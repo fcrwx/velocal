@@ -1,0 +1,4955 @@
+# Makefile.SH
+# This file is derived from Makefile.SH.  Any changes made here will
+# be lost the next time you run Configure.
+#  Makefile is used to generate makefile.  The only difference
+#  is that makefile has the dependencies filled in at the end.
+#
+#
+# I now supply perly.c with the kits, so don't remake perly.c without byacc
+BYACC = byacc
+CC = cc
+LD = cc
+
+LDFLAGS = -Wl,-E  -L/usr/local/lib
+CLDFLAGS = -Wl,-E  -L/usr/local/lib
+
+mallocsrc = 
+mallocobj = 
+LNS = /bin/ln -s
+# NOTE: some systems don't grok "cp -f". XXX Configure test needed?
+CPS = cp
+RMS = rm -f
+ranlib = :
+
+# The following are mentioned only to make metaconfig include the
+# appropriate questions in Configure.  If you want to change these,
+# edit config.sh instead, or specify --man1dir=/wherever on
+# installman commandline.
+bin = /users/home/velocal/web/public/perl/bin
+scriptdir = /users/home/velocal/web/public/perl/bin
+shrpdir = /users/home/velocal/web/public/perl/lib/5.8.8/i386-freebsd/CORE
+privlib = /users/home/velocal/web/public/perl/lib/5.8.8
+man1dir = /users/home/velocal/web/public/perl/man/man1
+man1ext = 1
+man3dir = /users/home/velocal/web/public/perl/man/man3
+man3ext = 3
+
+# The following are used to build and install shared libraries for
+# dynamic loading.
+LDDLFLAGS = -shared  -L/usr/local/lib
+SHRPLDFLAGS = $(LDDLFLAGS)
+CCDLFLAGS =  
+DLSUFFIX = .so
+PLDLFLAGS = 
+LIBPERL = libperl.a
+LLIBPERL= $(LIBPERL)
+SHRPENV = 
+
+# Static targets are ordinarily built without CCCDLFLAGS.  However,
+# if building a shared libperl.so that might later be linked into
+# another application, then it might be appropriate to also build static
+# extensions (usually just DynaLoader) with relocatable code (e.g. -fPIC
+# for GNU cc).  This is handled by ext/util/make_ext.
+STATIC = static
+
+# The following is used to include the current directory in
+# the dynamic loader path you are building a shared libperl.
+LDLIBPTH = 
+
+dynamic_ext =   lib/auto/B/B.so lib/auto/ByteLoader/ByteLoader.so lib/auto/Cwd/Cwd.so lib/auto/DB_File/DB_File.so lib/auto/Data/Dumper/Dumper.so lib/auto/Devel/DProf/DProf.so lib/auto/Devel/PPPort/PPPort.so lib/auto/Devel/Peek/Peek.so lib/auto/Digest/MD5/MD5.so lib/auto/Encode/Encode.so lib/auto/Fcntl/Fcntl.so lib/auto/File/Glob/Glob.so lib/auto/Filter/Util/Call/Call.so lib/auto/GDBM_File/GDBM_File.so lib/auto/I18N/Langinfo/Langinfo.so lib/auto/IO/IO.so lib/auto/IPC/SysV/SysV.so lib/auto/List/Util/Util.so lib/auto/MIME/Base64/Base64.so lib/auto/NDBM_File/NDBM_File.so lib/auto/Opcode/Opcode.so lib/auto/POSIX/POSIX.so lib/auto/PerlIO/encoding/encoding.so lib/auto/PerlIO/scalar/scalar.so lib/auto/PerlIO/via/via.so lib/auto/SDBM_File/SDBM_File.so lib/auto/Socket/Socket.so lib/auto/Storable/Storable.so lib/auto/Sys/Hostname/Hostname.so lib/auto/Sys/Syslog/Syslog.so lib/auto/Time/HiRes/HiRes.so lib/auto/Unicode/Normalize/Normalize.so lib/auto/XS/APItest/APItest.so lib/auto/XS/Typemap/Typemap.so lib/auto/attrs/attrs.so lib/auto/re/re.so lib/auto/threads/threads.so lib/auto/threads/shared/shared.so
+static_ext =  
+nonxs_ext =   ext/Errno/pm_to_blib
+ext = $(dynamic_ext) $(static_ext) $(nonxs_ext)
+DYNALOADER = lib/auto/DynaLoader/DynaLoader$(LIB_EXT)
+
+libs = -lm -lcrypt -lutil -lc 
+
+public = perl$(EXE_EXT)  utilities translators
+
+shellflags = 
+
+# This is set to  MAKE=make if your make command doesn't
+# do it for you.
+#
+
+# Mention gmake here so it gets probed for by Configure.
+
+# These variables may need to be manually set for non-Unix systems.
+AR = /usr/bin/ar
+EXE_EXT = 
+LIB_EXT = .a
+OBJ_EXT = .o
+PATH_SEP = :
+
+FIRSTMAKEFILE = makefile
+
+# Any special object files needed by this architecture, e.g. os2/os2.obj
+ARCHOBJS = 
+
+.SUFFIXES: .c $(OBJ_EXT) .i .s
+
+# grrr
+SHELL = /bin/sh
+
+# how to tr(anslate) newlines
+TRNL = '\n'
+
+OPTIMIZE = -O
+
+EXTRAS = 
+
+INSTALLPREFIXEXP = /users/home/velocal/web/public/perl
+
+
+CCCMD    = `sh $(shellflags) cflags "optimize='$(OPTIMIZE)'" $@`
+
+CCCMDSRC = `sh $(shellflags) cflags "optimize='$(OPTIMIZE)'" $<`
+
+CONFIGPM = lib/Config.pm lib/Config_heavy.pl
+private = preplibrary $(CONFIGPM) lib/Config.pod lib/ExtUtils/Miniperl.pm
+
+# Files to be built with variable substitution before miniperl
+# is available.
+sh = Makefile.SH cflags.SH config_h.SH makeaperl.SH makedepend.SH \
+	makedir.SH myconfig.SH writemain.SH pod/Makefile.SH
+
+shextract = Makefile cflags config.h makeaperl makedepend \
+	makedir myconfig writemain pod/Makefile
+
+# Files to be built with variable substitution after miniperl is
+# available.  Dependencies handled manually below (for now).
+
+pl = pod/pod2html.PL pod/pod2latex.PL pod/pod2man.PL pod/pod2text.PL \
+	pod/pod2usage.PL pod/podchecker.PL pod/podselect.PL
+
+# lib/lib.pm is not listed here because it has a rule of its own.
+plextract = pod/pod2html pod/pod2latex pod/pod2man pod/pod2text \
+	pod/pod2usage pod/podchecker pod/podselect
+
+addedbyconf = UU $(shextract) $(plextract) lib/lib.pm pstruct
+
+# Unicode data files generated by mktables
+unidatafiles = lib/unicore/Canonical.pl lib/unicore/Exact.pl \
+	lib/unicore/Properties lib/unicore/Decomposition.pl \
+	lib/unicore/CombiningClass.pl lib/unicore/Name.pl lib/unicore/PVA.pl
+
+# Directories of Unicode data files generated by mktables
+unidatadirs = lib/unicore/To lib/unicore/lib
+
+h1 = EXTERN.h INTERN.h XSUB.h av.h config.h cop.h cv.h dosish.h
+h2 = embed.h form.h gv.h handy.h hv.h keywords.h mg.h op.h opcode.h
+h3 = pad.h patchlevel.h perl.h perlapi.h perly.h pp.h proto.h regcomp.h
+h4 = regexp.h scope.h sv.h unixish.h util.h iperlsys.h thread.h
+h5 = utf8.h warnings.h
+h = $(h1) $(h2) $(h3) $(h4) $(h5)
+
+c1 = $(mallocsrc) av.c scope.c op.c doop.c doio.c dump.c hv.c mg.c reentr.c
+c2 = perl.c perly.c pp.c pp_hot.c pp_ctl.c pp_sys.c regcomp.c regexec.c utf8.c
+c3 = gv.c sv.c taint.c toke.c util.c deb.c run.c universal.c xsutils.c pad.c
+c4 = globals.c perlio.c perlapi.c numeric.c locale.c pp_pack.c pp_sort.c
+
+c = $(c1) $(c2) $(c3) $(c4) miniperlmain.c perlmain.c opmini.c
+
+obj1 = $(mallocobj) gv$(OBJ_EXT) toke$(OBJ_EXT) perly$(OBJ_EXT) op$(OBJ_EXT) pad$(OBJ_EXT) regcomp$(OBJ_EXT) dump$(OBJ_EXT) util$(OBJ_EXT) mg$(OBJ_EXT) reentr$(OBJ_EXT)
+obj2 = hv$(OBJ_EXT) av$(OBJ_EXT) run$(OBJ_EXT) pp_hot$(OBJ_EXT) sv$(OBJ_EXT) pp$(OBJ_EXT) scope$(OBJ_EXT) pp_ctl$(OBJ_EXT) pp_sys$(OBJ_EXT)
+obj3 = doop$(OBJ_EXT) doio$(OBJ_EXT) regexec$(OBJ_EXT) utf8$(OBJ_EXT) taint$(OBJ_EXT) deb$(OBJ_EXT) universal$(OBJ_EXT) xsutils$(OBJ_EXT) globals$(OBJ_EXT) perlio$(OBJ_EXT) perlapi$(OBJ_EXT) numeric$(OBJ_EXT) locale$(OBJ_EXT) pp_pack$(OBJ_EXT) pp_sort$(OBJ_EXT)
+
+obj = $(obj1) $(obj2) $(obj3) $(ARCHOBJS)
+
+lintflags = \
+    -bhn \
+    -p \
+    -s \
+    -Ncheck=%all \
+    -Nlevel=4 \
+    -errfmt=src \
+    -errtags \
+    -erroff=E_BAD_PTR_CAST \
+    -erroff=E_BLOCK_DECL_UNUSED \
+    -erroff=E_CONSTANT_CONDITION \
+    -erroff=E_BAD_PTR_CAST_ALIGN \
+    -erroff=E_PTRDIFF_OVERFLOW \
+    -erroff=E_EXPR_NULL_EFFECT \
+    -erroff=E_BAD_PTR_INT_COMBINATION \
+    -erroff=E_LOOP_EMPTY \
+    -erroff=E_TRUE_LOGICAL_EXPR \
+    -erroff=E_FALSE_LOGICAL_EXPR \
+    -erroff=E_INDISTING_FROM_TRUNC \
+    -erroff=E_POINTER_TO_OBJECT \
+    -erroff=E_ASSIGN_NARROW_CONV \
+    -erroff=E_BAD_SIGN_EXTEND \
+    -erroff=E_INCL_NUSD \
+    -erroff=E_MAIN_PARAM \
+    -Wfoo.flow
+
+.c$(OBJ_EXT):
+	$(CCCMD) $(PLDLFLAGS) $*.c
+
+.c.i:
+	$(CCCMDSRC) -E $*.c > $*.i
+
+.c.s:
+	$(CCCMDSRC) -S $*.c
+
+all: $(FIRSTMAKEFILE) miniperl$(EXE_EXT) extra.pods $(private) $(unidatafiles) $(public) $(dynamic_ext) $(nonxs_ext) extras.make
+	@echo " ";
+	@echo "	Everything is up to date. Type '$(MAKE) test' to run test suite."
+
+.PHONY: all compile translators utilities
+
+compile: all
+	echo "testing compilation" > testcompile;
+	cd utils;  $(MAKE) compile;
+	cd x2p; $(MAKE) compile;
+	cd pod; $(MAKE) compile;
+
+translators:	miniperl$(EXE_EXT) $(CONFIGPM) FORCE
+	@echo " "; echo "	Making x2p stuff"; cd x2p; $(LDLIBPTH) $(MAKE) all
+
+utilities:	miniperl$(EXE_EXT) $(CONFIGPM) $(plextract) lib/lib.pm FORCE
+	@echo " "; echo "	Making utilities"; cd utils; $(LDLIBPTH) $(MAKE) all
+
+
+# This is now done by installman only if you actually want the man pages.
+#	@echo " "; echo "	Making docs"; cd pod; $(MAKE) all;
+
+# Phony target to force checking subdirectories.
+# Apparently some makes require an action for the FORCE target.
+.PHONY: FORCE
+FORCE:
+	@sh -c true
+
+# We do a copy of the op.c instead of a symlink because gcc gets huffy
+# if we have a symlink forest to another disk (it complains about too many
+# levels of symbolic links, even if we have only two)
+
+opmini.c: op.c
+	$(RMS) opmini.c
+	$(CPS) op.c opmini.c
+
+opmini$(OBJ_EXT): opmini.c
+	$(CCCMD) $(PLDLFLAGS) -DPERL_EXTERNAL_GLOB opmini.c
+
+miniperlmain$(OBJ_EXT): miniperlmain.c patchlevel.h
+	$(CCCMD) $(PLDLFLAGS) $*.c
+
+perlmain.c: miniperlmain.c config.sh $(FIRSTMAKEFILE)
+	sh writemain $(DYNALOADER) $(static_ext) > perlmain.c
+
+perlmain$(OBJ_EXT): perlmain.c
+	$(CCCMD) $(PLDLFLAGS) $*.c
+
+# The file ext.libs is a list of libraries that must be linked in
+# for static extensions, e.g. -lm -lgdbm, etc.  The individual
+# static extension Makefile's add to it.
+ext.libs: $(static_ext)
+	-@test -f ext.libs || touch ext.libs
+
+$(LIBPERL): $& perl$(OBJ_EXT) $(obj) $(LIBPERLEXPORT)
+	rm -f $(LIBPERL)
+	$(AR) rcu $(LIBPERL) perl$(OBJ_EXT) $(obj)
+	@$(ranlib) $(LIBPERL)
+
+# How to build executables.
+
+# The $& notation tells Sequent machines that it can do a parallel make,
+# and is harmless otherwise.
+# The miniperl -w -MExporter line is a basic cheap test to catch errors
+# before make goes on to run preplibrary and then MakeMaker on extensions.
+# This is very handy because later errors are often caused by miniperl
+# build problems but that's not obvious to the novice.
+# The Module used here must not depend on Config or any extensions.
+
+miniperl$(EXE_EXT): $& miniperlmain$(OBJ_EXT) $(LIBPERL) opmini$(OBJ_EXT)
+	-@rm -f miniperl.xok
+	$(LDLIBPTH) $(CC) $(CLDFLAGS) -o miniperl \
+	    miniperlmain$(OBJ_EXT) opmini$(OBJ_EXT) $(LLIBPERL) $(libs)
+	$(LDLIBPTH) ./miniperl -w -Ilib -MExporter -e '<?>' || $(MAKE) minitest
+
+perl$(EXE_EXT): $& perlmain$(OBJ_EXT) $(LIBPERL) $(DYNALOADER) $(static_ext) ext.libs $(PERLEXPORT)
+	-@rm -f miniperl.xok
+	$(SHRPENV) $(LDLIBPTH) $(CC) -o perl$(PERL_SUFFIX) $(PERL_PROFILE_LDFLAGS) $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(DYNALOADER) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
+
+# Purify/Quantify Perls.
+
+pureperl$(EXE_EXT): $& perlmain$(OBJ_EXT) $(LIBPERL) $(DYNALOADER) $(static_ext) ext.libs $(PERLEXPORT)
+	$(SHRPENV) $(LDLIBPTH) purify $(CC) -o pureperl $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(DYNALOADER) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
+
+purecovperl$(EXE_EXT): $& perlmain$(OBJ_EXT) $(LIBPERL) $(DYNALOADER) $(static_ext) ext.libs $(PERLEXPORT)
+	$(SHRPENV) $(LDLIBPTH) purecov $(CC) -o purecovperl $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(DYNALOADER) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
+
+quantperl$(EXE_EXT): $& perlmain$(OBJ_EXT) $(LIBPERL) $(DYNALOADER) $(static_ext) ext.libs $(PERLEXPORT)
+	$(SHRPENV) $(LDLIBPTH) quantify $(CC) -o quantperl $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) $(DYNALOADER) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
+
+# Valgrind perl (currently Linux only)
+
+perl.valgrind.config: config.sh
+	@echo "To build perl.valgrind you must Configure -Doptimize=-g -Uusemymalloc, checking..."
+	@$(MAKE) perl.config.dashg
+	@echo "Checking usemymalloc='n' in config.sh..."
+	@grep "^usemymalloc="    config.sh
+	@grep "^usemymalloc='n'" config.sh >/dev/null || exit 1
+	@echo "And of course you have to have valgrind..."
+	valgrind ./perl -e 1 2>/dev/null || exit 1
+
+# Third Degree Perl (Tru64 only)
+
+perl.config.dashg:
+	@echo "Checking optimize='-g' in config.sh..."
+	@grep "^optimize="     config.sh
+	@egrep "^optimize='(-g|.*-g[1-3].*)'" config.sh >/dev/null || exit 1
+
+perl.third.config: config.sh
+	@echo "To build perl.third you must Configure -Doptimize=-g -Uusemymalloc, checking..."
+	@$(MAKE) perl.config.dashg
+	@echo "Checking usemymalloc='n' in config.sh..."
+	@grep "^usemymalloc="    config.sh
+	@grep "^usemymalloc='n'" config.sh >/dev/null || exit 1
+
+perl.third: /usr/bin/atom perl.third.config perl
+	atom -tool third -L. -all -gp -toolargs="-invalid -uninit heap+stack+copy -min 0" perl
+	@echo "Now you may run perl.third and then study perl.3log."
+
+# Pixie Perls (Tru64 and IRIX only)
+
+perl.pixie.config: config.sh
+	@echo "To build perl.pixie you must Configure -Doptimize=-g, checking..."
+	@$(MAKE) perl.config.dashg
+
+perl.pixie.atom: /usr/bin/atom perl
+	atom -tool pixie -L. -all -toolargs="-quiet" perl
+
+perl.pixie.irix: perl
+	pixie perl
+
+perl.pixie: /usr/bin/pixie perl.pixie.config perl
+	if test -x /usr/bin/atom; then \
+	  $(MAKE) perl.pixie.atom; \
+	else \
+	  $(MAKE) perl.pixie.irix; \
+	fi
+	@echo "Now you may run perl.pixie and then run pixie."
+
+# Gprof Perl
+
+perl.config.dashpg:
+	@echo "Checking optimize='-pg' in config.sh..."
+	@grep "^optimize="      config.sh
+	@grep "^optimize='.*-pg.*'" config.sh >/dev/null || exit 1
+
+perl.gprof.config: config.sh
+	@echo "To build perl.gprof you must Configure -Doptimize=-pg, checking..."
+	@$(MAKE) perl.config.dashpg
+
+perl.gprof: /usr/bin/gprof perl.gprof.config
+	@-rm -f perl
+	$(MAKE) PERL_SUFFIX=.gprof PERL_PROFILE_LDFLAGS=-pg perl
+	@echo "Now you may run perl.gprof and then run gprof perl.gprof."
+
+# Gcov Perl
+
+perl.config.gcov:
+	@echo "To build perl.gcov you must use gcc 3.0 or newer, checking..."
+	@echo "Checking gccversion in config.sh..."
+	@grep "^gccversion="      config.sh
+	@grep "^gccversion='[3-9]\." config.sh >/dev/null || exit 1
+	@echo "To build perl.gcov you must Configure -Dccflags=-fprofile-arcs -ftest-coverage, checking..."
+	@echo "Checking ccflags='-fprofile-arcs -ftest-coverage' in config.sh..."
+	@grep "^ccflags="      config.sh
+	@grep "^ccflags='.*-fprofile-arcs -ftest-coverage.*'" config.sh >/dev/null || exit 1
+
+perl.gcov: perl.config.gcov
+	@-rm -f perl
+	$(MAKE) PERL_SUFFIX=.gcov PERL_PROFILE_LDFLAGS='' perl
+	@echo "Now you may run perl.gcov and then run gcov some.c."
+
+# Microperl.  This is just a convenience thing if one happens to
+# build also the full Perl and therefore the real big Makefile:
+# usually one should manually explicitly issue the below command.
+
+.PHONY: microperl
+microperl:
+	$(MAKE) -f Makefile.micro
+
+# This version, if specified in Configure, does ONLY those scripts which need
+# set-id emulation.  Suidperl must be setuid root.  It contains the "taint"
+# checks as well as the special code to validate that the script in question
+# has been invoked correctly.
+
+suidperl$(EXE_EXT): $& sperl$(OBJ_EXT) perlmain$(OBJ_EXT) $(LIBPERL) $(DYNALOADER) $(static_ext) ext.libs $(PERLEXPORT)
+	$(SHRPENV) $(LDLIBPTH) $(CC) -o suidperl $(CLDFLAGS) $(CCDLFLAGS) perlmain$(OBJ_EXT) sperl$(OBJ_EXT) $(DYNALOADER) $(static_ext) $(LLIBPERL) `cat ext.libs` $(libs)
+
+
+sperl$(OBJ_EXT): perl.c $(h)
+	$(RMS) sperl.c
+	$(LNS) perl.c sperl.c
+	$(CCCMD) -DIAMSUID sperl.c
+	$(RMS) sperl.c
+
+# We have to call our ./makedir because Ultrix 4.3 make can't handle the line
+#	test -d lib/auto || mkdir lib/auto
+# We need to autosplit in two steps because VOS can't handle so many args
+#
+.PHONY: preplibrary
+preplibrary: miniperl$(EXE_EXT) $(CONFIGPM) lib/lib.pm $(PREPLIBRARY_LIBPERL)
+	@sh ./makedir lib/auto
+	@echo "	AutoSplitting perl library"
+	$(LDLIBPTH) ./miniperl -Ilib -e 'use AutoSplit; \
+		autosplit_lib_modules(@ARGV)' lib/*.pm
+	$(LDLIBPTH) ./miniperl -Ilib -e 'use AutoSplit; \
+		autosplit_lib_modules(@ARGV)' lib/*/*.pm
+	$(MAKE) lib/re.pm
+
+lib/Config.pod: config.sh miniperl$(EXE_EXT) configpm Porting/Glossary
+	$(LDLIBPTH) ./miniperl -Ilib configpm --heavy=lib/Config_heavy.pl lib/Config.pm
+
+$(CONFIGPM): lib/Config.pod
+
+lib/ExtUtils/Miniperl.pm: miniperlmain.c miniperl$(EXE_EXT) minimod.pl $(CONFIGPM)
+	$(LDLIBPTH) ./miniperl minimod.pl > lib/ExtUtils/Miniperl.pm
+
+lib/re.pm: ext/re/re.pm
+	cp ext/re/re.pm lib/re.pm
+
+$(plextract):	miniperl$(EXE_EXT) $(CONFIGPM) x2p/s2p
+	@-rm -f $@
+	$(LDLIBPTH) ./miniperl -I`pwd`/lib $@.PL
+
+x2p/s2p: miniperl$(EXE_EXT) $(CONFIGPM) x2p/s2p.PL
+	cd x2p; $(LDLIBPTH) $(MAKE) s2p
+
+lib/lib.pm:	miniperl$(EXE_EXT) $(CONFIGPM)
+	@-rm -f $@
+	$(LDLIBPTH) ./miniperl -Ilib lib/lib_pm.PL
+
+unidatafiles $(unidatafiles): uni.data
+
+uni.data: miniperl$(EXE_EXT) $(CONFIGPM) lib/unicore/mktables
+	cd lib/unicore && $(LDLIBPTH) ../../miniperl -I../../lib mktables -w
+	touch uni.data
+
+extra.pods: miniperl$(EXE_EXT)
+	-@test -f extra.pods && rm -f `cat extra.pods`
+	-@rm -f extra.pods
+	-@for x in `grep -l '^=[a-z]' README.* | grep -v README.vms` ; do \
+	    nx=`echo $$x | sed -e "s/README\.//"`; \
+	    cd pod ; $(LNS) ../$$x "perl"$$nx".pod" ; cd .. ; \
+	    echo "pod/perl"$$nx".pod" >> extra.pods ; \
+	done
+	-@rm -f pod/perlvms.pod
+	-@test -f vms/perlvms.pod && cd pod && $(LNS) ../vms/perlvms.pod perlvms.pod && cd .. && echo "pod/perlvms.pod" >> extra.pods
+	-@rm -f pod/perldelta.pod
+	-@test -f pod/perl588delta.pod && cd pod && $(LNS) perl588delta.pod perldelta.pod && cd .. && echo "pod/perldelta.pod" >> extra.pods # See buildtoc
+
+extras.make: perl$(EXE_EXT)
+	-@test -s extras.lst && PATH="`pwd`:${PATH}" PERL5LIB="`pwd`/lib" $(LDLIBPTH) ./perl -Ilib -MCPAN -e '@ARGV&&make(@ARGV)' `cat extras.lst`
+
+extras.test: perl$(EXE_EXT)
+	-@test -s extras.lst && PATH="`pwd`:${PATH}" PERL5LIB="`pwd`/lib" $(LDLIBPTH) ./perl -Ilib -MCPAN -e '@ARGV&&test(@ARGV)' `cat extras.lst`
+
+extras.install: perl$(EXE_EXT)
+	-@test -s extras.lst && PATH="`pwd`:${PATH}" PERL5LIB="`pwd`/lib" $(LDLIBPTH) ./perl -Ilib -MCPAN -e '@ARGV&&install(@ARGV)' `cat extras.lst`
+
+.PHONY: install install-strip install-all install-verbose install-silent \
+	no-install install.perl install.man install.html
+
+META.yml:	Porting/makemeta Porting/Maintainers.pl Porting/Maintainers.pm
+	$(LDLIBPTH) ./miniperl -Ilib Porting/makemeta
+
+install-strip:
+	$(MAKE) STRIPFLAGS=-s install DESTDIR="$(DESTDIR)"
+
+install install-all:
+	$(MAKE) install.perl install.man STRIPFLAGS=$(STRIPFLAGS) DESTDIR="$(DESTDIR)"
+
+install-verbose:
+	$(MAKE) install.perl install.man STRIPFLAGS=$(STRIPFLAGS) INSTALLFLAGS=-V DESTDIR="$(DESTDIR)"
+
+install-silent:
+	$(MAKE) install.perl install.man STRIPFLAGS=$(STRIPFLAGS) INSTALLFLAGS=-S DESTDIR="$(DESTDIR)"
+
+no-install:
+	$(MAKE) install.perl install.man STRIPFLAGS=$(STRIPFLAGS) INSTALLFLAGS=-n DESTDIR="$(DESTDIR)"
+
+# Set this to an empty string to avoid an attempt of rebuild before install
+INSTALL_DEPENDENCE = all
+
+install.perl:	$(INSTALL_DEPENDENCE) installperl
+	if [ -n "$(COMPILE)" ]; \
+	then \
+		cd utils; $(MAKE) compile; \
+		cd ../x2p; $(MAKE) compile; \
+		cd ../pod; $(MAKE) compile; \
+	else :; \
+	fi
+	$(LDLIBPTH) ./perl installperl --destdir=$(DESTDIR) $(INSTALLFLAGS) $(STRIPFLAGS)
+	$(MAKE) extras.install
+
+install.man:	all installman
+	$(LDLIBPTH) ./perl installman --destdir=$(DESTDIR) $(INSTALLFLAGS)
+
+# XXX Experimental. Hardwired values, but useful for testing.
+# Eventually Configure could ask for some of these values.
+install.html: all installhtml
+	-@test -f README.vms && cd vms && $(LNS) ../README.vms README_vms.pod && cd ..
+	$(LDLIBPTH) ./perl installhtml   \
+      --podroot=. --podpath=. --recurse  \
+      --htmldir=$(privlib)/html   \
+      --htmlroot=$(privlib)/html  \
+      --splithead=pod/perlipc     \
+      --splititem=pod/perlfunc    \
+      --libpods=perlfunc:perlguts:perlvar:perlrun:perlop \
+      --ignore=Porting/Maintainers.pm,Porting/patching.pod,Porting/pumpkin.pod,Porting/repository.pod \
+      --verbose
+
+
+# I now supply perly.c with the kits, so the following section is
+# used only if you force byacc to run by saying
+# 	make run_byacc
+# Since we patch up the byacc output, the perly.fixer script needs
+# to run with precisely the same version of byacc as I use.  You
+# normally shouldn't remake perly.[ch].
+
+.PHONY: check_byacc run_byacc
+
+check_byacc:
+	@$(BYACC) -V 2>&1 | grep 'version 1\.8\.2'
+
+run_byacc:	FORCE check_byacc
+	$(BYACC) -d perly.y
+	-chmod 664 perly.c perly.h
+	sh $(shellflags) ./perly.fixer y.tab.c perly.c
+	sed -e 's/fprintf *( *stderr *,/PerlIO_printf(Perl_debug_log,/g' \
+	    -e 's/y\.tab/perly/g' perly.c >perly.tmp && mv perly.tmp perly.c
+	sed -e '/^extern YYSTYPE yy/D' y.tab.h >yh.tmp && mv yh.tmp y.tab.h
+	cmp -s y.tab.h perly.h && rm -f y.tab.h || mv y.tab.h perly.h
+	perl -i.old perlyline.pl perly.c
+	chmod 664 vms/perly_c.vms vms/perly_h.vms
+	perl vms/vms_yfix.pl perly.c perly.h vms/perly_c.vms vms/perly_h.vms
+
+# We don't want to regenerate perly.c and perly.h, but they might
+# appear out-of-date after a patch is applied or a new distribution is
+# made.
+perly.c: perly.y
+	-@sh -c true
+
+perly.h: perly.y
+	-@sh -c true
+
+PERLYVMS = vms/perly_c.vms vms/perly_h.vms
+
+$(PERLYVMS):	perly.c perly.h vms/vms_yfix.pl
+	perl vms/vms_yfix.pl perly.c perly.h vms/perly_c.vms vms/perly_h.vms
+
+# No compat3.sym here since and including the 5.004_50.
+# No interp.sym since 5.005_03.
+SYM  = global.sym globvar.sym perlio.sym pp.sym
+
+SYMH = perlvars.h intrpvar.h thrdvar.h
+
+CHMOD_W = chmod +w
+
+# The following files are generated automatically
+#	autodoc.pl:	pod/perlapi.pod pod/perlintern.pod
+#	bytecode.pl:	ext/ByteLoader/byterun.h ext/ByteLoader/byterun.c
+#			ext/B/B/Asmdata.pm
+#	embed.pl:	proto.h embed.h embedvar.h global.sym
+#			perlapi.h perlapi.c 
+# [* embed.pl needs pp.sym generated by opcode.pl! *]
+#	keywords.pl:	keywords.h
+#	opcode.pl:	opcode.h opnames.h pp_proto.h pp.sym
+#	regcomp.pl:	regnodes.h
+#	warnings.pl:	warnings.h lib/warnings.pm
+# The correct versions should be already supplied with the perl kit,
+# in case you don't have perl available.
+# To force them to be regenerated, run
+#       perl regen.pl
+# with your existing copy of perl
+# (make regen_headers is kept for backwards compatibility)
+
+AUTOGEN_FILES = keywords.h opcode.h opnames.h pp_proto.h pp.sym proto.h \
+		embed.h embedvar.h global.sym \
+		pod/perlintern.pod pod/perlapi.pod \
+		perlapi.h perlapi.c ext/ByteLoader/byterun.h \
+		ext/ByteLoader/byterun.c ext/B/B/Asmdata.pm regnodes.h \
+		warnings.h lib/warnings.pm
+
+.PHONY: regen_headers regen_pods regen_all
+
+regen regen_headers:	FORCE
+	-perl regen.pl
+
+regen_pods:	FORCE
+	-cd pod; $(LDLIBPTH) $(MAKE) regen_pods
+
+regen_all: $(PERLYVMS) regen regen_pods
+
+.PHONY:	manisort manicheck
+
+manisort:	FORCE
+	LC_ALL=C sort -fdc MANIFEST || (echo "WARNING: re-sorting MANIFEST"; \
+		LC_ALL=C sort -fdo MANIFEST MANIFEST)
+
+manicheck:	FORCE
+	perl Porting/manicheck
+
+# Extensions:
+# Names added to $(dynamic_ext) or $(static_ext) or $(nonxs_ext) will
+# automatically get built.  There should ordinarily be no need to change
+# any of this part of makefile.
+#
+# The dummy dependency is a place holder in case $(dynamic_ext) or
+# $(static_ext) is empty.
+#
+# DynaLoader may be needed for extensions that use Makefile.PL.
+
+$(DYNALOADER):	miniperl$(EXE_EXT) preplibrary FORCE
+	@$(LDLIBPTH) sh ext/util/make_ext $(STATIC) $@ MAKE=$(MAKE) LIBPERL_A=$(LIBPERL)
+
+d_dummy $(dynamic_ext):	miniperl$(EXE_EXT) preplibrary $(DYNALOADER) FORCE
+	@$(LDLIBPTH) sh ext/util/make_ext dynamic $@ MAKE=$(MAKE) LIBPERL_A=$(LIBPERL)
+
+s_dummy $(static_ext):	miniperl$(EXE_EXT) preplibrary $(DYNALOADER) FORCE
+	@$(LDLIBPTH) sh ext/util/make_ext $(STATIC) $@ MAKE=$(MAKE) LIBPERL_A=$(LIBPERL)
+
+n_dummy $(nonxs_ext):	miniperl$(EXE_EXT) preplibrary $(DYNALOADER) FORCE
+	@$(LDLIBPTH) sh ext/util/make_ext nonxs $@ MAKE=$(MAKE) LIBPERL_A=$(LIBPERL)
+
+.PHONY: clean _tidy _mopup _cleaner1 _cleaner2 \
+	realclean _realcleaner clobber _clobber \
+	distclean veryclean _verycleaner
+
+clean:		_tidy _mopup
+
+realclean:	_realcleaner _mopup
+	@echo "Note that '$(MAKE) realclean' does not delete config.sh or Policy.sh"
+
+_clobber:
+	-@rm -f Cross/run-* Cross/to-* Cross/from-*
+	rm -f config.sh cppstdin Policy.sh extras.lst
+
+clobber:	_realcleaner _mopup _clobber
+
+distclean:	clobber
+
+# Like distclean but also removes emacs backups and *.orig.
+veryclean:	_verycleaner _mopup _clobber
+	-@rm -f Obsolete Wanted
+
+# Do not 'make _mopup' directly.
+_mopup:
+	rm -f *$(OBJ_EXT) *$(LIB_EXT) all perlmain.c opmini.c
+	-rmdir .depending
+	-@test -f extra.pods && rm -f `cat extra.pods`
+	-@test -f vms/README_vms.pod && rm -f vms/README_vms.pod
+	-rm -f perl.exp ext.libs extra.pods uni.data opmini.o
+	-rm -f perl.export perl.dll perl.libexp perl.map perl.def
+	-rm -f perl.loadmap miniperl.loadmap perl.prelmap miniperl.prelmap
+	-rm -f perl.third lib*.so.perl.third perl.3log t/perl.third t/perl.3log
+	-rm -f perl.pixie lib*.so.perl.pixie lib*.so.Addrs
+	-rm -f perl.Addrs perl.Counts t/perl.Addrs t/perl.Counts *perl.xok
+	-rm -f perlld cygwin.c ld2 libperl*.def libperl*.dll cygperl*.dll *.exe.stackdump
+	-rm -f perl$(EXE_EXT) suidperl$(EXE_EXT) miniperl$(EXE_EXT) $(LIBPERL) libperl.* microperl
+	-rm -f opcode.h-old opnames.h-old pp.sym-old pp_proto.h-old
+
+# Do not 'make _tidy' directly.
+_tidy:
+	-cd pod; $(LDLIBPTH) $(MAKE) clean
+	-cd utils; $(LDLIBPTH) $(MAKE) clean
+	-cd x2p; $(LDLIBPTH) $(MAKE) clean
+	-@for x in $(DYNALOADER) $(dynamic_ext) $(static_ext) $(nonxs_ext) ; do \
+	$(LDLIBPTH) sh ext/util/make_ext clean $$x MAKE=$(MAKE) ; \
+	done
+	rm -f testcompile compilelog
+
+_cleaner1:
+	-cd os2; rm -f Makefile
+	-cd pod; $(LDLIBPTH) $(MAKE) $(CLEAN)
+	-cd utils; $(LDLIBPTH) $(MAKE) $(CLEAN)
+	-cd x2p; $(LDLIBPTH) $(MAKE) $(CLEAN)
+	-@for x in $(DYNALOADER) $(dynamic_ext) $(static_ext) $(nonxs_ext) ; do \
+	$(LDLIBPTH) sh ext/util/make_ext $(CLEAN) $$x MAKE=$(MAKE) ; \
+	done
+
+# Some systems do not support "?", so keep these files separate.
+_cleaner2:
+	-rm -f core.*perl.*.? t/core.perl.*.? .?*.c
+	rm -f core *perl.core t/core t/*perl.core core.* t/core.*
+	rm -f t/misctmp* t/forktmp* t/tmp* t/c t/perl$(EXE_EXT) t/rantests
+	rm -f so_locations $(LIBPERL_NONSHR) $(MINIPERL_NONSHR)
+	rm -rf $(addedbyconf)
+	rm -f $(FIRSTMAKEFILE) $(FIRSTMAKEFILE).old makefile.old
+	rm -f $(private)
+	rm -rf $(unidatafiles) $(unidatadirs)
+	rm -rf lib/auto
+	rm -f lib/.exists lib/*/.exists lib/*/*/.exists
+	rm -f h2ph.man pstruct
+	rm -rf .config
+	rm -f preload
+	rm -f testcompile compilelog
+	rm -rf lib/Encode
+	-rmdir lib/B lib/Data
+	-rmdir lib/Filter/Util lib/IO/Socket lib/IO
+	-rmdir lib/List lib/MIME lib/Scalar lib/Sys 
+	-rmdir lib/threads lib/XS
+
+_realcleaner:
+	@$(LDLIBPTH) $(MAKE) _cleaner1 CLEAN=realclean
+	@$(LDLIBPTH) $(MAKE) _cleaner2
+
+_verycleaner:
+	@$(LDLIBPTH) $(MAKE) _cleaner1 CLEAN=veryclean
+	@$(LDLIBPTH) $(MAKE) _cleaner2
+	-rm -f *~ *.orig */*~ */*.orig */*/*~ */*/*.orig
+
+.PHONY: lint
+lint: $(c)
+	rm -f *.ln
+	lint $(lintflags) -DPERL_CORE -D_REENTRANT -DDEBUGGING -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(c)
+
+# Need to unset during recursion to go out of loop.
+# The README below ensures that the dependency list is never empty and
+# that when MAKEDEPEND is empty $(FIRSTMAKEFILE) doesn't need rebuilding.
+
+MAKEDEPEND = Makefile makedepend
+
+$(FIRSTMAKEFILE):	README $(MAKEDEPEND)
+	$(MAKE) depend MAKEDEPEND=
+
+config.h: config_h.SH config.sh
+	$(SHELL) config_h.SH
+
+# When done, touch perlmain.c so that it doesn't get remade each time.
+.PHONY: depend
+depend: makedepend
+	sh ./makedepend MAKE=$(MAKE)
+	- test -s perlmain.c && touch perlmain.c
+	cd x2p; $(MAKE) depend
+
+# Cannot postpone this until $firstmakefile is ready ;-)
+makedepend: makedepend.SH config.sh
+	sh ./makedepend.SH
+
+.PHONY: test check test_prep test_prep_nodll test_prep_pre _test_prep \
+	test_tty test-tty _test_tty test_notty test-notty _test_notty \
+	utest ucheck test.utf8 check.utf8 test.torture torturetest \
+	test.utf16 check.utf16 utest.utf16 ucheck.utf16 \
+	test.third check.third utest.third ucheck.third test_notty.third \
+	test.deparse test_notty.deparse test_harness test_harness_notty \
+	test.bytecompile minitest coretest test.taintwarn
+
+# Cannot delegate rebuilding of t/perl to make
+# to allow interlaced test and minitest
+
+TESTFILE=TEST
+
+_test_prep:
+	cd t && (rm -f $(PERL)$(EXE_EXT); $(LNS) ../$(PERL)$(EXE_EXT) $(PERL)$(EXE_EXT))
+
+# Architecture-neutral stuff:
+
+test_prep_pre: preplibrary utilities $(nonxs_ext)
+
+test_prep: test_prep_pre miniperl$(EXE_EXT) $(unidatafiles) perl$(EXE_EXT) $(dynamic_ext) $(TEST_PERL_DLL)
+	PERL=./perl $(MAKE) _test_prep
+
+_test_tty:
+	cd t && $(PERL_DEBUG) $(LDLIBPTH) $(PERL) $(TESTFILE) $(TEST_ARGS) </dev/tty
+
+_test_notty:
+	cd t && $(PERL_DEBUG) PERL_SKIP_TTY_TEST=1 $(LDLIBPTH) $(PERL) $(TESTFILE) $(TEST_ARGS)
+
+# The second branch is for testing without a tty or controlling terminal,
+# see t/op/stat.t
+_test:
+	if (true </dev/tty) >/dev/null 2>&1; then \
+	  $(MAKE) TEST_ARGS=$(TEST_ARGS) TESTFILE=$(TESTFILE) _test_tty   ; \
+	else \
+	  $(MAKE) TEST_ARGS=$(TEST_ARGS) TESTFILE=$(TESTFILE) _test_notty ; \
+	fi
+	@echo "Ran tests" > t/rantests
+
+test check: test_prep
+	PERL=./perl $(MAKE) _test
+
+test_tty: test_prep
+	PERL=./perl $(MAKE) _test_tty
+
+test_notty: test_prep
+	PERL=./perl $(MAKE) _test_notty
+
+utest ucheck test.utf8 check.utf8: test_prep
+	PERL=./perl TEST_ARGS=-utf8 $(MAKE) _test
+
+coretest: test_prep
+	PERL=./perl TEST_ARGS=-core $(MAKE) _test
+
+test-prep:	test_prep
+
+test-tty:	test_tty
+
+test-notty:	test_notty
+
+# Torture testing
+
+test.torture torturetest:	test_prep
+	PERL=./perl TEST_ARGS=-torture $(MAKE) _test
+
+# Targets for UTF16 testing:
+
+minitest.utf16: minitest.prep
+	- cd t && (rm -f perl$(EXE_EXT); $(LNS) ../miniperl$(EXE_EXT) perl$(EXE_EXT)) \
+		&& $(LDLIBPTH) ./perl TEST -minitest -utf16 base/*.t comp/*.t cmd/*.t run/*.t io/*.t op/*.t uni/*.t </dev/tty
+
+test.utf16 check.utf16: test_prep
+	PERL=./perl $(MAKE) TEST_ARGS=-utf16 _test
+
+utest.utf16 ucheck.utf16: test_prep
+	PERL=./perl $(MAKE) TEST_ARGS="-utf8 -utf16" _test
+
+# Targets for valgrind testing:
+
+test_prep.valgrind: test_prep perl.valgrind
+	PERL=./perl $(MAKE) _test_prep
+
+test.valgrind check.valgrind:	test_prep perl.valgrind.config
+	PERL=./perl PERL_DEBUG=PERL_VALGRIND=1 $(MAKE) _test
+
+utest.valgrind ucheck.valgrind: test_prep.valgrind perl.valgrind
+	PERL=./perl PERL_DEBUG=PERL_VALGRIND=1 TEST_ARGS=-utf8 $(MAKE) _test
+
+test_notty.valgrind: test_prep.valgrind perl.valgrind
+	PERL=./perl $(MAKE) PERL_DEBUG=PERL_VALGRIND=1 _test_notty
+
+# Targets for Third Degree testing.
+
+test_prep.third: test_prep perl.third
+	PERL=./perl.third $(MAKE) _test_prep
+
+test.third check.third:	test_prep.third perl.third
+	PERL=./perl.third PERL_DEBUG=PERL_3LOG=1 $(MAKE) _test
+
+utest.third ucheck.third: test_prep.third perl.third
+	PERL=./perl.third PERL_DEBUG=PERL_3LOG=1 TEST_ARGS=-utf8 $(MAKE) _test
+
+test_notty.third: test_prep.third perl.third
+	PERL=./perl.third $(MAKE) PERL_DEBUG=PERL_3LOG=1 _test_notty
+
+# Targets for Bytecode/ByteLoader testing.
+
+test.bytecompile:	test_prep
+	PERL=./perl TEST_ARGS=-bytecompile $(MAKE) _test
+
+# Targets for Deparse testing.
+
+test.deparse:	test_prep
+	PERL=./perl TEST_ARGS=-deparse $(MAKE) _test
+
+test_notty.deparse:	test_prep
+	PERL=./perl TEST_ARGS=-deparse $(MAKE) _test_notty
+
+# Targets to run the test suite with -t
+
+test.taintwarn:	test_prep
+	PERL=./perl TEST_ARGS=-taintwarn $(MAKE) _test
+
+minitest.prep:
+	-@test -f lib/lib.pm && test -f lib/Config.pm || \
+	  $(MAKE) lib/Config.pm lib/lib.pm $(unidatafiles)
+	@echo " "
+	@echo "You may see some irrelevant test failures if you have been unable"
+	@echo "to build lib/Config.pm, lib/lib.pm or the Unicode data files."
+	@echo " "
+
+# Can't depend on lib/Config.pm because that might be where miniperl
+# is crashing.
+minitest: miniperl$(EXE_EXT) lib/re.pm minitest.prep
+	- cd t && (rm -f perl$(EXE_EXT); $(LNS) ../miniperl$(EXE_EXT) perl$(EXE_EXT)) \
+		&& $(LDLIBPTH) ./perl TEST -minitest base/*.t comp/*.t cmd/*.t run/*.t io/*.t op/*.t uni/*.t </dev/tty
+
+# Test via harness
+
+test_harness: test_prep
+	PERL=./perl $(MAKE) TESTFILE=harness _test
+
+test_harness_notty: test_prep
+	PERL=./perl HARNESS_NOTTY=1 $(MAKE) TESTFILE=harness _test
+
+# Handy way to run perlbug -ok without having to install and run the
+# installed perlbug. We don't re-run the tests here - we trust the user.
+# Please *don't* use this unless all tests pass.
+# If you want to report test failures, use "make nok" instead.
+
+.PHONY: ok okfile oknack okfilenack nok nokfile noknack nokfilenack
+
+ok:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -ok -s '(UNINSTALLED)'
+
+okfile:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -ok -s '(UNINSTALLED)' -F perl.ok
+
+oknack:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -ok -s '(UNINSTALLED)' -A
+
+okfilenack:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -ok -s '(UNINSTALLED)' -F perl.ok -A
+
+nok:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -nok -s '(UNINSTALLED)'
+
+nokfile:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -nok -s '(UNINSTALLED)' -F perl.nok
+
+noknack:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -nok -s '(UNINSTALLED)' -A
+
+nokfilenack:	utilities
+	$(LDLIBPTH) ./perl -Ilib utils/perlbug -nok -s '(UNINSTALLED)' -F perl.nok -A
+
+.PHONY: clist hlist shlist pllist
+
+clist:	$(c)
+	echo $(c) | tr ' ' $(TRNL) >.clist
+
+hlist:  $(h)
+	echo $(h) | tr ' ' $(TRNL) >.hlist
+
+shlist: $(sh)
+	echo $(sh) | tr ' ' $(TRNL) >.shlist
+
+pllist: $(pl)
+	echo $(pl) | tr ' ' $(TRNL) >.pllist
+
+Makefile: Makefile.SH ./config.sh
+	$(SHELL) Makefile.SH
+
+.PHONY: distcheck
+distcheck: FORCE
+	perl '-MExtUtils::Manifest=&fullcheck' -e 'fullcheck()'
+
+.PHONY: elc
+elc:	emacs/cperl-mode.elc
+
+emacs/cperl-mode.elc: emacs/cperl-mode.el
+	-cd emacs; emacs -batch -q -no-site-file -f batch-byte-compile cperl-mode.el
+
+.PHONY: etags ctags tags
+
+etags:	TAGS
+
+TAGS: emacs/cperl-mode.elc
+	sh emacs/ptags
+
+# Let's hope make will not go into an infinite loop on case-unsensitive systems
+# This may also fail if . is in the head of the path, since perl will
+# require -Ilib
+tags:	TAGS
+	perl emacs/e2ctags.pl TAGS > tags
+
+ctags:
+	ctags -f Tags -N --totals --languages=c --langmap=c:+.h *.c *.h
+
+# AUTOMATICALLY GENERATED MAKE DEPENDENCIES--PUT NOTHING BELOW THIS LINE
+# If this runs make out of memory, delete /usr/include lines.
+av$(OBJ_EXT): /usr/include/_ctype.h
+av$(OBJ_EXT): /usr/include/arpa/inet.h
+av$(OBJ_EXT): /usr/include/ctype.h
+av$(OBJ_EXT): /usr/include/dirent.h
+av$(OBJ_EXT): /usr/include/errno.h
+av$(OBJ_EXT): /usr/include/float.h
+av$(OBJ_EXT): /usr/include/floatingpoint.h
+av$(OBJ_EXT): /usr/include/ieeefp.h
+av$(OBJ_EXT): /usr/include/inttypes.h
+av$(OBJ_EXT): /usr/include/libutil.h
+av$(OBJ_EXT): /usr/include/limits.h
+av$(OBJ_EXT): /usr/include/locale.h
+av$(OBJ_EXT): /usr/include/machine/_inttypes.h
+av$(OBJ_EXT): /usr/include/machine/_limits.h
+av$(OBJ_EXT): /usr/include/machine/_stdint.h
+av$(OBJ_EXT): /usr/include/machine/_types.h
+av$(OBJ_EXT): /usr/include/machine/endian.h
+av$(OBJ_EXT): /usr/include/machine/ieeefp.h
+av$(OBJ_EXT): /usr/include/machine/param.h
+av$(OBJ_EXT): /usr/include/machine/setjmp.h
+av$(OBJ_EXT): /usr/include/machine/signal.h
+av$(OBJ_EXT): /usr/include/machine/trap.h
+av$(OBJ_EXT): /usr/include/math.h
+av$(OBJ_EXT): /usr/include/netdb.h
+av$(OBJ_EXT): /usr/include/netinet/in.h
+av$(OBJ_EXT): /usr/include/netinet6/in6.h
+av$(OBJ_EXT): /usr/include/runetype.h
+av$(OBJ_EXT): /usr/include/setjmp.h
+av$(OBJ_EXT): /usr/include/signal.h
+av$(OBJ_EXT): /usr/include/stdarg.h
+av$(OBJ_EXT): /usr/include/stddef.h
+av$(OBJ_EXT): /usr/include/stdio.h
+av$(OBJ_EXT): /usr/include/stdlib.h
+av$(OBJ_EXT): /usr/include/string.h
+av$(OBJ_EXT): /usr/include/strings.h
+av$(OBJ_EXT): /usr/include/sys/_iovec.h
+av$(OBJ_EXT): /usr/include/sys/_null.h
+av$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+av$(OBJ_EXT): /usr/include/sys/_sigset.h
+av$(OBJ_EXT): /usr/include/sys/_timeval.h
+av$(OBJ_EXT): /usr/include/sys/_types.h
+av$(OBJ_EXT): /usr/include/sys/cdefs.h
+av$(OBJ_EXT): /usr/include/sys/dirent.h
+av$(OBJ_EXT): /usr/include/sys/fcntl.h
+av$(OBJ_EXT): /usr/include/sys/file.h
+av$(OBJ_EXT): /usr/include/sys/filio.h
+av$(OBJ_EXT): /usr/include/sys/ioccom.h
+av$(OBJ_EXT): /usr/include/sys/ioctl.h
+av$(OBJ_EXT): /usr/include/sys/ipc.h
+av$(OBJ_EXT): /usr/include/sys/limits.h
+av$(OBJ_EXT): /usr/include/sys/param.h
+av$(OBJ_EXT): /usr/include/sys/select.h
+av$(OBJ_EXT): /usr/include/sys/sem.h
+av$(OBJ_EXT): /usr/include/sys/signal.h
+av$(OBJ_EXT): /usr/include/sys/socket.h
+av$(OBJ_EXT): /usr/include/sys/sockio.h
+av$(OBJ_EXT): /usr/include/sys/stat.h
+av$(OBJ_EXT): /usr/include/sys/stdint.h
+av$(OBJ_EXT): /usr/include/sys/syslimits.h
+av$(OBJ_EXT): /usr/include/sys/time.h
+av$(OBJ_EXT): /usr/include/sys/times.h
+av$(OBJ_EXT): /usr/include/sys/timespec.h
+av$(OBJ_EXT): /usr/include/sys/ttycom.h
+av$(OBJ_EXT): /usr/include/sys/types.h
+av$(OBJ_EXT): /usr/include/sys/unistd.h
+av$(OBJ_EXT): /usr/include/time.h
+av$(OBJ_EXT): /usr/include/unistd.h
+av$(OBJ_EXT): EXTERN.h
+av$(OBJ_EXT): av.c
+av$(OBJ_EXT): av.h
+av$(OBJ_EXT): config.h
+av$(OBJ_EXT): cop.h
+av$(OBJ_EXT): cv.h
+av$(OBJ_EXT): embed.h
+av$(OBJ_EXT): embedvar.h
+av$(OBJ_EXT): form.h
+av$(OBJ_EXT): gv.h
+av$(OBJ_EXT): handy.h
+av$(OBJ_EXT): hv.h
+av$(OBJ_EXT): intrpvar.h
+av$(OBJ_EXT): iperlsys.h
+av$(OBJ_EXT): mg.h
+av$(OBJ_EXT): op.h
+av$(OBJ_EXT): opcode.h
+av$(OBJ_EXT): opnames.h
+av$(OBJ_EXT): pad.h
+av$(OBJ_EXT): patchlevel.h
+av$(OBJ_EXT): perl.h
+av$(OBJ_EXT): perlio.h
+av$(OBJ_EXT): perlvars.h
+av$(OBJ_EXT): perly.h
+av$(OBJ_EXT): pp.h
+av$(OBJ_EXT): pp_proto.h
+av$(OBJ_EXT): proto.h
+av$(OBJ_EXT): reentr.inc
+av$(OBJ_EXT): regexp.h
+av$(OBJ_EXT): scope.h
+av$(OBJ_EXT): sv.h
+av$(OBJ_EXT): thrdvar.h
+av$(OBJ_EXT): thread.h
+av$(OBJ_EXT): unixish.h
+av$(OBJ_EXT): utf8.h
+av$(OBJ_EXT): util.h
+av$(OBJ_EXT): warnings.h
+scope$(OBJ_EXT): /usr/include/_ctype.h
+scope$(OBJ_EXT): /usr/include/arpa/inet.h
+scope$(OBJ_EXT): /usr/include/ctype.h
+scope$(OBJ_EXT): /usr/include/dirent.h
+scope$(OBJ_EXT): /usr/include/errno.h
+scope$(OBJ_EXT): /usr/include/float.h
+scope$(OBJ_EXT): /usr/include/floatingpoint.h
+scope$(OBJ_EXT): /usr/include/ieeefp.h
+scope$(OBJ_EXT): /usr/include/inttypes.h
+scope$(OBJ_EXT): /usr/include/libutil.h
+scope$(OBJ_EXT): /usr/include/limits.h
+scope$(OBJ_EXT): /usr/include/locale.h
+scope$(OBJ_EXT): /usr/include/machine/_inttypes.h
+scope$(OBJ_EXT): /usr/include/machine/_limits.h
+scope$(OBJ_EXT): /usr/include/machine/_stdint.h
+scope$(OBJ_EXT): /usr/include/machine/_types.h
+scope$(OBJ_EXT): /usr/include/machine/endian.h
+scope$(OBJ_EXT): /usr/include/machine/ieeefp.h
+scope$(OBJ_EXT): /usr/include/machine/param.h
+scope$(OBJ_EXT): /usr/include/machine/setjmp.h
+scope$(OBJ_EXT): /usr/include/machine/signal.h
+scope$(OBJ_EXT): /usr/include/machine/trap.h
+scope$(OBJ_EXT): /usr/include/math.h
+scope$(OBJ_EXT): /usr/include/netdb.h
+scope$(OBJ_EXT): /usr/include/netinet/in.h
+scope$(OBJ_EXT): /usr/include/netinet6/in6.h
+scope$(OBJ_EXT): /usr/include/runetype.h
+scope$(OBJ_EXT): /usr/include/setjmp.h
+scope$(OBJ_EXT): /usr/include/signal.h
+scope$(OBJ_EXT): /usr/include/stdarg.h
+scope$(OBJ_EXT): /usr/include/stddef.h
+scope$(OBJ_EXT): /usr/include/stdio.h
+scope$(OBJ_EXT): /usr/include/stdlib.h
+scope$(OBJ_EXT): /usr/include/string.h
+scope$(OBJ_EXT): /usr/include/strings.h
+scope$(OBJ_EXT): /usr/include/sys/_iovec.h
+scope$(OBJ_EXT): /usr/include/sys/_null.h
+scope$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+scope$(OBJ_EXT): /usr/include/sys/_sigset.h
+scope$(OBJ_EXT): /usr/include/sys/_timeval.h
+scope$(OBJ_EXT): /usr/include/sys/_types.h
+scope$(OBJ_EXT): /usr/include/sys/cdefs.h
+scope$(OBJ_EXT): /usr/include/sys/dirent.h
+scope$(OBJ_EXT): /usr/include/sys/fcntl.h
+scope$(OBJ_EXT): /usr/include/sys/file.h
+scope$(OBJ_EXT): /usr/include/sys/filio.h
+scope$(OBJ_EXT): /usr/include/sys/ioccom.h
+scope$(OBJ_EXT): /usr/include/sys/ioctl.h
+scope$(OBJ_EXT): /usr/include/sys/ipc.h
+scope$(OBJ_EXT): /usr/include/sys/limits.h
+scope$(OBJ_EXT): /usr/include/sys/param.h
+scope$(OBJ_EXT): /usr/include/sys/select.h
+scope$(OBJ_EXT): /usr/include/sys/sem.h
+scope$(OBJ_EXT): /usr/include/sys/signal.h
+scope$(OBJ_EXT): /usr/include/sys/socket.h
+scope$(OBJ_EXT): /usr/include/sys/sockio.h
+scope$(OBJ_EXT): /usr/include/sys/stat.h
+scope$(OBJ_EXT): /usr/include/sys/stdint.h
+scope$(OBJ_EXT): /usr/include/sys/syslimits.h
+scope$(OBJ_EXT): /usr/include/sys/time.h
+scope$(OBJ_EXT): /usr/include/sys/times.h
+scope$(OBJ_EXT): /usr/include/sys/timespec.h
+scope$(OBJ_EXT): /usr/include/sys/ttycom.h
+scope$(OBJ_EXT): /usr/include/sys/types.h
+scope$(OBJ_EXT): /usr/include/sys/unistd.h
+scope$(OBJ_EXT): /usr/include/time.h
+scope$(OBJ_EXT): /usr/include/unistd.h
+scope$(OBJ_EXT): EXTERN.h
+scope$(OBJ_EXT): av.h
+scope$(OBJ_EXT): config.h
+scope$(OBJ_EXT): cop.h
+scope$(OBJ_EXT): cv.h
+scope$(OBJ_EXT): embed.h
+scope$(OBJ_EXT): embedvar.h
+scope$(OBJ_EXT): form.h
+scope$(OBJ_EXT): gv.h
+scope$(OBJ_EXT): handy.h
+scope$(OBJ_EXT): hv.h
+scope$(OBJ_EXT): intrpvar.h
+scope$(OBJ_EXT): iperlsys.h
+scope$(OBJ_EXT): mg.h
+scope$(OBJ_EXT): op.h
+scope$(OBJ_EXT): opcode.h
+scope$(OBJ_EXT): opnames.h
+scope$(OBJ_EXT): pad.h
+scope$(OBJ_EXT): patchlevel.h
+scope$(OBJ_EXT): perl.h
+scope$(OBJ_EXT): perlio.h
+scope$(OBJ_EXT): perlvars.h
+scope$(OBJ_EXT): perly.h
+scope$(OBJ_EXT): pp.h
+scope$(OBJ_EXT): pp_proto.h
+scope$(OBJ_EXT): proto.h
+scope$(OBJ_EXT): reentr.inc
+scope$(OBJ_EXT): regexp.h
+scope$(OBJ_EXT): scope.c
+scope$(OBJ_EXT): scope.h
+scope$(OBJ_EXT): sv.h
+scope$(OBJ_EXT): thrdvar.h
+scope$(OBJ_EXT): thread.h
+scope$(OBJ_EXT): unixish.h
+scope$(OBJ_EXT): utf8.h
+scope$(OBJ_EXT): util.h
+scope$(OBJ_EXT): warnings.h
+op$(OBJ_EXT): /usr/include/_ctype.h
+op$(OBJ_EXT): /usr/include/arpa/inet.h
+op$(OBJ_EXT): /usr/include/ctype.h
+op$(OBJ_EXT): /usr/include/dirent.h
+op$(OBJ_EXT): /usr/include/errno.h
+op$(OBJ_EXT): /usr/include/float.h
+op$(OBJ_EXT): /usr/include/floatingpoint.h
+op$(OBJ_EXT): /usr/include/ieeefp.h
+op$(OBJ_EXT): /usr/include/inttypes.h
+op$(OBJ_EXT): /usr/include/libutil.h
+op$(OBJ_EXT): /usr/include/limits.h
+op$(OBJ_EXT): /usr/include/locale.h
+op$(OBJ_EXT): /usr/include/machine/_inttypes.h
+op$(OBJ_EXT): /usr/include/machine/_limits.h
+op$(OBJ_EXT): /usr/include/machine/_stdint.h
+op$(OBJ_EXT): /usr/include/machine/_types.h
+op$(OBJ_EXT): /usr/include/machine/endian.h
+op$(OBJ_EXT): /usr/include/machine/ieeefp.h
+op$(OBJ_EXT): /usr/include/machine/param.h
+op$(OBJ_EXT): /usr/include/machine/setjmp.h
+op$(OBJ_EXT): /usr/include/machine/signal.h
+op$(OBJ_EXT): /usr/include/machine/trap.h
+op$(OBJ_EXT): /usr/include/math.h
+op$(OBJ_EXT): /usr/include/netdb.h
+op$(OBJ_EXT): /usr/include/netinet/in.h
+op$(OBJ_EXT): /usr/include/netinet6/in6.h
+op$(OBJ_EXT): /usr/include/runetype.h
+op$(OBJ_EXT): /usr/include/setjmp.h
+op$(OBJ_EXT): /usr/include/signal.h
+op$(OBJ_EXT): /usr/include/stdarg.h
+op$(OBJ_EXT): /usr/include/stddef.h
+op$(OBJ_EXT): /usr/include/stdio.h
+op$(OBJ_EXT): /usr/include/stdlib.h
+op$(OBJ_EXT): /usr/include/string.h
+op$(OBJ_EXT): /usr/include/strings.h
+op$(OBJ_EXT): /usr/include/sys/_iovec.h
+op$(OBJ_EXT): /usr/include/sys/_null.h
+op$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+op$(OBJ_EXT): /usr/include/sys/_sigset.h
+op$(OBJ_EXT): /usr/include/sys/_timeval.h
+op$(OBJ_EXT): /usr/include/sys/_types.h
+op$(OBJ_EXT): /usr/include/sys/cdefs.h
+op$(OBJ_EXT): /usr/include/sys/dirent.h
+op$(OBJ_EXT): /usr/include/sys/fcntl.h
+op$(OBJ_EXT): /usr/include/sys/file.h
+op$(OBJ_EXT): /usr/include/sys/filio.h
+op$(OBJ_EXT): /usr/include/sys/ioccom.h
+op$(OBJ_EXT): /usr/include/sys/ioctl.h
+op$(OBJ_EXT): /usr/include/sys/ipc.h
+op$(OBJ_EXT): /usr/include/sys/limits.h
+op$(OBJ_EXT): /usr/include/sys/param.h
+op$(OBJ_EXT): /usr/include/sys/select.h
+op$(OBJ_EXT): /usr/include/sys/sem.h
+op$(OBJ_EXT): /usr/include/sys/signal.h
+op$(OBJ_EXT): /usr/include/sys/socket.h
+op$(OBJ_EXT): /usr/include/sys/sockio.h
+op$(OBJ_EXT): /usr/include/sys/stat.h
+op$(OBJ_EXT): /usr/include/sys/stdint.h
+op$(OBJ_EXT): /usr/include/sys/syslimits.h
+op$(OBJ_EXT): /usr/include/sys/time.h
+op$(OBJ_EXT): /usr/include/sys/times.h
+op$(OBJ_EXT): /usr/include/sys/timespec.h
+op$(OBJ_EXT): /usr/include/sys/ttycom.h
+op$(OBJ_EXT): /usr/include/sys/types.h
+op$(OBJ_EXT): /usr/include/sys/unistd.h
+op$(OBJ_EXT): /usr/include/time.h
+op$(OBJ_EXT): /usr/include/unistd.h
+op$(OBJ_EXT): EXTERN.h
+op$(OBJ_EXT): XSUB.h
+op$(OBJ_EXT): av.h
+op$(OBJ_EXT): config.h
+op$(OBJ_EXT): cop.h
+op$(OBJ_EXT): cv.h
+op$(OBJ_EXT): embed.h
+op$(OBJ_EXT): embedvar.h
+op$(OBJ_EXT): form.h
+op$(OBJ_EXT): gv.h
+op$(OBJ_EXT): handy.h
+op$(OBJ_EXT): hv.h
+op$(OBJ_EXT): intrpvar.h
+op$(OBJ_EXT): iperlsys.h
+op$(OBJ_EXT): keywords.h
+op$(OBJ_EXT): mg.h
+op$(OBJ_EXT): op.c
+op$(OBJ_EXT): op.h
+op$(OBJ_EXT): opcode.h
+op$(OBJ_EXT): opnames.h
+op$(OBJ_EXT): pad.h
+op$(OBJ_EXT): patchlevel.h
+op$(OBJ_EXT): perl.h
+op$(OBJ_EXT): perlapi.h
+op$(OBJ_EXT): perlio.h
+op$(OBJ_EXT): perlvars.h
+op$(OBJ_EXT): perly.h
+op$(OBJ_EXT): pp.h
+op$(OBJ_EXT): pp_proto.h
+op$(OBJ_EXT): proto.h
+op$(OBJ_EXT): reentr.inc
+op$(OBJ_EXT): regexp.h
+op$(OBJ_EXT): scope.h
+op$(OBJ_EXT): sv.h
+op$(OBJ_EXT): thrdvar.h
+op$(OBJ_EXT): thread.h
+op$(OBJ_EXT): unixish.h
+op$(OBJ_EXT): utf8.h
+op$(OBJ_EXT): util.h
+op$(OBJ_EXT): warnings.h
+doop$(OBJ_EXT): /usr/include/_ctype.h
+doop$(OBJ_EXT): /usr/include/arpa/inet.h
+doop$(OBJ_EXT): /usr/include/ctype.h
+doop$(OBJ_EXT): /usr/include/dirent.h
+doop$(OBJ_EXT): /usr/include/errno.h
+doop$(OBJ_EXT): /usr/include/float.h
+doop$(OBJ_EXT): /usr/include/floatingpoint.h
+doop$(OBJ_EXT): /usr/include/ieeefp.h
+doop$(OBJ_EXT): /usr/include/inttypes.h
+doop$(OBJ_EXT): /usr/include/libutil.h
+doop$(OBJ_EXT): /usr/include/limits.h
+doop$(OBJ_EXT): /usr/include/locale.h
+doop$(OBJ_EXT): /usr/include/machine/_inttypes.h
+doop$(OBJ_EXT): /usr/include/machine/_limits.h
+doop$(OBJ_EXT): /usr/include/machine/_stdint.h
+doop$(OBJ_EXT): /usr/include/machine/_types.h
+doop$(OBJ_EXT): /usr/include/machine/endian.h
+doop$(OBJ_EXT): /usr/include/machine/ieeefp.h
+doop$(OBJ_EXT): /usr/include/machine/param.h
+doop$(OBJ_EXT): /usr/include/machine/setjmp.h
+doop$(OBJ_EXT): /usr/include/machine/signal.h
+doop$(OBJ_EXT): /usr/include/machine/trap.h
+doop$(OBJ_EXT): /usr/include/math.h
+doop$(OBJ_EXT): /usr/include/netdb.h
+doop$(OBJ_EXT): /usr/include/netinet/in.h
+doop$(OBJ_EXT): /usr/include/netinet6/in6.h
+doop$(OBJ_EXT): /usr/include/runetype.h
+doop$(OBJ_EXT): /usr/include/setjmp.h
+doop$(OBJ_EXT): /usr/include/signal.h
+doop$(OBJ_EXT): /usr/include/stdarg.h
+doop$(OBJ_EXT): /usr/include/stddef.h
+doop$(OBJ_EXT): /usr/include/stdio.h
+doop$(OBJ_EXT): /usr/include/stdlib.h
+doop$(OBJ_EXT): /usr/include/string.h
+doop$(OBJ_EXT): /usr/include/strings.h
+doop$(OBJ_EXT): /usr/include/sys/_iovec.h
+doop$(OBJ_EXT): /usr/include/sys/_null.h
+doop$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+doop$(OBJ_EXT): /usr/include/sys/_sigset.h
+doop$(OBJ_EXT): /usr/include/sys/_timeval.h
+doop$(OBJ_EXT): /usr/include/sys/_types.h
+doop$(OBJ_EXT): /usr/include/sys/cdefs.h
+doop$(OBJ_EXT): /usr/include/sys/dirent.h
+doop$(OBJ_EXT): /usr/include/sys/fcntl.h
+doop$(OBJ_EXT): /usr/include/sys/file.h
+doop$(OBJ_EXT): /usr/include/sys/filio.h
+doop$(OBJ_EXT): /usr/include/sys/ioccom.h
+doop$(OBJ_EXT): /usr/include/sys/ioctl.h
+doop$(OBJ_EXT): /usr/include/sys/ipc.h
+doop$(OBJ_EXT): /usr/include/sys/limits.h
+doop$(OBJ_EXT): /usr/include/sys/param.h
+doop$(OBJ_EXT): /usr/include/sys/select.h
+doop$(OBJ_EXT): /usr/include/sys/sem.h
+doop$(OBJ_EXT): /usr/include/sys/signal.h
+doop$(OBJ_EXT): /usr/include/sys/socket.h
+doop$(OBJ_EXT): /usr/include/sys/sockio.h
+doop$(OBJ_EXT): /usr/include/sys/stat.h
+doop$(OBJ_EXT): /usr/include/sys/stdint.h
+doop$(OBJ_EXT): /usr/include/sys/syslimits.h
+doop$(OBJ_EXT): /usr/include/sys/time.h
+doop$(OBJ_EXT): /usr/include/sys/times.h
+doop$(OBJ_EXT): /usr/include/sys/timespec.h
+doop$(OBJ_EXT): /usr/include/sys/ttycom.h
+doop$(OBJ_EXT): /usr/include/sys/types.h
+doop$(OBJ_EXT): /usr/include/sys/unistd.h
+doop$(OBJ_EXT): /usr/include/time.h
+doop$(OBJ_EXT): /usr/include/unistd.h
+doop$(OBJ_EXT): EXTERN.h
+doop$(OBJ_EXT): av.h
+doop$(OBJ_EXT): config.h
+doop$(OBJ_EXT): cop.h
+doop$(OBJ_EXT): cv.h
+doop$(OBJ_EXT): doop.c
+doop$(OBJ_EXT): embed.h
+doop$(OBJ_EXT): embedvar.h
+doop$(OBJ_EXT): form.h
+doop$(OBJ_EXT): gv.h
+doop$(OBJ_EXT): handy.h
+doop$(OBJ_EXT): hv.h
+doop$(OBJ_EXT): intrpvar.h
+doop$(OBJ_EXT): iperlsys.h
+doop$(OBJ_EXT): mg.h
+doop$(OBJ_EXT): op.h
+doop$(OBJ_EXT): opcode.h
+doop$(OBJ_EXT): opnames.h
+doop$(OBJ_EXT): pad.h
+doop$(OBJ_EXT): patchlevel.h
+doop$(OBJ_EXT): perl.h
+doop$(OBJ_EXT): perlio.h
+doop$(OBJ_EXT): perlvars.h
+doop$(OBJ_EXT): perly.h
+doop$(OBJ_EXT): pp.h
+doop$(OBJ_EXT): pp_proto.h
+doop$(OBJ_EXT): proto.h
+doop$(OBJ_EXT): reentr.inc
+doop$(OBJ_EXT): regexp.h
+doop$(OBJ_EXT): scope.h
+doop$(OBJ_EXT): sv.h
+doop$(OBJ_EXT): thrdvar.h
+doop$(OBJ_EXT): thread.h
+doop$(OBJ_EXT): unixish.h
+doop$(OBJ_EXT): utf8.h
+doop$(OBJ_EXT): util.h
+doop$(OBJ_EXT): warnings.h
+doio$(OBJ_EXT): /usr/include/_ctype.h
+doio$(OBJ_EXT): /usr/include/arpa/inet.h
+doio$(OBJ_EXT): /usr/include/ctype.h
+doio$(OBJ_EXT): /usr/include/dirent.h
+doio$(OBJ_EXT): /usr/include/errno.h
+doio$(OBJ_EXT): /usr/include/float.h
+doio$(OBJ_EXT): /usr/include/floatingpoint.h
+doio$(OBJ_EXT): /usr/include/ieeefp.h
+doio$(OBJ_EXT): /usr/include/inttypes.h
+doio$(OBJ_EXT): /usr/include/libutil.h
+doio$(OBJ_EXT): /usr/include/limits.h
+doio$(OBJ_EXT): /usr/include/locale.h
+doio$(OBJ_EXT): /usr/include/machine/_inttypes.h
+doio$(OBJ_EXT): /usr/include/machine/_limits.h
+doio$(OBJ_EXT): /usr/include/machine/_stdint.h
+doio$(OBJ_EXT): /usr/include/machine/_types.h
+doio$(OBJ_EXT): /usr/include/machine/endian.h
+doio$(OBJ_EXT): /usr/include/machine/ieeefp.h
+doio$(OBJ_EXT): /usr/include/machine/param.h
+doio$(OBJ_EXT): /usr/include/machine/setjmp.h
+doio$(OBJ_EXT): /usr/include/machine/signal.h
+doio$(OBJ_EXT): /usr/include/machine/trap.h
+doio$(OBJ_EXT): /usr/include/math.h
+doio$(OBJ_EXT): /usr/include/netdb.h
+doio$(OBJ_EXT): /usr/include/netinet/in.h
+doio$(OBJ_EXT): /usr/include/netinet6/in6.h
+doio$(OBJ_EXT): /usr/include/runetype.h
+doio$(OBJ_EXT): /usr/include/setjmp.h
+doio$(OBJ_EXT): /usr/include/signal.h
+doio$(OBJ_EXT): /usr/include/stdarg.h
+doio$(OBJ_EXT): /usr/include/stddef.h
+doio$(OBJ_EXT): /usr/include/stdio.h
+doio$(OBJ_EXT): /usr/include/stdlib.h
+doio$(OBJ_EXT): /usr/include/string.h
+doio$(OBJ_EXT): /usr/include/strings.h
+doio$(OBJ_EXT): /usr/include/sys/_iovec.h
+doio$(OBJ_EXT): /usr/include/sys/_null.h
+doio$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+doio$(OBJ_EXT): /usr/include/sys/_sigset.h
+doio$(OBJ_EXT): /usr/include/sys/_timeval.h
+doio$(OBJ_EXT): /usr/include/sys/_types.h
+doio$(OBJ_EXT): /usr/include/sys/cdefs.h
+doio$(OBJ_EXT): /usr/include/sys/dirent.h
+doio$(OBJ_EXT): /usr/include/sys/fcntl.h
+doio$(OBJ_EXT): /usr/include/sys/file.h
+doio$(OBJ_EXT): /usr/include/sys/filio.h
+doio$(OBJ_EXT): /usr/include/sys/ioccom.h
+doio$(OBJ_EXT): /usr/include/sys/ioctl.h
+doio$(OBJ_EXT): /usr/include/sys/ipc.h
+doio$(OBJ_EXT): /usr/include/sys/limits.h
+doio$(OBJ_EXT): /usr/include/sys/msg.h
+doio$(OBJ_EXT): /usr/include/sys/param.h
+doio$(OBJ_EXT): /usr/include/sys/select.h
+doio$(OBJ_EXT): /usr/include/sys/sem.h
+doio$(OBJ_EXT): /usr/include/sys/shm.h
+doio$(OBJ_EXT): /usr/include/sys/signal.h
+doio$(OBJ_EXT): /usr/include/sys/socket.h
+doio$(OBJ_EXT): /usr/include/sys/sockio.h
+doio$(OBJ_EXT): /usr/include/sys/stat.h
+doio$(OBJ_EXT): /usr/include/sys/stdint.h
+doio$(OBJ_EXT): /usr/include/sys/syslimits.h
+doio$(OBJ_EXT): /usr/include/sys/time.h
+doio$(OBJ_EXT): /usr/include/sys/times.h
+doio$(OBJ_EXT): /usr/include/sys/timespec.h
+doio$(OBJ_EXT): /usr/include/sys/ttycom.h
+doio$(OBJ_EXT): /usr/include/sys/types.h
+doio$(OBJ_EXT): /usr/include/sys/unistd.h
+doio$(OBJ_EXT): /usr/include/time.h
+doio$(OBJ_EXT): /usr/include/unistd.h
+doio$(OBJ_EXT): /usr/include/utime.h
+doio$(OBJ_EXT): EXTERN.h
+doio$(OBJ_EXT): av.h
+doio$(OBJ_EXT): config.h
+doio$(OBJ_EXT): cop.h
+doio$(OBJ_EXT): cv.h
+doio$(OBJ_EXT): doio.c
+doio$(OBJ_EXT): embed.h
+doio$(OBJ_EXT): embedvar.h
+doio$(OBJ_EXT): form.h
+doio$(OBJ_EXT): gv.h
+doio$(OBJ_EXT): handy.h
+doio$(OBJ_EXT): hv.h
+doio$(OBJ_EXT): intrpvar.h
+doio$(OBJ_EXT): iperlsys.h
+doio$(OBJ_EXT): mg.h
+doio$(OBJ_EXT): op.h
+doio$(OBJ_EXT): opcode.h
+doio$(OBJ_EXT): opnames.h
+doio$(OBJ_EXT): pad.h
+doio$(OBJ_EXT): patchlevel.h
+doio$(OBJ_EXT): perl.h
+doio$(OBJ_EXT): perlio.h
+doio$(OBJ_EXT): perlvars.h
+doio$(OBJ_EXT): perly.h
+doio$(OBJ_EXT): pp.h
+doio$(OBJ_EXT): pp_proto.h
+doio$(OBJ_EXT): proto.h
+doio$(OBJ_EXT): reentr.inc
+doio$(OBJ_EXT): regexp.h
+doio$(OBJ_EXT): scope.h
+doio$(OBJ_EXT): sv.h
+doio$(OBJ_EXT): thrdvar.h
+doio$(OBJ_EXT): thread.h
+doio$(OBJ_EXT): unixish.h
+doio$(OBJ_EXT): utf8.h
+doio$(OBJ_EXT): util.h
+doio$(OBJ_EXT): warnings.h
+dump$(OBJ_EXT): /usr/include/_ctype.h
+dump$(OBJ_EXT): /usr/include/arpa/inet.h
+dump$(OBJ_EXT): /usr/include/ctype.h
+dump$(OBJ_EXT): /usr/include/dirent.h
+dump$(OBJ_EXT): /usr/include/errno.h
+dump$(OBJ_EXT): /usr/include/float.h
+dump$(OBJ_EXT): /usr/include/floatingpoint.h
+dump$(OBJ_EXT): /usr/include/ieeefp.h
+dump$(OBJ_EXT): /usr/include/inttypes.h
+dump$(OBJ_EXT): /usr/include/libutil.h
+dump$(OBJ_EXT): /usr/include/limits.h
+dump$(OBJ_EXT): /usr/include/locale.h
+dump$(OBJ_EXT): /usr/include/machine/_inttypes.h
+dump$(OBJ_EXT): /usr/include/machine/_limits.h
+dump$(OBJ_EXT): /usr/include/machine/_stdint.h
+dump$(OBJ_EXT): /usr/include/machine/_types.h
+dump$(OBJ_EXT): /usr/include/machine/endian.h
+dump$(OBJ_EXT): /usr/include/machine/ieeefp.h
+dump$(OBJ_EXT): /usr/include/machine/param.h
+dump$(OBJ_EXT): /usr/include/machine/setjmp.h
+dump$(OBJ_EXT): /usr/include/machine/signal.h
+dump$(OBJ_EXT): /usr/include/machine/trap.h
+dump$(OBJ_EXT): /usr/include/math.h
+dump$(OBJ_EXT): /usr/include/netdb.h
+dump$(OBJ_EXT): /usr/include/netinet/in.h
+dump$(OBJ_EXT): /usr/include/netinet6/in6.h
+dump$(OBJ_EXT): /usr/include/runetype.h
+dump$(OBJ_EXT): /usr/include/setjmp.h
+dump$(OBJ_EXT): /usr/include/signal.h
+dump$(OBJ_EXT): /usr/include/stdarg.h
+dump$(OBJ_EXT): /usr/include/stddef.h
+dump$(OBJ_EXT): /usr/include/stdio.h
+dump$(OBJ_EXT): /usr/include/stdlib.h
+dump$(OBJ_EXT): /usr/include/string.h
+dump$(OBJ_EXT): /usr/include/strings.h
+dump$(OBJ_EXT): /usr/include/sys/_iovec.h
+dump$(OBJ_EXT): /usr/include/sys/_null.h
+dump$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+dump$(OBJ_EXT): /usr/include/sys/_sigset.h
+dump$(OBJ_EXT): /usr/include/sys/_timeval.h
+dump$(OBJ_EXT): /usr/include/sys/_types.h
+dump$(OBJ_EXT): /usr/include/sys/cdefs.h
+dump$(OBJ_EXT): /usr/include/sys/dirent.h
+dump$(OBJ_EXT): /usr/include/sys/fcntl.h
+dump$(OBJ_EXT): /usr/include/sys/file.h
+dump$(OBJ_EXT): /usr/include/sys/filio.h
+dump$(OBJ_EXT): /usr/include/sys/ioccom.h
+dump$(OBJ_EXT): /usr/include/sys/ioctl.h
+dump$(OBJ_EXT): /usr/include/sys/ipc.h
+dump$(OBJ_EXT): /usr/include/sys/limits.h
+dump$(OBJ_EXT): /usr/include/sys/param.h
+dump$(OBJ_EXT): /usr/include/sys/select.h
+dump$(OBJ_EXT): /usr/include/sys/sem.h
+dump$(OBJ_EXT): /usr/include/sys/signal.h
+dump$(OBJ_EXT): /usr/include/sys/socket.h
+dump$(OBJ_EXT): /usr/include/sys/sockio.h
+dump$(OBJ_EXT): /usr/include/sys/stat.h
+dump$(OBJ_EXT): /usr/include/sys/stdint.h
+dump$(OBJ_EXT): /usr/include/sys/syslimits.h
+dump$(OBJ_EXT): /usr/include/sys/time.h
+dump$(OBJ_EXT): /usr/include/sys/times.h
+dump$(OBJ_EXT): /usr/include/sys/timespec.h
+dump$(OBJ_EXT): /usr/include/sys/ttycom.h
+dump$(OBJ_EXT): /usr/include/sys/types.h
+dump$(OBJ_EXT): /usr/include/sys/unistd.h
+dump$(OBJ_EXT): /usr/include/time.h
+dump$(OBJ_EXT): /usr/include/unistd.h
+dump$(OBJ_EXT): EXTERN.h
+dump$(OBJ_EXT): av.h
+dump$(OBJ_EXT): config.h
+dump$(OBJ_EXT): cop.h
+dump$(OBJ_EXT): cv.h
+dump$(OBJ_EXT): dump.c
+dump$(OBJ_EXT): embed.h
+dump$(OBJ_EXT): embedvar.h
+dump$(OBJ_EXT): form.h
+dump$(OBJ_EXT): gv.h
+dump$(OBJ_EXT): handy.h
+dump$(OBJ_EXT): hv.h
+dump$(OBJ_EXT): intrpvar.h
+dump$(OBJ_EXT): iperlsys.h
+dump$(OBJ_EXT): mg.h
+dump$(OBJ_EXT): op.h
+dump$(OBJ_EXT): opcode.h
+dump$(OBJ_EXT): opnames.h
+dump$(OBJ_EXT): pad.h
+dump$(OBJ_EXT): patchlevel.h
+dump$(OBJ_EXT): perl.h
+dump$(OBJ_EXT): perlio.h
+dump$(OBJ_EXT): perlvars.h
+dump$(OBJ_EXT): perly.h
+dump$(OBJ_EXT): pp.h
+dump$(OBJ_EXT): pp_proto.h
+dump$(OBJ_EXT): proto.h
+dump$(OBJ_EXT): reentr.inc
+dump$(OBJ_EXT): regcomp.h
+dump$(OBJ_EXT): regexp.h
+dump$(OBJ_EXT): regnodes.h
+dump$(OBJ_EXT): scope.h
+dump$(OBJ_EXT): sv.h
+dump$(OBJ_EXT): thrdvar.h
+dump$(OBJ_EXT): thread.h
+dump$(OBJ_EXT): unixish.h
+dump$(OBJ_EXT): utf8.h
+dump$(OBJ_EXT): util.h
+dump$(OBJ_EXT): warnings.h
+hv$(OBJ_EXT): /usr/include/_ctype.h
+hv$(OBJ_EXT): /usr/include/arpa/inet.h
+hv$(OBJ_EXT): /usr/include/ctype.h
+hv$(OBJ_EXT): /usr/include/dirent.h
+hv$(OBJ_EXT): /usr/include/errno.h
+hv$(OBJ_EXT): /usr/include/float.h
+hv$(OBJ_EXT): /usr/include/floatingpoint.h
+hv$(OBJ_EXT): /usr/include/ieeefp.h
+hv$(OBJ_EXT): /usr/include/inttypes.h
+hv$(OBJ_EXT): /usr/include/libutil.h
+hv$(OBJ_EXT): /usr/include/limits.h
+hv$(OBJ_EXT): /usr/include/locale.h
+hv$(OBJ_EXT): /usr/include/machine/_inttypes.h
+hv$(OBJ_EXT): /usr/include/machine/_limits.h
+hv$(OBJ_EXT): /usr/include/machine/_stdint.h
+hv$(OBJ_EXT): /usr/include/machine/_types.h
+hv$(OBJ_EXT): /usr/include/machine/endian.h
+hv$(OBJ_EXT): /usr/include/machine/ieeefp.h
+hv$(OBJ_EXT): /usr/include/machine/param.h
+hv$(OBJ_EXT): /usr/include/machine/setjmp.h
+hv$(OBJ_EXT): /usr/include/machine/signal.h
+hv$(OBJ_EXT): /usr/include/machine/trap.h
+hv$(OBJ_EXT): /usr/include/math.h
+hv$(OBJ_EXT): /usr/include/netdb.h
+hv$(OBJ_EXT): /usr/include/netinet/in.h
+hv$(OBJ_EXT): /usr/include/netinet6/in6.h
+hv$(OBJ_EXT): /usr/include/runetype.h
+hv$(OBJ_EXT): /usr/include/setjmp.h
+hv$(OBJ_EXT): /usr/include/signal.h
+hv$(OBJ_EXT): /usr/include/stdarg.h
+hv$(OBJ_EXT): /usr/include/stddef.h
+hv$(OBJ_EXT): /usr/include/stdio.h
+hv$(OBJ_EXT): /usr/include/stdlib.h
+hv$(OBJ_EXT): /usr/include/string.h
+hv$(OBJ_EXT): /usr/include/strings.h
+hv$(OBJ_EXT): /usr/include/sys/_iovec.h
+hv$(OBJ_EXT): /usr/include/sys/_null.h
+hv$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+hv$(OBJ_EXT): /usr/include/sys/_sigset.h
+hv$(OBJ_EXT): /usr/include/sys/_timeval.h
+hv$(OBJ_EXT): /usr/include/sys/_types.h
+hv$(OBJ_EXT): /usr/include/sys/cdefs.h
+hv$(OBJ_EXT): /usr/include/sys/dirent.h
+hv$(OBJ_EXT): /usr/include/sys/fcntl.h
+hv$(OBJ_EXT): /usr/include/sys/file.h
+hv$(OBJ_EXT): /usr/include/sys/filio.h
+hv$(OBJ_EXT): /usr/include/sys/ioccom.h
+hv$(OBJ_EXT): /usr/include/sys/ioctl.h
+hv$(OBJ_EXT): /usr/include/sys/ipc.h
+hv$(OBJ_EXT): /usr/include/sys/limits.h
+hv$(OBJ_EXT): /usr/include/sys/param.h
+hv$(OBJ_EXT): /usr/include/sys/select.h
+hv$(OBJ_EXT): /usr/include/sys/sem.h
+hv$(OBJ_EXT): /usr/include/sys/signal.h
+hv$(OBJ_EXT): /usr/include/sys/socket.h
+hv$(OBJ_EXT): /usr/include/sys/sockio.h
+hv$(OBJ_EXT): /usr/include/sys/stat.h
+hv$(OBJ_EXT): /usr/include/sys/stdint.h
+hv$(OBJ_EXT): /usr/include/sys/syslimits.h
+hv$(OBJ_EXT): /usr/include/sys/time.h
+hv$(OBJ_EXT): /usr/include/sys/times.h
+hv$(OBJ_EXT): /usr/include/sys/timespec.h
+hv$(OBJ_EXT): /usr/include/sys/ttycom.h
+hv$(OBJ_EXT): /usr/include/sys/types.h
+hv$(OBJ_EXT): /usr/include/sys/unistd.h
+hv$(OBJ_EXT): /usr/include/time.h
+hv$(OBJ_EXT): /usr/include/unistd.h
+hv$(OBJ_EXT): EXTERN.h
+hv$(OBJ_EXT): av.h
+hv$(OBJ_EXT): config.h
+hv$(OBJ_EXT): cop.h
+hv$(OBJ_EXT): cv.h
+hv$(OBJ_EXT): embed.h
+hv$(OBJ_EXT): embedvar.h
+hv$(OBJ_EXT): form.h
+hv$(OBJ_EXT): gv.h
+hv$(OBJ_EXT): handy.h
+hv$(OBJ_EXT): hv.c
+hv$(OBJ_EXT): hv.h
+hv$(OBJ_EXT): intrpvar.h
+hv$(OBJ_EXT): iperlsys.h
+hv$(OBJ_EXT): mg.h
+hv$(OBJ_EXT): op.h
+hv$(OBJ_EXT): opcode.h
+hv$(OBJ_EXT): opnames.h
+hv$(OBJ_EXT): pad.h
+hv$(OBJ_EXT): patchlevel.h
+hv$(OBJ_EXT): perl.h
+hv$(OBJ_EXT): perlio.h
+hv$(OBJ_EXT): perlvars.h
+hv$(OBJ_EXT): perly.h
+hv$(OBJ_EXT): pp.h
+hv$(OBJ_EXT): pp_proto.h
+hv$(OBJ_EXT): proto.h
+hv$(OBJ_EXT): reentr.inc
+hv$(OBJ_EXT): regexp.h
+hv$(OBJ_EXT): scope.h
+hv$(OBJ_EXT): sv.h
+hv$(OBJ_EXT): thrdvar.h
+hv$(OBJ_EXT): thread.h
+hv$(OBJ_EXT): unixish.h
+hv$(OBJ_EXT): utf8.h
+hv$(OBJ_EXT): util.h
+hv$(OBJ_EXT): warnings.h
+mg$(OBJ_EXT): /usr/include/_ctype.h
+mg$(OBJ_EXT): /usr/include/arpa/inet.h
+mg$(OBJ_EXT): /usr/include/ctype.h
+mg$(OBJ_EXT): /usr/include/dirent.h
+mg$(OBJ_EXT): /usr/include/errno.h
+mg$(OBJ_EXT): /usr/include/float.h
+mg$(OBJ_EXT): /usr/include/floatingpoint.h
+mg$(OBJ_EXT): /usr/include/grp.h
+mg$(OBJ_EXT): /usr/include/ieeefp.h
+mg$(OBJ_EXT): /usr/include/inttypes.h
+mg$(OBJ_EXT): /usr/include/libutil.h
+mg$(OBJ_EXT): /usr/include/limits.h
+mg$(OBJ_EXT): /usr/include/locale.h
+mg$(OBJ_EXT): /usr/include/machine/_inttypes.h
+mg$(OBJ_EXT): /usr/include/machine/_limits.h
+mg$(OBJ_EXT): /usr/include/machine/_stdint.h
+mg$(OBJ_EXT): /usr/include/machine/_types.h
+mg$(OBJ_EXT): /usr/include/machine/endian.h
+mg$(OBJ_EXT): /usr/include/machine/ieeefp.h
+mg$(OBJ_EXT): /usr/include/machine/param.h
+mg$(OBJ_EXT): /usr/include/machine/setjmp.h
+mg$(OBJ_EXT): /usr/include/machine/signal.h
+mg$(OBJ_EXT): /usr/include/machine/trap.h
+mg$(OBJ_EXT): /usr/include/math.h
+mg$(OBJ_EXT): /usr/include/netdb.h
+mg$(OBJ_EXT): /usr/include/netinet/in.h
+mg$(OBJ_EXT): /usr/include/netinet6/in6.h
+mg$(OBJ_EXT): /usr/include/runetype.h
+mg$(OBJ_EXT): /usr/include/setjmp.h
+mg$(OBJ_EXT): /usr/include/signal.h
+mg$(OBJ_EXT): /usr/include/stdarg.h
+mg$(OBJ_EXT): /usr/include/stddef.h
+mg$(OBJ_EXT): /usr/include/stdio.h
+mg$(OBJ_EXT): /usr/include/stdlib.h
+mg$(OBJ_EXT): /usr/include/string.h
+mg$(OBJ_EXT): /usr/include/strings.h
+mg$(OBJ_EXT): /usr/include/sys/_iovec.h
+mg$(OBJ_EXT): /usr/include/sys/_null.h
+mg$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+mg$(OBJ_EXT): /usr/include/sys/_sigset.h
+mg$(OBJ_EXT): /usr/include/sys/_timeval.h
+mg$(OBJ_EXT): /usr/include/sys/_types.h
+mg$(OBJ_EXT): /usr/include/sys/cdefs.h
+mg$(OBJ_EXT): /usr/include/sys/dirent.h
+mg$(OBJ_EXT): /usr/include/sys/fcntl.h
+mg$(OBJ_EXT): /usr/include/sys/file.h
+mg$(OBJ_EXT): /usr/include/sys/filio.h
+mg$(OBJ_EXT): /usr/include/sys/ioccom.h
+mg$(OBJ_EXT): /usr/include/sys/ioctl.h
+mg$(OBJ_EXT): /usr/include/sys/ipc.h
+mg$(OBJ_EXT): /usr/include/sys/limits.h
+mg$(OBJ_EXT): /usr/include/sys/param.h
+mg$(OBJ_EXT): /usr/include/sys/select.h
+mg$(OBJ_EXT): /usr/include/sys/sem.h
+mg$(OBJ_EXT): /usr/include/sys/signal.h
+mg$(OBJ_EXT): /usr/include/sys/socket.h
+mg$(OBJ_EXT): /usr/include/sys/sockio.h
+mg$(OBJ_EXT): /usr/include/sys/stat.h
+mg$(OBJ_EXT): /usr/include/sys/stdint.h
+mg$(OBJ_EXT): /usr/include/sys/syslimits.h
+mg$(OBJ_EXT): /usr/include/sys/time.h
+mg$(OBJ_EXT): /usr/include/sys/times.h
+mg$(OBJ_EXT): /usr/include/sys/timespec.h
+mg$(OBJ_EXT): /usr/include/sys/ttycom.h
+mg$(OBJ_EXT): /usr/include/sys/types.h
+mg$(OBJ_EXT): /usr/include/sys/unistd.h
+mg$(OBJ_EXT): /usr/include/time.h
+mg$(OBJ_EXT): /usr/include/unistd.h
+mg$(OBJ_EXT): EXTERN.h
+mg$(OBJ_EXT): av.h
+mg$(OBJ_EXT): config.h
+mg$(OBJ_EXT): cop.h
+mg$(OBJ_EXT): cv.h
+mg$(OBJ_EXT): embed.h
+mg$(OBJ_EXT): embedvar.h
+mg$(OBJ_EXT): form.h
+mg$(OBJ_EXT): gv.h
+mg$(OBJ_EXT): handy.h
+mg$(OBJ_EXT): hv.h
+mg$(OBJ_EXT): intrpvar.h
+mg$(OBJ_EXT): iperlsys.h
+mg$(OBJ_EXT): mg.c
+mg$(OBJ_EXT): mg.h
+mg$(OBJ_EXT): op.h
+mg$(OBJ_EXT): opcode.h
+mg$(OBJ_EXT): opnames.h
+mg$(OBJ_EXT): pad.h
+mg$(OBJ_EXT): patchlevel.h
+mg$(OBJ_EXT): perl.h
+mg$(OBJ_EXT): perlio.h
+mg$(OBJ_EXT): perlvars.h
+mg$(OBJ_EXT): perly.h
+mg$(OBJ_EXT): pp.h
+mg$(OBJ_EXT): pp_proto.h
+mg$(OBJ_EXT): proto.h
+mg$(OBJ_EXT): reentr.inc
+mg$(OBJ_EXT): regexp.h
+mg$(OBJ_EXT): scope.h
+mg$(OBJ_EXT): sv.h
+mg$(OBJ_EXT): thrdvar.h
+mg$(OBJ_EXT): thread.h
+mg$(OBJ_EXT): unixish.h
+mg$(OBJ_EXT): utf8.h
+mg$(OBJ_EXT): util.h
+mg$(OBJ_EXT): warnings.h
+reentr$(OBJ_EXT): /usr/include/_ctype.h
+reentr$(OBJ_EXT): /usr/include/arpa/inet.h
+reentr$(OBJ_EXT): /usr/include/ctype.h
+reentr$(OBJ_EXT): /usr/include/dirent.h
+reentr$(OBJ_EXT): /usr/include/errno.h
+reentr$(OBJ_EXT): /usr/include/float.h
+reentr$(OBJ_EXT): /usr/include/floatingpoint.h
+reentr$(OBJ_EXT): /usr/include/ieeefp.h
+reentr$(OBJ_EXT): /usr/include/inttypes.h
+reentr$(OBJ_EXT): /usr/include/libutil.h
+reentr$(OBJ_EXT): /usr/include/limits.h
+reentr$(OBJ_EXT): /usr/include/locale.h
+reentr$(OBJ_EXT): /usr/include/machine/_inttypes.h
+reentr$(OBJ_EXT): /usr/include/machine/_limits.h
+reentr$(OBJ_EXT): /usr/include/machine/_stdint.h
+reentr$(OBJ_EXT): /usr/include/machine/_types.h
+reentr$(OBJ_EXT): /usr/include/machine/endian.h
+reentr$(OBJ_EXT): /usr/include/machine/ieeefp.h
+reentr$(OBJ_EXT): /usr/include/machine/param.h
+reentr$(OBJ_EXT): /usr/include/machine/setjmp.h
+reentr$(OBJ_EXT): /usr/include/machine/signal.h
+reentr$(OBJ_EXT): /usr/include/machine/trap.h
+reentr$(OBJ_EXT): /usr/include/math.h
+reentr$(OBJ_EXT): /usr/include/netdb.h
+reentr$(OBJ_EXT): /usr/include/netinet/in.h
+reentr$(OBJ_EXT): /usr/include/netinet6/in6.h
+reentr$(OBJ_EXT): /usr/include/runetype.h
+reentr$(OBJ_EXT): /usr/include/setjmp.h
+reentr$(OBJ_EXT): /usr/include/signal.h
+reentr$(OBJ_EXT): /usr/include/stdarg.h
+reentr$(OBJ_EXT): /usr/include/stddef.h
+reentr$(OBJ_EXT): /usr/include/stdio.h
+reentr$(OBJ_EXT): /usr/include/stdlib.h
+reentr$(OBJ_EXT): /usr/include/string.h
+reentr$(OBJ_EXT): /usr/include/strings.h
+reentr$(OBJ_EXT): /usr/include/sys/_iovec.h
+reentr$(OBJ_EXT): /usr/include/sys/_null.h
+reentr$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+reentr$(OBJ_EXT): /usr/include/sys/_sigset.h
+reentr$(OBJ_EXT): /usr/include/sys/_timeval.h
+reentr$(OBJ_EXT): /usr/include/sys/_types.h
+reentr$(OBJ_EXT): /usr/include/sys/cdefs.h
+reentr$(OBJ_EXT): /usr/include/sys/dirent.h
+reentr$(OBJ_EXT): /usr/include/sys/fcntl.h
+reentr$(OBJ_EXT): /usr/include/sys/file.h
+reentr$(OBJ_EXT): /usr/include/sys/filio.h
+reentr$(OBJ_EXT): /usr/include/sys/ioccom.h
+reentr$(OBJ_EXT): /usr/include/sys/ioctl.h
+reentr$(OBJ_EXT): /usr/include/sys/ipc.h
+reentr$(OBJ_EXT): /usr/include/sys/limits.h
+reentr$(OBJ_EXT): /usr/include/sys/param.h
+reentr$(OBJ_EXT): /usr/include/sys/select.h
+reentr$(OBJ_EXT): /usr/include/sys/sem.h
+reentr$(OBJ_EXT): /usr/include/sys/signal.h
+reentr$(OBJ_EXT): /usr/include/sys/socket.h
+reentr$(OBJ_EXT): /usr/include/sys/sockio.h
+reentr$(OBJ_EXT): /usr/include/sys/stat.h
+reentr$(OBJ_EXT): /usr/include/sys/stdint.h
+reentr$(OBJ_EXT): /usr/include/sys/syslimits.h
+reentr$(OBJ_EXT): /usr/include/sys/time.h
+reentr$(OBJ_EXT): /usr/include/sys/times.h
+reentr$(OBJ_EXT): /usr/include/sys/timespec.h
+reentr$(OBJ_EXT): /usr/include/sys/ttycom.h
+reentr$(OBJ_EXT): /usr/include/sys/types.h
+reentr$(OBJ_EXT): /usr/include/sys/unistd.h
+reentr$(OBJ_EXT): /usr/include/time.h
+reentr$(OBJ_EXT): /usr/include/unistd.h
+reentr$(OBJ_EXT): EXTERN.h
+reentr$(OBJ_EXT): av.h
+reentr$(OBJ_EXT): config.h
+reentr$(OBJ_EXT): cop.h
+reentr$(OBJ_EXT): cv.h
+reentr$(OBJ_EXT): embed.h
+reentr$(OBJ_EXT): embedvar.h
+reentr$(OBJ_EXT): form.h
+reentr$(OBJ_EXT): gv.h
+reentr$(OBJ_EXT): handy.h
+reentr$(OBJ_EXT): hv.h
+reentr$(OBJ_EXT): intrpvar.h
+reentr$(OBJ_EXT): iperlsys.h
+reentr$(OBJ_EXT): mg.h
+reentr$(OBJ_EXT): op.h
+reentr$(OBJ_EXT): opcode.h
+reentr$(OBJ_EXT): opnames.h
+reentr$(OBJ_EXT): pad.h
+reentr$(OBJ_EXT): patchlevel.h
+reentr$(OBJ_EXT): perl.h
+reentr$(OBJ_EXT): perlio.h
+reentr$(OBJ_EXT): perlvars.h
+reentr$(OBJ_EXT): perly.h
+reentr$(OBJ_EXT): pp.h
+reentr$(OBJ_EXT): pp_proto.h
+reentr$(OBJ_EXT): proto.h
+reentr$(OBJ_EXT): reentr.c
+reentr$(OBJ_EXT): reentr.h
+reentr$(OBJ_EXT): reentr.inc
+reentr$(OBJ_EXT): regexp.h
+reentr$(OBJ_EXT): scope.h
+reentr$(OBJ_EXT): sv.h
+reentr$(OBJ_EXT): thrdvar.h
+reentr$(OBJ_EXT): thread.h
+reentr$(OBJ_EXT): unixish.h
+reentr$(OBJ_EXT): utf8.h
+reentr$(OBJ_EXT): util.h
+reentr$(OBJ_EXT): warnings.h
+perl$(OBJ_EXT): /usr/include/_ctype.h
+perl$(OBJ_EXT): /usr/include/arpa/inet.h
+perl$(OBJ_EXT): /usr/include/ctype.h
+perl$(OBJ_EXT): /usr/include/dirent.h
+perl$(OBJ_EXT): /usr/include/errno.h
+perl$(OBJ_EXT): /usr/include/float.h
+perl$(OBJ_EXT): /usr/include/floatingpoint.h
+perl$(OBJ_EXT): /usr/include/ieeefp.h
+perl$(OBJ_EXT): /usr/include/inttypes.h
+perl$(OBJ_EXT): /usr/include/libutil.h
+perl$(OBJ_EXT): /usr/include/limits.h
+perl$(OBJ_EXT): /usr/include/locale.h
+perl$(OBJ_EXT): /usr/include/machine/_inttypes.h
+perl$(OBJ_EXT): /usr/include/machine/_limits.h
+perl$(OBJ_EXT): /usr/include/machine/_stdint.h
+perl$(OBJ_EXT): /usr/include/machine/_types.h
+perl$(OBJ_EXT): /usr/include/machine/endian.h
+perl$(OBJ_EXT): /usr/include/machine/ieeefp.h
+perl$(OBJ_EXT): /usr/include/machine/param.h
+perl$(OBJ_EXT): /usr/include/machine/setjmp.h
+perl$(OBJ_EXT): /usr/include/machine/signal.h
+perl$(OBJ_EXT): /usr/include/machine/trap.h
+perl$(OBJ_EXT): /usr/include/math.h
+perl$(OBJ_EXT): /usr/include/netdb.h
+perl$(OBJ_EXT): /usr/include/netinet/in.h
+perl$(OBJ_EXT): /usr/include/netinet6/in6.h
+perl$(OBJ_EXT): /usr/include/runetype.h
+perl$(OBJ_EXT): /usr/include/setjmp.h
+perl$(OBJ_EXT): /usr/include/signal.h
+perl$(OBJ_EXT): /usr/include/stdarg.h
+perl$(OBJ_EXT): /usr/include/stddef.h
+perl$(OBJ_EXT): /usr/include/stdio.h
+perl$(OBJ_EXT): /usr/include/stdlib.h
+perl$(OBJ_EXT): /usr/include/string.h
+perl$(OBJ_EXT): /usr/include/strings.h
+perl$(OBJ_EXT): /usr/include/sys/_iovec.h
+perl$(OBJ_EXT): /usr/include/sys/_null.h
+perl$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+perl$(OBJ_EXT): /usr/include/sys/_sigset.h
+perl$(OBJ_EXT): /usr/include/sys/_timeval.h
+perl$(OBJ_EXT): /usr/include/sys/_types.h
+perl$(OBJ_EXT): /usr/include/sys/cdefs.h
+perl$(OBJ_EXT): /usr/include/sys/dirent.h
+perl$(OBJ_EXT): /usr/include/sys/fcntl.h
+perl$(OBJ_EXT): /usr/include/sys/file.h
+perl$(OBJ_EXT): /usr/include/sys/filio.h
+perl$(OBJ_EXT): /usr/include/sys/ioccom.h
+perl$(OBJ_EXT): /usr/include/sys/ioctl.h
+perl$(OBJ_EXT): /usr/include/sys/ipc.h
+perl$(OBJ_EXT): /usr/include/sys/limits.h
+perl$(OBJ_EXT): /usr/include/sys/param.h
+perl$(OBJ_EXT): /usr/include/sys/select.h
+perl$(OBJ_EXT): /usr/include/sys/sem.h
+perl$(OBJ_EXT): /usr/include/sys/signal.h
+perl$(OBJ_EXT): /usr/include/sys/socket.h
+perl$(OBJ_EXT): /usr/include/sys/sockio.h
+perl$(OBJ_EXT): /usr/include/sys/stat.h
+perl$(OBJ_EXT): /usr/include/sys/stdint.h
+perl$(OBJ_EXT): /usr/include/sys/syslimits.h
+perl$(OBJ_EXT): /usr/include/sys/time.h
+perl$(OBJ_EXT): /usr/include/sys/times.h
+perl$(OBJ_EXT): /usr/include/sys/timespec.h
+perl$(OBJ_EXT): /usr/include/sys/ttycom.h
+perl$(OBJ_EXT): /usr/include/sys/types.h
+perl$(OBJ_EXT): /usr/include/sys/unistd.h
+perl$(OBJ_EXT): /usr/include/time.h
+perl$(OBJ_EXT): /usr/include/unistd.h
+perl$(OBJ_EXT): EXTERN.h
+perl$(OBJ_EXT): av.h
+perl$(OBJ_EXT): config.h
+perl$(OBJ_EXT): cop.h
+perl$(OBJ_EXT): cv.h
+perl$(OBJ_EXT): embed.h
+perl$(OBJ_EXT): embedvar.h
+perl$(OBJ_EXT): form.h
+perl$(OBJ_EXT): gv.h
+perl$(OBJ_EXT): handy.h
+perl$(OBJ_EXT): hv.h
+perl$(OBJ_EXT): intrpvar.h
+perl$(OBJ_EXT): iperlsys.h
+perl$(OBJ_EXT): mg.h
+perl$(OBJ_EXT): op.h
+perl$(OBJ_EXT): opcode.h
+perl$(OBJ_EXT): opnames.h
+perl$(OBJ_EXT): pad.h
+perl$(OBJ_EXT): patchlevel.h
+perl$(OBJ_EXT): perl.c
+perl$(OBJ_EXT): perl.h
+perl$(OBJ_EXT): perlio.h
+perl$(OBJ_EXT): perlvars.h
+perl$(OBJ_EXT): perly.h
+perl$(OBJ_EXT): pp.h
+perl$(OBJ_EXT): pp_proto.h
+perl$(OBJ_EXT): proto.h
+perl$(OBJ_EXT): reentr.inc
+perl$(OBJ_EXT): regexp.h
+perl$(OBJ_EXT): scope.h
+perl$(OBJ_EXT): sv.h
+perl$(OBJ_EXT): thrdvar.h
+perl$(OBJ_EXT): thread.h
+perl$(OBJ_EXT): unixish.h
+perl$(OBJ_EXT): utf8.h
+perl$(OBJ_EXT): util.h
+perl$(OBJ_EXT): warnings.h
+perly$(OBJ_EXT): /usr/include/_ctype.h
+perly$(OBJ_EXT): /usr/include/arpa/inet.h
+perly$(OBJ_EXT): /usr/include/ctype.h
+perly$(OBJ_EXT): /usr/include/dirent.h
+perly$(OBJ_EXT): /usr/include/errno.h
+perly$(OBJ_EXT): /usr/include/float.h
+perly$(OBJ_EXT): /usr/include/floatingpoint.h
+perly$(OBJ_EXT): /usr/include/ieeefp.h
+perly$(OBJ_EXT): /usr/include/inttypes.h
+perly$(OBJ_EXT): /usr/include/libutil.h
+perly$(OBJ_EXT): /usr/include/limits.h
+perly$(OBJ_EXT): /usr/include/locale.h
+perly$(OBJ_EXT): /usr/include/machine/_inttypes.h
+perly$(OBJ_EXT): /usr/include/machine/_limits.h
+perly$(OBJ_EXT): /usr/include/machine/_stdint.h
+perly$(OBJ_EXT): /usr/include/machine/_types.h
+perly$(OBJ_EXT): /usr/include/machine/endian.h
+perly$(OBJ_EXT): /usr/include/machine/ieeefp.h
+perly$(OBJ_EXT): /usr/include/machine/param.h
+perly$(OBJ_EXT): /usr/include/machine/setjmp.h
+perly$(OBJ_EXT): /usr/include/machine/signal.h
+perly$(OBJ_EXT): /usr/include/machine/trap.h
+perly$(OBJ_EXT): /usr/include/math.h
+perly$(OBJ_EXT): /usr/include/netdb.h
+perly$(OBJ_EXT): /usr/include/netinet/in.h
+perly$(OBJ_EXT): /usr/include/netinet6/in6.h
+perly$(OBJ_EXT): /usr/include/runetype.h
+perly$(OBJ_EXT): /usr/include/setjmp.h
+perly$(OBJ_EXT): /usr/include/signal.h
+perly$(OBJ_EXT): /usr/include/stdarg.h
+perly$(OBJ_EXT): /usr/include/stddef.h
+perly$(OBJ_EXT): /usr/include/stdio.h
+perly$(OBJ_EXT): /usr/include/stdlib.h
+perly$(OBJ_EXT): /usr/include/string.h
+perly$(OBJ_EXT): /usr/include/strings.h
+perly$(OBJ_EXT): /usr/include/sys/_iovec.h
+perly$(OBJ_EXT): /usr/include/sys/_null.h
+perly$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+perly$(OBJ_EXT): /usr/include/sys/_sigset.h
+perly$(OBJ_EXT): /usr/include/sys/_timeval.h
+perly$(OBJ_EXT): /usr/include/sys/_types.h
+perly$(OBJ_EXT): /usr/include/sys/cdefs.h
+perly$(OBJ_EXT): /usr/include/sys/dirent.h
+perly$(OBJ_EXT): /usr/include/sys/fcntl.h
+perly$(OBJ_EXT): /usr/include/sys/file.h
+perly$(OBJ_EXT): /usr/include/sys/filio.h
+perly$(OBJ_EXT): /usr/include/sys/ioccom.h
+perly$(OBJ_EXT): /usr/include/sys/ioctl.h
+perly$(OBJ_EXT): /usr/include/sys/ipc.h
+perly$(OBJ_EXT): /usr/include/sys/limits.h
+perly$(OBJ_EXT): /usr/include/sys/param.h
+perly$(OBJ_EXT): /usr/include/sys/select.h
+perly$(OBJ_EXT): /usr/include/sys/sem.h
+perly$(OBJ_EXT): /usr/include/sys/signal.h
+perly$(OBJ_EXT): /usr/include/sys/socket.h
+perly$(OBJ_EXT): /usr/include/sys/sockio.h
+perly$(OBJ_EXT): /usr/include/sys/stat.h
+perly$(OBJ_EXT): /usr/include/sys/stdint.h
+perly$(OBJ_EXT): /usr/include/sys/syslimits.h
+perly$(OBJ_EXT): /usr/include/sys/time.h
+perly$(OBJ_EXT): /usr/include/sys/times.h
+perly$(OBJ_EXT): /usr/include/sys/timespec.h
+perly$(OBJ_EXT): /usr/include/sys/ttycom.h
+perly$(OBJ_EXT): /usr/include/sys/types.h
+perly$(OBJ_EXT): /usr/include/sys/unistd.h
+perly$(OBJ_EXT): /usr/include/time.h
+perly$(OBJ_EXT): /usr/include/unistd.h
+perly$(OBJ_EXT): EXTERN.h
+perly$(OBJ_EXT): av.h
+perly$(OBJ_EXT): config.h
+perly$(OBJ_EXT): cop.h
+perly$(OBJ_EXT): cv.h
+perly$(OBJ_EXT): embed.h
+perly$(OBJ_EXT): embedvar.h
+perly$(OBJ_EXT): form.h
+perly$(OBJ_EXT): gv.h
+perly$(OBJ_EXT): handy.h
+perly$(OBJ_EXT): hv.h
+perly$(OBJ_EXT): intrpvar.h
+perly$(OBJ_EXT): iperlsys.h
+perly$(OBJ_EXT): mg.h
+perly$(OBJ_EXT): op.h
+perly$(OBJ_EXT): opcode.h
+perly$(OBJ_EXT): opnames.h
+perly$(OBJ_EXT): pad.h
+perly$(OBJ_EXT): patchlevel.h
+perly$(OBJ_EXT): perl.h
+perly$(OBJ_EXT): perlio.h
+perly$(OBJ_EXT): perlvars.h
+perly$(OBJ_EXT): perly.c
+perly$(OBJ_EXT): perly.h
+perly$(OBJ_EXT): pp.h
+perly$(OBJ_EXT): pp_proto.h
+perly$(OBJ_EXT): proto.h
+perly$(OBJ_EXT): reentr.inc
+perly$(OBJ_EXT): regexp.h
+perly$(OBJ_EXT): scope.h
+perly$(OBJ_EXT): sv.h
+perly$(OBJ_EXT): thrdvar.h
+perly$(OBJ_EXT): thread.h
+perly$(OBJ_EXT): unixish.h
+perly$(OBJ_EXT): utf8.h
+perly$(OBJ_EXT): util.h
+perly$(OBJ_EXT): warnings.h
+pp$(OBJ_EXT): /usr/include/_ctype.h
+pp$(OBJ_EXT): /usr/include/arpa/inet.h
+pp$(OBJ_EXT): /usr/include/ctype.h
+pp$(OBJ_EXT): /usr/include/dirent.h
+pp$(OBJ_EXT): /usr/include/errno.h
+pp$(OBJ_EXT): /usr/include/float.h
+pp$(OBJ_EXT): /usr/include/floatingpoint.h
+pp$(OBJ_EXT): /usr/include/ieeefp.h
+pp$(OBJ_EXT): /usr/include/inttypes.h
+pp$(OBJ_EXT): /usr/include/libutil.h
+pp$(OBJ_EXT): /usr/include/limits.h
+pp$(OBJ_EXT): /usr/include/locale.h
+pp$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pp$(OBJ_EXT): /usr/include/machine/_limits.h
+pp$(OBJ_EXT): /usr/include/machine/_stdint.h
+pp$(OBJ_EXT): /usr/include/machine/_types.h
+pp$(OBJ_EXT): /usr/include/machine/endian.h
+pp$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pp$(OBJ_EXT): /usr/include/machine/param.h
+pp$(OBJ_EXT): /usr/include/machine/setjmp.h
+pp$(OBJ_EXT): /usr/include/machine/signal.h
+pp$(OBJ_EXT): /usr/include/machine/trap.h
+pp$(OBJ_EXT): /usr/include/math.h
+pp$(OBJ_EXT): /usr/include/netdb.h
+pp$(OBJ_EXT): /usr/include/netinet/in.h
+pp$(OBJ_EXT): /usr/include/netinet6/in6.h
+pp$(OBJ_EXT): /usr/include/runetype.h
+pp$(OBJ_EXT): /usr/include/setjmp.h
+pp$(OBJ_EXT): /usr/include/signal.h
+pp$(OBJ_EXT): /usr/include/stdarg.h
+pp$(OBJ_EXT): /usr/include/stddef.h
+pp$(OBJ_EXT): /usr/include/stdio.h
+pp$(OBJ_EXT): /usr/include/stdlib.h
+pp$(OBJ_EXT): /usr/include/string.h
+pp$(OBJ_EXT): /usr/include/strings.h
+pp$(OBJ_EXT): /usr/include/sys/_iovec.h
+pp$(OBJ_EXT): /usr/include/sys/_null.h
+pp$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pp$(OBJ_EXT): /usr/include/sys/_sigset.h
+pp$(OBJ_EXT): /usr/include/sys/_timeval.h
+pp$(OBJ_EXT): /usr/include/sys/_types.h
+pp$(OBJ_EXT): /usr/include/sys/cdefs.h
+pp$(OBJ_EXT): /usr/include/sys/dirent.h
+pp$(OBJ_EXT): /usr/include/sys/fcntl.h
+pp$(OBJ_EXT): /usr/include/sys/file.h
+pp$(OBJ_EXT): /usr/include/sys/filio.h
+pp$(OBJ_EXT): /usr/include/sys/ioccom.h
+pp$(OBJ_EXT): /usr/include/sys/ioctl.h
+pp$(OBJ_EXT): /usr/include/sys/ipc.h
+pp$(OBJ_EXT): /usr/include/sys/limits.h
+pp$(OBJ_EXT): /usr/include/sys/param.h
+pp$(OBJ_EXT): /usr/include/sys/select.h
+pp$(OBJ_EXT): /usr/include/sys/sem.h
+pp$(OBJ_EXT): /usr/include/sys/signal.h
+pp$(OBJ_EXT): /usr/include/sys/socket.h
+pp$(OBJ_EXT): /usr/include/sys/sockio.h
+pp$(OBJ_EXT): /usr/include/sys/stat.h
+pp$(OBJ_EXT): /usr/include/sys/stdint.h
+pp$(OBJ_EXT): /usr/include/sys/syslimits.h
+pp$(OBJ_EXT): /usr/include/sys/time.h
+pp$(OBJ_EXT): /usr/include/sys/times.h
+pp$(OBJ_EXT): /usr/include/sys/timespec.h
+pp$(OBJ_EXT): /usr/include/sys/ttycom.h
+pp$(OBJ_EXT): /usr/include/sys/types.h
+pp$(OBJ_EXT): /usr/include/sys/unistd.h
+pp$(OBJ_EXT): /usr/include/time.h
+pp$(OBJ_EXT): /usr/include/unistd.h
+pp$(OBJ_EXT): EXTERN.h
+pp$(OBJ_EXT): av.h
+pp$(OBJ_EXT): config.h
+pp$(OBJ_EXT): cop.h
+pp$(OBJ_EXT): cv.h
+pp$(OBJ_EXT): embed.h
+pp$(OBJ_EXT): embedvar.h
+pp$(OBJ_EXT): form.h
+pp$(OBJ_EXT): gv.h
+pp$(OBJ_EXT): handy.h
+pp$(OBJ_EXT): hv.h
+pp$(OBJ_EXT): intrpvar.h
+pp$(OBJ_EXT): iperlsys.h
+pp$(OBJ_EXT): keywords.h
+pp$(OBJ_EXT): mg.h
+pp$(OBJ_EXT): op.h
+pp$(OBJ_EXT): opcode.h
+pp$(OBJ_EXT): opnames.h
+pp$(OBJ_EXT): pad.h
+pp$(OBJ_EXT): patchlevel.h
+pp$(OBJ_EXT): perl.h
+pp$(OBJ_EXT): perlio.h
+pp$(OBJ_EXT): perlvars.h
+pp$(OBJ_EXT): perly.h
+pp$(OBJ_EXT): pp.c
+pp$(OBJ_EXT): pp.h
+pp$(OBJ_EXT): pp_proto.h
+pp$(OBJ_EXT): proto.h
+pp$(OBJ_EXT): reentr.h
+pp$(OBJ_EXT): reentr.inc
+pp$(OBJ_EXT): regexp.h
+pp$(OBJ_EXT): scope.h
+pp$(OBJ_EXT): sv.h
+pp$(OBJ_EXT): thrdvar.h
+pp$(OBJ_EXT): thread.h
+pp$(OBJ_EXT): unixish.h
+pp$(OBJ_EXT): utf8.h
+pp$(OBJ_EXT): util.h
+pp$(OBJ_EXT): warnings.h
+pp_hot$(OBJ_EXT): /usr/include/_ctype.h
+pp_hot$(OBJ_EXT): /usr/include/arpa/inet.h
+pp_hot$(OBJ_EXT): /usr/include/ctype.h
+pp_hot$(OBJ_EXT): /usr/include/dirent.h
+pp_hot$(OBJ_EXT): /usr/include/errno.h
+pp_hot$(OBJ_EXT): /usr/include/float.h
+pp_hot$(OBJ_EXT): /usr/include/floatingpoint.h
+pp_hot$(OBJ_EXT): /usr/include/ieeefp.h
+pp_hot$(OBJ_EXT): /usr/include/inttypes.h
+pp_hot$(OBJ_EXT): /usr/include/libutil.h
+pp_hot$(OBJ_EXT): /usr/include/limits.h
+pp_hot$(OBJ_EXT): /usr/include/locale.h
+pp_hot$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pp_hot$(OBJ_EXT): /usr/include/machine/_limits.h
+pp_hot$(OBJ_EXT): /usr/include/machine/_stdint.h
+pp_hot$(OBJ_EXT): /usr/include/machine/_types.h
+pp_hot$(OBJ_EXT): /usr/include/machine/endian.h
+pp_hot$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pp_hot$(OBJ_EXT): /usr/include/machine/param.h
+pp_hot$(OBJ_EXT): /usr/include/machine/setjmp.h
+pp_hot$(OBJ_EXT): /usr/include/machine/signal.h
+pp_hot$(OBJ_EXT): /usr/include/machine/trap.h
+pp_hot$(OBJ_EXT): /usr/include/math.h
+pp_hot$(OBJ_EXT): /usr/include/netdb.h
+pp_hot$(OBJ_EXT): /usr/include/netinet/in.h
+pp_hot$(OBJ_EXT): /usr/include/netinet6/in6.h
+pp_hot$(OBJ_EXT): /usr/include/runetype.h
+pp_hot$(OBJ_EXT): /usr/include/setjmp.h
+pp_hot$(OBJ_EXT): /usr/include/signal.h
+pp_hot$(OBJ_EXT): /usr/include/stdarg.h
+pp_hot$(OBJ_EXT): /usr/include/stddef.h
+pp_hot$(OBJ_EXT): /usr/include/stdio.h
+pp_hot$(OBJ_EXT): /usr/include/stdlib.h
+pp_hot$(OBJ_EXT): /usr/include/string.h
+pp_hot$(OBJ_EXT): /usr/include/strings.h
+pp_hot$(OBJ_EXT): /usr/include/sys/_iovec.h
+pp_hot$(OBJ_EXT): /usr/include/sys/_null.h
+pp_hot$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pp_hot$(OBJ_EXT): /usr/include/sys/_sigset.h
+pp_hot$(OBJ_EXT): /usr/include/sys/_timeval.h
+pp_hot$(OBJ_EXT): /usr/include/sys/_types.h
+pp_hot$(OBJ_EXT): /usr/include/sys/cdefs.h
+pp_hot$(OBJ_EXT): /usr/include/sys/dirent.h
+pp_hot$(OBJ_EXT): /usr/include/sys/fcntl.h
+pp_hot$(OBJ_EXT): /usr/include/sys/file.h
+pp_hot$(OBJ_EXT): /usr/include/sys/filio.h
+pp_hot$(OBJ_EXT): /usr/include/sys/ioccom.h
+pp_hot$(OBJ_EXT): /usr/include/sys/ioctl.h
+pp_hot$(OBJ_EXT): /usr/include/sys/ipc.h
+pp_hot$(OBJ_EXT): /usr/include/sys/limits.h
+pp_hot$(OBJ_EXT): /usr/include/sys/param.h
+pp_hot$(OBJ_EXT): /usr/include/sys/select.h
+pp_hot$(OBJ_EXT): /usr/include/sys/sem.h
+pp_hot$(OBJ_EXT): /usr/include/sys/signal.h
+pp_hot$(OBJ_EXT): /usr/include/sys/socket.h
+pp_hot$(OBJ_EXT): /usr/include/sys/sockio.h
+pp_hot$(OBJ_EXT): /usr/include/sys/stat.h
+pp_hot$(OBJ_EXT): /usr/include/sys/stdint.h
+pp_hot$(OBJ_EXT): /usr/include/sys/syslimits.h
+pp_hot$(OBJ_EXT): /usr/include/sys/time.h
+pp_hot$(OBJ_EXT): /usr/include/sys/times.h
+pp_hot$(OBJ_EXT): /usr/include/sys/timespec.h
+pp_hot$(OBJ_EXT): /usr/include/sys/ttycom.h
+pp_hot$(OBJ_EXT): /usr/include/sys/types.h
+pp_hot$(OBJ_EXT): /usr/include/sys/unistd.h
+pp_hot$(OBJ_EXT): /usr/include/time.h
+pp_hot$(OBJ_EXT): /usr/include/unistd.h
+pp_hot$(OBJ_EXT): EXTERN.h
+pp_hot$(OBJ_EXT): av.h
+pp_hot$(OBJ_EXT): config.h
+pp_hot$(OBJ_EXT): cop.h
+pp_hot$(OBJ_EXT): cv.h
+pp_hot$(OBJ_EXT): embed.h
+pp_hot$(OBJ_EXT): embedvar.h
+pp_hot$(OBJ_EXT): form.h
+pp_hot$(OBJ_EXT): gv.h
+pp_hot$(OBJ_EXT): handy.h
+pp_hot$(OBJ_EXT): hv.h
+pp_hot$(OBJ_EXT): intrpvar.h
+pp_hot$(OBJ_EXT): iperlsys.h
+pp_hot$(OBJ_EXT): mg.h
+pp_hot$(OBJ_EXT): op.h
+pp_hot$(OBJ_EXT): opcode.h
+pp_hot$(OBJ_EXT): opnames.h
+pp_hot$(OBJ_EXT): pad.h
+pp_hot$(OBJ_EXT): patchlevel.h
+pp_hot$(OBJ_EXT): perl.h
+pp_hot$(OBJ_EXT): perlio.h
+pp_hot$(OBJ_EXT): perlvars.h
+pp_hot$(OBJ_EXT): perly.h
+pp_hot$(OBJ_EXT): pp.h
+pp_hot$(OBJ_EXT): pp_hot.c
+pp_hot$(OBJ_EXT): pp_proto.h
+pp_hot$(OBJ_EXT): proto.h
+pp_hot$(OBJ_EXT): reentr.inc
+pp_hot$(OBJ_EXT): regexp.h
+pp_hot$(OBJ_EXT): scope.h
+pp_hot$(OBJ_EXT): sv.h
+pp_hot$(OBJ_EXT): thrdvar.h
+pp_hot$(OBJ_EXT): thread.h
+pp_hot$(OBJ_EXT): unixish.h
+pp_hot$(OBJ_EXT): utf8.h
+pp_hot$(OBJ_EXT): util.h
+pp_hot$(OBJ_EXT): warnings.h
+pp_ctl$(OBJ_EXT): /usr/include/_ctype.h
+pp_ctl$(OBJ_EXT): /usr/include/arpa/inet.h
+pp_ctl$(OBJ_EXT): /usr/include/ctype.h
+pp_ctl$(OBJ_EXT): /usr/include/dirent.h
+pp_ctl$(OBJ_EXT): /usr/include/errno.h
+pp_ctl$(OBJ_EXT): /usr/include/float.h
+pp_ctl$(OBJ_EXT): /usr/include/floatingpoint.h
+pp_ctl$(OBJ_EXT): /usr/include/ieeefp.h
+pp_ctl$(OBJ_EXT): /usr/include/inttypes.h
+pp_ctl$(OBJ_EXT): /usr/include/libutil.h
+pp_ctl$(OBJ_EXT): /usr/include/limits.h
+pp_ctl$(OBJ_EXT): /usr/include/locale.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/_limits.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/_stdint.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/_types.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/endian.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/param.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/setjmp.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/signal.h
+pp_ctl$(OBJ_EXT): /usr/include/machine/trap.h
+pp_ctl$(OBJ_EXT): /usr/include/math.h
+pp_ctl$(OBJ_EXT): /usr/include/netdb.h
+pp_ctl$(OBJ_EXT): /usr/include/netinet/in.h
+pp_ctl$(OBJ_EXT): /usr/include/netinet6/in6.h
+pp_ctl$(OBJ_EXT): /usr/include/runetype.h
+pp_ctl$(OBJ_EXT): /usr/include/setjmp.h
+pp_ctl$(OBJ_EXT): /usr/include/signal.h
+pp_ctl$(OBJ_EXT): /usr/include/stdarg.h
+pp_ctl$(OBJ_EXT): /usr/include/stddef.h
+pp_ctl$(OBJ_EXT): /usr/include/stdio.h
+pp_ctl$(OBJ_EXT): /usr/include/stdlib.h
+pp_ctl$(OBJ_EXT): /usr/include/string.h
+pp_ctl$(OBJ_EXT): /usr/include/strings.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/_iovec.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/_null.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/_sigset.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/_timeval.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/_types.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/cdefs.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/dirent.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/fcntl.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/file.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/filio.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/ioccom.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/ioctl.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/ipc.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/limits.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/param.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/select.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/sem.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/signal.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/socket.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/sockio.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/stat.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/stdint.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/syslimits.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/time.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/times.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/timespec.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/ttycom.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/types.h
+pp_ctl$(OBJ_EXT): /usr/include/sys/unistd.h
+pp_ctl$(OBJ_EXT): /usr/include/time.h
+pp_ctl$(OBJ_EXT): /usr/include/unistd.h
+pp_ctl$(OBJ_EXT): EXTERN.h
+pp_ctl$(OBJ_EXT): av.h
+pp_ctl$(OBJ_EXT): config.h
+pp_ctl$(OBJ_EXT): cop.h
+pp_ctl$(OBJ_EXT): cv.h
+pp_ctl$(OBJ_EXT): embed.h
+pp_ctl$(OBJ_EXT): embedvar.h
+pp_ctl$(OBJ_EXT): form.h
+pp_ctl$(OBJ_EXT): gv.h
+pp_ctl$(OBJ_EXT): handy.h
+pp_ctl$(OBJ_EXT): hv.h
+pp_ctl$(OBJ_EXT): intrpvar.h
+pp_ctl$(OBJ_EXT): iperlsys.h
+pp_ctl$(OBJ_EXT): mg.h
+pp_ctl$(OBJ_EXT): op.h
+pp_ctl$(OBJ_EXT): opcode.h
+pp_ctl$(OBJ_EXT): opnames.h
+pp_ctl$(OBJ_EXT): pad.h
+pp_ctl$(OBJ_EXT): patchlevel.h
+pp_ctl$(OBJ_EXT): perl.h
+pp_ctl$(OBJ_EXT): perlio.h
+pp_ctl$(OBJ_EXT): perlvars.h
+pp_ctl$(OBJ_EXT): perly.h
+pp_ctl$(OBJ_EXT): pp.h
+pp_ctl$(OBJ_EXT): pp_ctl.c
+pp_ctl$(OBJ_EXT): pp_proto.h
+pp_ctl$(OBJ_EXT): proto.h
+pp_ctl$(OBJ_EXT): reentr.inc
+pp_ctl$(OBJ_EXT): regexp.h
+pp_ctl$(OBJ_EXT): scope.h
+pp_ctl$(OBJ_EXT): sv.h
+pp_ctl$(OBJ_EXT): thrdvar.h
+pp_ctl$(OBJ_EXT): thread.h
+pp_ctl$(OBJ_EXT): unixish.h
+pp_ctl$(OBJ_EXT): utf8.h
+pp_ctl$(OBJ_EXT): util.h
+pp_ctl$(OBJ_EXT): warnings.h
+pp_sys$(OBJ_EXT): /usr/include/_ctype.h
+pp_sys$(OBJ_EXT): /usr/include/arpa/inet.h
+pp_sys$(OBJ_EXT): /usr/include/ctype.h
+pp_sys$(OBJ_EXT): /usr/include/dirent.h
+pp_sys$(OBJ_EXT): /usr/include/errno.h
+pp_sys$(OBJ_EXT): /usr/include/float.h
+pp_sys$(OBJ_EXT): /usr/include/floatingpoint.h
+pp_sys$(OBJ_EXT): /usr/include/grp.h
+pp_sys$(OBJ_EXT): /usr/include/ieeefp.h
+pp_sys$(OBJ_EXT): /usr/include/inttypes.h
+pp_sys$(OBJ_EXT): /usr/include/libutil.h
+pp_sys$(OBJ_EXT): /usr/include/limits.h
+pp_sys$(OBJ_EXT): /usr/include/locale.h
+pp_sys$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pp_sys$(OBJ_EXT): /usr/include/machine/_limits.h
+pp_sys$(OBJ_EXT): /usr/include/machine/_stdint.h
+pp_sys$(OBJ_EXT): /usr/include/machine/_types.h
+pp_sys$(OBJ_EXT): /usr/include/machine/endian.h
+pp_sys$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pp_sys$(OBJ_EXT): /usr/include/machine/param.h
+pp_sys$(OBJ_EXT): /usr/include/machine/setjmp.h
+pp_sys$(OBJ_EXT): /usr/include/machine/signal.h
+pp_sys$(OBJ_EXT): /usr/include/machine/trap.h
+pp_sys$(OBJ_EXT): /usr/include/math.h
+pp_sys$(OBJ_EXT): /usr/include/netdb.h
+pp_sys$(OBJ_EXT): /usr/include/netinet/in.h
+pp_sys$(OBJ_EXT): /usr/include/netinet6/in6.h
+pp_sys$(OBJ_EXT): /usr/include/pwd.h
+pp_sys$(OBJ_EXT): /usr/include/runetype.h
+pp_sys$(OBJ_EXT): /usr/include/setjmp.h
+pp_sys$(OBJ_EXT): /usr/include/signal.h
+pp_sys$(OBJ_EXT): /usr/include/stdarg.h
+pp_sys$(OBJ_EXT): /usr/include/stddef.h
+pp_sys$(OBJ_EXT): /usr/include/stdio.h
+pp_sys$(OBJ_EXT): /usr/include/stdlib.h
+pp_sys$(OBJ_EXT): /usr/include/string.h
+pp_sys$(OBJ_EXT): /usr/include/strings.h
+pp_sys$(OBJ_EXT): /usr/include/sys/_iovec.h
+pp_sys$(OBJ_EXT): /usr/include/sys/_null.h
+pp_sys$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pp_sys$(OBJ_EXT): /usr/include/sys/_sigset.h
+pp_sys$(OBJ_EXT): /usr/include/sys/_timeval.h
+pp_sys$(OBJ_EXT): /usr/include/sys/_types.h
+pp_sys$(OBJ_EXT): /usr/include/sys/cdefs.h
+pp_sys$(OBJ_EXT): /usr/include/sys/dirent.h
+pp_sys$(OBJ_EXT): /usr/include/sys/fcntl.h
+pp_sys$(OBJ_EXT): /usr/include/sys/file.h
+pp_sys$(OBJ_EXT): /usr/include/sys/filio.h
+pp_sys$(OBJ_EXT): /usr/include/sys/ioccom.h
+pp_sys$(OBJ_EXT): /usr/include/sys/ioctl.h
+pp_sys$(OBJ_EXT): /usr/include/sys/ipc.h
+pp_sys$(OBJ_EXT): /usr/include/sys/limits.h
+pp_sys$(OBJ_EXT): /usr/include/sys/param.h
+pp_sys$(OBJ_EXT): /usr/include/sys/resource.h
+pp_sys$(OBJ_EXT): /usr/include/sys/select.h
+pp_sys$(OBJ_EXT): /usr/include/sys/sem.h
+pp_sys$(OBJ_EXT): /usr/include/sys/signal.h
+pp_sys$(OBJ_EXT): /usr/include/sys/socket.h
+pp_sys$(OBJ_EXT): /usr/include/sys/sockio.h
+pp_sys$(OBJ_EXT): /usr/include/sys/stat.h
+pp_sys$(OBJ_EXT): /usr/include/sys/stdint.h
+pp_sys$(OBJ_EXT): /usr/include/sys/syslimits.h
+pp_sys$(OBJ_EXT): /usr/include/sys/time.h
+pp_sys$(OBJ_EXT): /usr/include/sys/times.h
+pp_sys$(OBJ_EXT): /usr/include/sys/timespec.h
+pp_sys$(OBJ_EXT): /usr/include/sys/ttycom.h
+pp_sys$(OBJ_EXT): /usr/include/sys/types.h
+pp_sys$(OBJ_EXT): /usr/include/sys/unistd.h
+pp_sys$(OBJ_EXT): /usr/include/sys/wait.h
+pp_sys$(OBJ_EXT): /usr/include/time.h
+pp_sys$(OBJ_EXT): /usr/include/unistd.h
+pp_sys$(OBJ_EXT): /usr/include/utime.h
+pp_sys$(OBJ_EXT): EXTERN.h
+pp_sys$(OBJ_EXT): av.h
+pp_sys$(OBJ_EXT): config.h
+pp_sys$(OBJ_EXT): cop.h
+pp_sys$(OBJ_EXT): cv.h
+pp_sys$(OBJ_EXT): embed.h
+pp_sys$(OBJ_EXT): embedvar.h
+pp_sys$(OBJ_EXT): form.h
+pp_sys$(OBJ_EXT): gv.h
+pp_sys$(OBJ_EXT): handy.h
+pp_sys$(OBJ_EXT): hv.h
+pp_sys$(OBJ_EXT): intrpvar.h
+pp_sys$(OBJ_EXT): iperlsys.h
+pp_sys$(OBJ_EXT): mg.h
+pp_sys$(OBJ_EXT): op.h
+pp_sys$(OBJ_EXT): opcode.h
+pp_sys$(OBJ_EXT): opnames.h
+pp_sys$(OBJ_EXT): pad.h
+pp_sys$(OBJ_EXT): patchlevel.h
+pp_sys$(OBJ_EXT): perl.h
+pp_sys$(OBJ_EXT): perlio.h
+pp_sys$(OBJ_EXT): perlvars.h
+pp_sys$(OBJ_EXT): perly.h
+pp_sys$(OBJ_EXT): pp.h
+pp_sys$(OBJ_EXT): pp_proto.h
+pp_sys$(OBJ_EXT): pp_sys.c
+pp_sys$(OBJ_EXT): proto.h
+pp_sys$(OBJ_EXT): reentr.h
+pp_sys$(OBJ_EXT): reentr.inc
+pp_sys$(OBJ_EXT): regexp.h
+pp_sys$(OBJ_EXT): scope.h
+pp_sys$(OBJ_EXT): sv.h
+pp_sys$(OBJ_EXT): thrdvar.h
+pp_sys$(OBJ_EXT): thread.h
+pp_sys$(OBJ_EXT): unixish.h
+pp_sys$(OBJ_EXT): utf8.h
+pp_sys$(OBJ_EXT): util.h
+pp_sys$(OBJ_EXT): warnings.h
+regcomp$(OBJ_EXT): /usr/include/_ctype.h
+regcomp$(OBJ_EXT): /usr/include/arpa/inet.h
+regcomp$(OBJ_EXT): /usr/include/ctype.h
+regcomp$(OBJ_EXT): /usr/include/dirent.h
+regcomp$(OBJ_EXT): /usr/include/errno.h
+regcomp$(OBJ_EXT): /usr/include/float.h
+regcomp$(OBJ_EXT): /usr/include/floatingpoint.h
+regcomp$(OBJ_EXT): /usr/include/ieeefp.h
+regcomp$(OBJ_EXT): /usr/include/inttypes.h
+regcomp$(OBJ_EXT): /usr/include/libutil.h
+regcomp$(OBJ_EXT): /usr/include/limits.h
+regcomp$(OBJ_EXT): /usr/include/locale.h
+regcomp$(OBJ_EXT): /usr/include/machine/_inttypes.h
+regcomp$(OBJ_EXT): /usr/include/machine/_limits.h
+regcomp$(OBJ_EXT): /usr/include/machine/_stdint.h
+regcomp$(OBJ_EXT): /usr/include/machine/_types.h
+regcomp$(OBJ_EXT): /usr/include/machine/endian.h
+regcomp$(OBJ_EXT): /usr/include/machine/ieeefp.h
+regcomp$(OBJ_EXT): /usr/include/machine/param.h
+regcomp$(OBJ_EXT): /usr/include/machine/setjmp.h
+regcomp$(OBJ_EXT): /usr/include/machine/signal.h
+regcomp$(OBJ_EXT): /usr/include/machine/trap.h
+regcomp$(OBJ_EXT): /usr/include/math.h
+regcomp$(OBJ_EXT): /usr/include/netdb.h
+regcomp$(OBJ_EXT): /usr/include/netinet/in.h
+regcomp$(OBJ_EXT): /usr/include/netinet6/in6.h
+regcomp$(OBJ_EXT): /usr/include/runetype.h
+regcomp$(OBJ_EXT): /usr/include/setjmp.h
+regcomp$(OBJ_EXT): /usr/include/signal.h
+regcomp$(OBJ_EXT): /usr/include/stdarg.h
+regcomp$(OBJ_EXT): /usr/include/stddef.h
+regcomp$(OBJ_EXT): /usr/include/stdio.h
+regcomp$(OBJ_EXT): /usr/include/stdlib.h
+regcomp$(OBJ_EXT): /usr/include/string.h
+regcomp$(OBJ_EXT): /usr/include/strings.h
+regcomp$(OBJ_EXT): /usr/include/sys/_iovec.h
+regcomp$(OBJ_EXT): /usr/include/sys/_null.h
+regcomp$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+regcomp$(OBJ_EXT): /usr/include/sys/_sigset.h
+regcomp$(OBJ_EXT): /usr/include/sys/_timeval.h
+regcomp$(OBJ_EXT): /usr/include/sys/_types.h
+regcomp$(OBJ_EXT): /usr/include/sys/cdefs.h
+regcomp$(OBJ_EXT): /usr/include/sys/dirent.h
+regcomp$(OBJ_EXT): /usr/include/sys/fcntl.h
+regcomp$(OBJ_EXT): /usr/include/sys/file.h
+regcomp$(OBJ_EXT): /usr/include/sys/filio.h
+regcomp$(OBJ_EXT): /usr/include/sys/ioccom.h
+regcomp$(OBJ_EXT): /usr/include/sys/ioctl.h
+regcomp$(OBJ_EXT): /usr/include/sys/ipc.h
+regcomp$(OBJ_EXT): /usr/include/sys/limits.h
+regcomp$(OBJ_EXT): /usr/include/sys/param.h
+regcomp$(OBJ_EXT): /usr/include/sys/select.h
+regcomp$(OBJ_EXT): /usr/include/sys/sem.h
+regcomp$(OBJ_EXT): /usr/include/sys/signal.h
+regcomp$(OBJ_EXT): /usr/include/sys/socket.h
+regcomp$(OBJ_EXT): /usr/include/sys/sockio.h
+regcomp$(OBJ_EXT): /usr/include/sys/stat.h
+regcomp$(OBJ_EXT): /usr/include/sys/stdint.h
+regcomp$(OBJ_EXT): /usr/include/sys/syslimits.h
+regcomp$(OBJ_EXT): /usr/include/sys/time.h
+regcomp$(OBJ_EXT): /usr/include/sys/times.h
+regcomp$(OBJ_EXT): /usr/include/sys/timespec.h
+regcomp$(OBJ_EXT): /usr/include/sys/ttycom.h
+regcomp$(OBJ_EXT): /usr/include/sys/types.h
+regcomp$(OBJ_EXT): /usr/include/sys/unistd.h
+regcomp$(OBJ_EXT): /usr/include/time.h
+regcomp$(OBJ_EXT): /usr/include/unistd.h
+regcomp$(OBJ_EXT): EXTERN.h
+regcomp$(OBJ_EXT): INTERN.h
+regcomp$(OBJ_EXT): av.h
+regcomp$(OBJ_EXT): config.h
+regcomp$(OBJ_EXT): cop.h
+regcomp$(OBJ_EXT): cv.h
+regcomp$(OBJ_EXT): embed.h
+regcomp$(OBJ_EXT): embedvar.h
+regcomp$(OBJ_EXT): form.h
+regcomp$(OBJ_EXT): gv.h
+regcomp$(OBJ_EXT): handy.h
+regcomp$(OBJ_EXT): hv.h
+regcomp$(OBJ_EXT): intrpvar.h
+regcomp$(OBJ_EXT): iperlsys.h
+regcomp$(OBJ_EXT): mg.h
+regcomp$(OBJ_EXT): op.h
+regcomp$(OBJ_EXT): opcode.h
+regcomp$(OBJ_EXT): opnames.h
+regcomp$(OBJ_EXT): pad.h
+regcomp$(OBJ_EXT): patchlevel.h
+regcomp$(OBJ_EXT): perl.h
+regcomp$(OBJ_EXT): perlio.h
+regcomp$(OBJ_EXT): perlvars.h
+regcomp$(OBJ_EXT): perly.h
+regcomp$(OBJ_EXT): pp.h
+regcomp$(OBJ_EXT): pp_proto.h
+regcomp$(OBJ_EXT): proto.h
+regcomp$(OBJ_EXT): reentr.inc
+regcomp$(OBJ_EXT): regcomp.c
+regcomp$(OBJ_EXT): regcomp.h
+regcomp$(OBJ_EXT): regexp.h
+regcomp$(OBJ_EXT): regnodes.h
+regcomp$(OBJ_EXT): scope.h
+regcomp$(OBJ_EXT): sv.h
+regcomp$(OBJ_EXT): thrdvar.h
+regcomp$(OBJ_EXT): thread.h
+regcomp$(OBJ_EXT): unixish.h
+regcomp$(OBJ_EXT): utf8.h
+regcomp$(OBJ_EXT): util.h
+regcomp$(OBJ_EXT): warnings.h
+regexec$(OBJ_EXT): /usr/include/_ctype.h
+regexec$(OBJ_EXT): /usr/include/arpa/inet.h
+regexec$(OBJ_EXT): /usr/include/ctype.h
+regexec$(OBJ_EXT): /usr/include/dirent.h
+regexec$(OBJ_EXT): /usr/include/errno.h
+regexec$(OBJ_EXT): /usr/include/float.h
+regexec$(OBJ_EXT): /usr/include/floatingpoint.h
+regexec$(OBJ_EXT): /usr/include/ieeefp.h
+regexec$(OBJ_EXT): /usr/include/inttypes.h
+regexec$(OBJ_EXT): /usr/include/libutil.h
+regexec$(OBJ_EXT): /usr/include/limits.h
+regexec$(OBJ_EXT): /usr/include/locale.h
+regexec$(OBJ_EXT): /usr/include/machine/_inttypes.h
+regexec$(OBJ_EXT): /usr/include/machine/_limits.h
+regexec$(OBJ_EXT): /usr/include/machine/_stdint.h
+regexec$(OBJ_EXT): /usr/include/machine/_types.h
+regexec$(OBJ_EXT): /usr/include/machine/endian.h
+regexec$(OBJ_EXT): /usr/include/machine/ieeefp.h
+regexec$(OBJ_EXT): /usr/include/machine/param.h
+regexec$(OBJ_EXT): /usr/include/machine/setjmp.h
+regexec$(OBJ_EXT): /usr/include/machine/signal.h
+regexec$(OBJ_EXT): /usr/include/machine/trap.h
+regexec$(OBJ_EXT): /usr/include/math.h
+regexec$(OBJ_EXT): /usr/include/netdb.h
+regexec$(OBJ_EXT): /usr/include/netinet/in.h
+regexec$(OBJ_EXT): /usr/include/netinet6/in6.h
+regexec$(OBJ_EXT): /usr/include/runetype.h
+regexec$(OBJ_EXT): /usr/include/setjmp.h
+regexec$(OBJ_EXT): /usr/include/signal.h
+regexec$(OBJ_EXT): /usr/include/stdarg.h
+regexec$(OBJ_EXT): /usr/include/stddef.h
+regexec$(OBJ_EXT): /usr/include/stdio.h
+regexec$(OBJ_EXT): /usr/include/stdlib.h
+regexec$(OBJ_EXT): /usr/include/string.h
+regexec$(OBJ_EXT): /usr/include/strings.h
+regexec$(OBJ_EXT): /usr/include/sys/_iovec.h
+regexec$(OBJ_EXT): /usr/include/sys/_null.h
+regexec$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+regexec$(OBJ_EXT): /usr/include/sys/_sigset.h
+regexec$(OBJ_EXT): /usr/include/sys/_timeval.h
+regexec$(OBJ_EXT): /usr/include/sys/_types.h
+regexec$(OBJ_EXT): /usr/include/sys/cdefs.h
+regexec$(OBJ_EXT): /usr/include/sys/dirent.h
+regexec$(OBJ_EXT): /usr/include/sys/fcntl.h
+regexec$(OBJ_EXT): /usr/include/sys/file.h
+regexec$(OBJ_EXT): /usr/include/sys/filio.h
+regexec$(OBJ_EXT): /usr/include/sys/ioccom.h
+regexec$(OBJ_EXT): /usr/include/sys/ioctl.h
+regexec$(OBJ_EXT): /usr/include/sys/ipc.h
+regexec$(OBJ_EXT): /usr/include/sys/limits.h
+regexec$(OBJ_EXT): /usr/include/sys/param.h
+regexec$(OBJ_EXT): /usr/include/sys/select.h
+regexec$(OBJ_EXT): /usr/include/sys/sem.h
+regexec$(OBJ_EXT): /usr/include/sys/signal.h
+regexec$(OBJ_EXT): /usr/include/sys/socket.h
+regexec$(OBJ_EXT): /usr/include/sys/sockio.h
+regexec$(OBJ_EXT): /usr/include/sys/stat.h
+regexec$(OBJ_EXT): /usr/include/sys/stdint.h
+regexec$(OBJ_EXT): /usr/include/sys/syslimits.h
+regexec$(OBJ_EXT): /usr/include/sys/time.h
+regexec$(OBJ_EXT): /usr/include/sys/times.h
+regexec$(OBJ_EXT): /usr/include/sys/timespec.h
+regexec$(OBJ_EXT): /usr/include/sys/ttycom.h
+regexec$(OBJ_EXT): /usr/include/sys/types.h
+regexec$(OBJ_EXT): /usr/include/sys/unistd.h
+regexec$(OBJ_EXT): /usr/include/time.h
+regexec$(OBJ_EXT): /usr/include/unistd.h
+regexec$(OBJ_EXT): EXTERN.h
+regexec$(OBJ_EXT): av.h
+regexec$(OBJ_EXT): config.h
+regexec$(OBJ_EXT): cop.h
+regexec$(OBJ_EXT): cv.h
+regexec$(OBJ_EXT): embed.h
+regexec$(OBJ_EXT): embedvar.h
+regexec$(OBJ_EXT): form.h
+regexec$(OBJ_EXT): gv.h
+regexec$(OBJ_EXT): handy.h
+regexec$(OBJ_EXT): hv.h
+regexec$(OBJ_EXT): intrpvar.h
+regexec$(OBJ_EXT): iperlsys.h
+regexec$(OBJ_EXT): mg.h
+regexec$(OBJ_EXT): op.h
+regexec$(OBJ_EXT): opcode.h
+regexec$(OBJ_EXT): opnames.h
+regexec$(OBJ_EXT): pad.h
+regexec$(OBJ_EXT): patchlevel.h
+regexec$(OBJ_EXT): perl.h
+regexec$(OBJ_EXT): perlio.h
+regexec$(OBJ_EXT): perlvars.h
+regexec$(OBJ_EXT): perly.h
+regexec$(OBJ_EXT): pp.h
+regexec$(OBJ_EXT): pp_proto.h
+regexec$(OBJ_EXT): proto.h
+regexec$(OBJ_EXT): reentr.inc
+regexec$(OBJ_EXT): regcomp.h
+regexec$(OBJ_EXT): regexec.c
+regexec$(OBJ_EXT): regexp.h
+regexec$(OBJ_EXT): regnodes.h
+regexec$(OBJ_EXT): scope.h
+regexec$(OBJ_EXT): sv.h
+regexec$(OBJ_EXT): thrdvar.h
+regexec$(OBJ_EXT): thread.h
+regexec$(OBJ_EXT): unixish.h
+regexec$(OBJ_EXT): utf8.h
+regexec$(OBJ_EXT): util.h
+regexec$(OBJ_EXT): warnings.h
+utf8$(OBJ_EXT): /usr/include/_ctype.h
+utf8$(OBJ_EXT): /usr/include/arpa/inet.h
+utf8$(OBJ_EXT): /usr/include/ctype.h
+utf8$(OBJ_EXT): /usr/include/dirent.h
+utf8$(OBJ_EXT): /usr/include/errno.h
+utf8$(OBJ_EXT): /usr/include/float.h
+utf8$(OBJ_EXT): /usr/include/floatingpoint.h
+utf8$(OBJ_EXT): /usr/include/ieeefp.h
+utf8$(OBJ_EXT): /usr/include/inttypes.h
+utf8$(OBJ_EXT): /usr/include/libutil.h
+utf8$(OBJ_EXT): /usr/include/limits.h
+utf8$(OBJ_EXT): /usr/include/locale.h
+utf8$(OBJ_EXT): /usr/include/machine/_inttypes.h
+utf8$(OBJ_EXT): /usr/include/machine/_limits.h
+utf8$(OBJ_EXT): /usr/include/machine/_stdint.h
+utf8$(OBJ_EXT): /usr/include/machine/_types.h
+utf8$(OBJ_EXT): /usr/include/machine/endian.h
+utf8$(OBJ_EXT): /usr/include/machine/ieeefp.h
+utf8$(OBJ_EXT): /usr/include/machine/param.h
+utf8$(OBJ_EXT): /usr/include/machine/setjmp.h
+utf8$(OBJ_EXT): /usr/include/machine/signal.h
+utf8$(OBJ_EXT): /usr/include/machine/trap.h
+utf8$(OBJ_EXT): /usr/include/math.h
+utf8$(OBJ_EXT): /usr/include/netdb.h
+utf8$(OBJ_EXT): /usr/include/netinet/in.h
+utf8$(OBJ_EXT): /usr/include/netinet6/in6.h
+utf8$(OBJ_EXT): /usr/include/runetype.h
+utf8$(OBJ_EXT): /usr/include/setjmp.h
+utf8$(OBJ_EXT): /usr/include/signal.h
+utf8$(OBJ_EXT): /usr/include/stdarg.h
+utf8$(OBJ_EXT): /usr/include/stddef.h
+utf8$(OBJ_EXT): /usr/include/stdio.h
+utf8$(OBJ_EXT): /usr/include/stdlib.h
+utf8$(OBJ_EXT): /usr/include/string.h
+utf8$(OBJ_EXT): /usr/include/strings.h
+utf8$(OBJ_EXT): /usr/include/sys/_iovec.h
+utf8$(OBJ_EXT): /usr/include/sys/_null.h
+utf8$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+utf8$(OBJ_EXT): /usr/include/sys/_sigset.h
+utf8$(OBJ_EXT): /usr/include/sys/_timeval.h
+utf8$(OBJ_EXT): /usr/include/sys/_types.h
+utf8$(OBJ_EXT): /usr/include/sys/cdefs.h
+utf8$(OBJ_EXT): /usr/include/sys/dirent.h
+utf8$(OBJ_EXT): /usr/include/sys/fcntl.h
+utf8$(OBJ_EXT): /usr/include/sys/file.h
+utf8$(OBJ_EXT): /usr/include/sys/filio.h
+utf8$(OBJ_EXT): /usr/include/sys/ioccom.h
+utf8$(OBJ_EXT): /usr/include/sys/ioctl.h
+utf8$(OBJ_EXT): /usr/include/sys/ipc.h
+utf8$(OBJ_EXT): /usr/include/sys/limits.h
+utf8$(OBJ_EXT): /usr/include/sys/param.h
+utf8$(OBJ_EXT): /usr/include/sys/select.h
+utf8$(OBJ_EXT): /usr/include/sys/sem.h
+utf8$(OBJ_EXT): /usr/include/sys/signal.h
+utf8$(OBJ_EXT): /usr/include/sys/socket.h
+utf8$(OBJ_EXT): /usr/include/sys/sockio.h
+utf8$(OBJ_EXT): /usr/include/sys/stat.h
+utf8$(OBJ_EXT): /usr/include/sys/stdint.h
+utf8$(OBJ_EXT): /usr/include/sys/syslimits.h
+utf8$(OBJ_EXT): /usr/include/sys/time.h
+utf8$(OBJ_EXT): /usr/include/sys/times.h
+utf8$(OBJ_EXT): /usr/include/sys/timespec.h
+utf8$(OBJ_EXT): /usr/include/sys/ttycom.h
+utf8$(OBJ_EXT): /usr/include/sys/types.h
+utf8$(OBJ_EXT): /usr/include/sys/unistd.h
+utf8$(OBJ_EXT): /usr/include/time.h
+utf8$(OBJ_EXT): /usr/include/unistd.h
+utf8$(OBJ_EXT): EXTERN.h
+utf8$(OBJ_EXT): av.h
+utf8$(OBJ_EXT): config.h
+utf8$(OBJ_EXT): cop.h
+utf8$(OBJ_EXT): cv.h
+utf8$(OBJ_EXT): embed.h
+utf8$(OBJ_EXT): embedvar.h
+utf8$(OBJ_EXT): form.h
+utf8$(OBJ_EXT): gv.h
+utf8$(OBJ_EXT): handy.h
+utf8$(OBJ_EXT): hv.h
+utf8$(OBJ_EXT): intrpvar.h
+utf8$(OBJ_EXT): iperlsys.h
+utf8$(OBJ_EXT): mg.h
+utf8$(OBJ_EXT): op.h
+utf8$(OBJ_EXT): opcode.h
+utf8$(OBJ_EXT): opnames.h
+utf8$(OBJ_EXT): pad.h
+utf8$(OBJ_EXT): patchlevel.h
+utf8$(OBJ_EXT): perl.h
+utf8$(OBJ_EXT): perlio.h
+utf8$(OBJ_EXT): perlvars.h
+utf8$(OBJ_EXT): perly.h
+utf8$(OBJ_EXT): pp.h
+utf8$(OBJ_EXT): pp_proto.h
+utf8$(OBJ_EXT): proto.h
+utf8$(OBJ_EXT): reentr.inc
+utf8$(OBJ_EXT): regexp.h
+utf8$(OBJ_EXT): scope.h
+utf8$(OBJ_EXT): sv.h
+utf8$(OBJ_EXT): thrdvar.h
+utf8$(OBJ_EXT): thread.h
+utf8$(OBJ_EXT): unixish.h
+utf8$(OBJ_EXT): utf8.c
+utf8$(OBJ_EXT): utf8.h
+utf8$(OBJ_EXT): util.h
+utf8$(OBJ_EXT): warnings.h
+gv$(OBJ_EXT): /usr/include/_ctype.h
+gv$(OBJ_EXT): /usr/include/arpa/inet.h
+gv$(OBJ_EXT): /usr/include/ctype.h
+gv$(OBJ_EXT): /usr/include/dirent.h
+gv$(OBJ_EXT): /usr/include/errno.h
+gv$(OBJ_EXT): /usr/include/float.h
+gv$(OBJ_EXT): /usr/include/floatingpoint.h
+gv$(OBJ_EXT): /usr/include/ieeefp.h
+gv$(OBJ_EXT): /usr/include/inttypes.h
+gv$(OBJ_EXT): /usr/include/libutil.h
+gv$(OBJ_EXT): /usr/include/limits.h
+gv$(OBJ_EXT): /usr/include/locale.h
+gv$(OBJ_EXT): /usr/include/machine/_inttypes.h
+gv$(OBJ_EXT): /usr/include/machine/_limits.h
+gv$(OBJ_EXT): /usr/include/machine/_stdint.h
+gv$(OBJ_EXT): /usr/include/machine/_types.h
+gv$(OBJ_EXT): /usr/include/machine/endian.h
+gv$(OBJ_EXT): /usr/include/machine/ieeefp.h
+gv$(OBJ_EXT): /usr/include/machine/param.h
+gv$(OBJ_EXT): /usr/include/machine/setjmp.h
+gv$(OBJ_EXT): /usr/include/machine/signal.h
+gv$(OBJ_EXT): /usr/include/machine/trap.h
+gv$(OBJ_EXT): /usr/include/math.h
+gv$(OBJ_EXT): /usr/include/netdb.h
+gv$(OBJ_EXT): /usr/include/netinet/in.h
+gv$(OBJ_EXT): /usr/include/netinet6/in6.h
+gv$(OBJ_EXT): /usr/include/runetype.h
+gv$(OBJ_EXT): /usr/include/setjmp.h
+gv$(OBJ_EXT): /usr/include/signal.h
+gv$(OBJ_EXT): /usr/include/stdarg.h
+gv$(OBJ_EXT): /usr/include/stddef.h
+gv$(OBJ_EXT): /usr/include/stdio.h
+gv$(OBJ_EXT): /usr/include/stdlib.h
+gv$(OBJ_EXT): /usr/include/string.h
+gv$(OBJ_EXT): /usr/include/strings.h
+gv$(OBJ_EXT): /usr/include/sys/_iovec.h
+gv$(OBJ_EXT): /usr/include/sys/_null.h
+gv$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+gv$(OBJ_EXT): /usr/include/sys/_sigset.h
+gv$(OBJ_EXT): /usr/include/sys/_timeval.h
+gv$(OBJ_EXT): /usr/include/sys/_types.h
+gv$(OBJ_EXT): /usr/include/sys/cdefs.h
+gv$(OBJ_EXT): /usr/include/sys/dirent.h
+gv$(OBJ_EXT): /usr/include/sys/fcntl.h
+gv$(OBJ_EXT): /usr/include/sys/file.h
+gv$(OBJ_EXT): /usr/include/sys/filio.h
+gv$(OBJ_EXT): /usr/include/sys/ioccom.h
+gv$(OBJ_EXT): /usr/include/sys/ioctl.h
+gv$(OBJ_EXT): /usr/include/sys/ipc.h
+gv$(OBJ_EXT): /usr/include/sys/limits.h
+gv$(OBJ_EXT): /usr/include/sys/param.h
+gv$(OBJ_EXT): /usr/include/sys/select.h
+gv$(OBJ_EXT): /usr/include/sys/sem.h
+gv$(OBJ_EXT): /usr/include/sys/signal.h
+gv$(OBJ_EXT): /usr/include/sys/socket.h
+gv$(OBJ_EXT): /usr/include/sys/sockio.h
+gv$(OBJ_EXT): /usr/include/sys/stat.h
+gv$(OBJ_EXT): /usr/include/sys/stdint.h
+gv$(OBJ_EXT): /usr/include/sys/syslimits.h
+gv$(OBJ_EXT): /usr/include/sys/time.h
+gv$(OBJ_EXT): /usr/include/sys/times.h
+gv$(OBJ_EXT): /usr/include/sys/timespec.h
+gv$(OBJ_EXT): /usr/include/sys/ttycom.h
+gv$(OBJ_EXT): /usr/include/sys/types.h
+gv$(OBJ_EXT): /usr/include/sys/unistd.h
+gv$(OBJ_EXT): /usr/include/time.h
+gv$(OBJ_EXT): /usr/include/unistd.h
+gv$(OBJ_EXT): EXTERN.h
+gv$(OBJ_EXT): av.h
+gv$(OBJ_EXT): config.h
+gv$(OBJ_EXT): cop.h
+gv$(OBJ_EXT): cv.h
+gv$(OBJ_EXT): embed.h
+gv$(OBJ_EXT): embedvar.h
+gv$(OBJ_EXT): form.h
+gv$(OBJ_EXT): gv.c
+gv$(OBJ_EXT): gv.h
+gv$(OBJ_EXT): handy.h
+gv$(OBJ_EXT): hv.h
+gv$(OBJ_EXT): intrpvar.h
+gv$(OBJ_EXT): iperlsys.h
+gv$(OBJ_EXT): mg.h
+gv$(OBJ_EXT): op.h
+gv$(OBJ_EXT): opcode.h
+gv$(OBJ_EXT): opnames.h
+gv$(OBJ_EXT): pad.h
+gv$(OBJ_EXT): patchlevel.h
+gv$(OBJ_EXT): perl.h
+gv$(OBJ_EXT): perlio.h
+gv$(OBJ_EXT): perlvars.h
+gv$(OBJ_EXT): perly.h
+gv$(OBJ_EXT): pp.h
+gv$(OBJ_EXT): pp_proto.h
+gv$(OBJ_EXT): proto.h
+gv$(OBJ_EXT): reentr.inc
+gv$(OBJ_EXT): regexp.h
+gv$(OBJ_EXT): scope.h
+gv$(OBJ_EXT): sv.h
+gv$(OBJ_EXT): thrdvar.h
+gv$(OBJ_EXT): thread.h
+gv$(OBJ_EXT): unixish.h
+gv$(OBJ_EXT): utf8.h
+gv$(OBJ_EXT): util.h
+gv$(OBJ_EXT): warnings.h
+sv$(OBJ_EXT): /usr/include/_ctype.h
+sv$(OBJ_EXT): /usr/include/arpa/inet.h
+sv$(OBJ_EXT): /usr/include/ctype.h
+sv$(OBJ_EXT): /usr/include/dirent.h
+sv$(OBJ_EXT): /usr/include/errno.h
+sv$(OBJ_EXT): /usr/include/float.h
+sv$(OBJ_EXT): /usr/include/floatingpoint.h
+sv$(OBJ_EXT): /usr/include/ieeefp.h
+sv$(OBJ_EXT): /usr/include/inttypes.h
+sv$(OBJ_EXT): /usr/include/libutil.h
+sv$(OBJ_EXT): /usr/include/limits.h
+sv$(OBJ_EXT): /usr/include/locale.h
+sv$(OBJ_EXT): /usr/include/machine/_inttypes.h
+sv$(OBJ_EXT): /usr/include/machine/_limits.h
+sv$(OBJ_EXT): /usr/include/machine/_stdint.h
+sv$(OBJ_EXT): /usr/include/machine/_types.h
+sv$(OBJ_EXT): /usr/include/machine/endian.h
+sv$(OBJ_EXT): /usr/include/machine/ieeefp.h
+sv$(OBJ_EXT): /usr/include/machine/param.h
+sv$(OBJ_EXT): /usr/include/machine/setjmp.h
+sv$(OBJ_EXT): /usr/include/machine/signal.h
+sv$(OBJ_EXT): /usr/include/machine/trap.h
+sv$(OBJ_EXT): /usr/include/math.h
+sv$(OBJ_EXT): /usr/include/netdb.h
+sv$(OBJ_EXT): /usr/include/netinet/in.h
+sv$(OBJ_EXT): /usr/include/netinet6/in6.h
+sv$(OBJ_EXT): /usr/include/runetype.h
+sv$(OBJ_EXT): /usr/include/setjmp.h
+sv$(OBJ_EXT): /usr/include/signal.h
+sv$(OBJ_EXT): /usr/include/stdarg.h
+sv$(OBJ_EXT): /usr/include/stddef.h
+sv$(OBJ_EXT): /usr/include/stdio.h
+sv$(OBJ_EXT): /usr/include/stdlib.h
+sv$(OBJ_EXT): /usr/include/string.h
+sv$(OBJ_EXT): /usr/include/strings.h
+sv$(OBJ_EXT): /usr/include/sys/_iovec.h
+sv$(OBJ_EXT): /usr/include/sys/_null.h
+sv$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+sv$(OBJ_EXT): /usr/include/sys/_sigset.h
+sv$(OBJ_EXT): /usr/include/sys/_timeval.h
+sv$(OBJ_EXT): /usr/include/sys/_types.h
+sv$(OBJ_EXT): /usr/include/sys/cdefs.h
+sv$(OBJ_EXT): /usr/include/sys/dirent.h
+sv$(OBJ_EXT): /usr/include/sys/fcntl.h
+sv$(OBJ_EXT): /usr/include/sys/file.h
+sv$(OBJ_EXT): /usr/include/sys/filio.h
+sv$(OBJ_EXT): /usr/include/sys/ioccom.h
+sv$(OBJ_EXT): /usr/include/sys/ioctl.h
+sv$(OBJ_EXT): /usr/include/sys/ipc.h
+sv$(OBJ_EXT): /usr/include/sys/limits.h
+sv$(OBJ_EXT): /usr/include/sys/param.h
+sv$(OBJ_EXT): /usr/include/sys/select.h
+sv$(OBJ_EXT): /usr/include/sys/sem.h
+sv$(OBJ_EXT): /usr/include/sys/signal.h
+sv$(OBJ_EXT): /usr/include/sys/socket.h
+sv$(OBJ_EXT): /usr/include/sys/sockio.h
+sv$(OBJ_EXT): /usr/include/sys/stat.h
+sv$(OBJ_EXT): /usr/include/sys/stdint.h
+sv$(OBJ_EXT): /usr/include/sys/syslimits.h
+sv$(OBJ_EXT): /usr/include/sys/time.h
+sv$(OBJ_EXT): /usr/include/sys/times.h
+sv$(OBJ_EXT): /usr/include/sys/timespec.h
+sv$(OBJ_EXT): /usr/include/sys/ttycom.h
+sv$(OBJ_EXT): /usr/include/sys/types.h
+sv$(OBJ_EXT): /usr/include/sys/unistd.h
+sv$(OBJ_EXT): /usr/include/time.h
+sv$(OBJ_EXT): /usr/include/unistd.h
+sv$(OBJ_EXT): EXTERN.h
+sv$(OBJ_EXT): av.h
+sv$(OBJ_EXT): config.h
+sv$(OBJ_EXT): cop.h
+sv$(OBJ_EXT): cv.h
+sv$(OBJ_EXT): embed.h
+sv$(OBJ_EXT): embedvar.h
+sv$(OBJ_EXT): form.h
+sv$(OBJ_EXT): gv.h
+sv$(OBJ_EXT): handy.h
+sv$(OBJ_EXT): hv.h
+sv$(OBJ_EXT): intrpvar.h
+sv$(OBJ_EXT): iperlsys.h
+sv$(OBJ_EXT): mg.h
+sv$(OBJ_EXT): op.h
+sv$(OBJ_EXT): opcode.h
+sv$(OBJ_EXT): opnames.h
+sv$(OBJ_EXT): pad.h
+sv$(OBJ_EXT): patchlevel.h
+sv$(OBJ_EXT): perl.h
+sv$(OBJ_EXT): perlio.h
+sv$(OBJ_EXT): perlvars.h
+sv$(OBJ_EXT): perly.h
+sv$(OBJ_EXT): pp.h
+sv$(OBJ_EXT): pp_proto.h
+sv$(OBJ_EXT): proto.h
+sv$(OBJ_EXT): reentr.inc
+sv$(OBJ_EXT): regcomp.h
+sv$(OBJ_EXT): regexp.h
+sv$(OBJ_EXT): regnodes.h
+sv$(OBJ_EXT): scope.h
+sv$(OBJ_EXT): sv.c
+sv$(OBJ_EXT): sv.h
+sv$(OBJ_EXT): thrdvar.h
+sv$(OBJ_EXT): thread.h
+sv$(OBJ_EXT): unixish.h
+sv$(OBJ_EXT): utf8.h
+sv$(OBJ_EXT): util.h
+sv$(OBJ_EXT): warnings.h
+taint$(OBJ_EXT): /usr/include/_ctype.h
+taint$(OBJ_EXT): /usr/include/arpa/inet.h
+taint$(OBJ_EXT): /usr/include/ctype.h
+taint$(OBJ_EXT): /usr/include/dirent.h
+taint$(OBJ_EXT): /usr/include/errno.h
+taint$(OBJ_EXT): /usr/include/float.h
+taint$(OBJ_EXT): /usr/include/floatingpoint.h
+taint$(OBJ_EXT): /usr/include/ieeefp.h
+taint$(OBJ_EXT): /usr/include/inttypes.h
+taint$(OBJ_EXT): /usr/include/libutil.h
+taint$(OBJ_EXT): /usr/include/limits.h
+taint$(OBJ_EXT): /usr/include/locale.h
+taint$(OBJ_EXT): /usr/include/machine/_inttypes.h
+taint$(OBJ_EXT): /usr/include/machine/_limits.h
+taint$(OBJ_EXT): /usr/include/machine/_stdint.h
+taint$(OBJ_EXT): /usr/include/machine/_types.h
+taint$(OBJ_EXT): /usr/include/machine/endian.h
+taint$(OBJ_EXT): /usr/include/machine/ieeefp.h
+taint$(OBJ_EXT): /usr/include/machine/param.h
+taint$(OBJ_EXT): /usr/include/machine/setjmp.h
+taint$(OBJ_EXT): /usr/include/machine/signal.h
+taint$(OBJ_EXT): /usr/include/machine/trap.h
+taint$(OBJ_EXT): /usr/include/math.h
+taint$(OBJ_EXT): /usr/include/netdb.h
+taint$(OBJ_EXT): /usr/include/netinet/in.h
+taint$(OBJ_EXT): /usr/include/netinet6/in6.h
+taint$(OBJ_EXT): /usr/include/runetype.h
+taint$(OBJ_EXT): /usr/include/setjmp.h
+taint$(OBJ_EXT): /usr/include/signal.h
+taint$(OBJ_EXT): /usr/include/stdarg.h
+taint$(OBJ_EXT): /usr/include/stddef.h
+taint$(OBJ_EXT): /usr/include/stdio.h
+taint$(OBJ_EXT): /usr/include/stdlib.h
+taint$(OBJ_EXT): /usr/include/string.h
+taint$(OBJ_EXT): /usr/include/strings.h
+taint$(OBJ_EXT): /usr/include/sys/_iovec.h
+taint$(OBJ_EXT): /usr/include/sys/_null.h
+taint$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+taint$(OBJ_EXT): /usr/include/sys/_sigset.h
+taint$(OBJ_EXT): /usr/include/sys/_timeval.h
+taint$(OBJ_EXT): /usr/include/sys/_types.h
+taint$(OBJ_EXT): /usr/include/sys/cdefs.h
+taint$(OBJ_EXT): /usr/include/sys/dirent.h
+taint$(OBJ_EXT): /usr/include/sys/fcntl.h
+taint$(OBJ_EXT): /usr/include/sys/file.h
+taint$(OBJ_EXT): /usr/include/sys/filio.h
+taint$(OBJ_EXT): /usr/include/sys/ioccom.h
+taint$(OBJ_EXT): /usr/include/sys/ioctl.h
+taint$(OBJ_EXT): /usr/include/sys/ipc.h
+taint$(OBJ_EXT): /usr/include/sys/limits.h
+taint$(OBJ_EXT): /usr/include/sys/param.h
+taint$(OBJ_EXT): /usr/include/sys/select.h
+taint$(OBJ_EXT): /usr/include/sys/sem.h
+taint$(OBJ_EXT): /usr/include/sys/signal.h
+taint$(OBJ_EXT): /usr/include/sys/socket.h
+taint$(OBJ_EXT): /usr/include/sys/sockio.h
+taint$(OBJ_EXT): /usr/include/sys/stat.h
+taint$(OBJ_EXT): /usr/include/sys/stdint.h
+taint$(OBJ_EXT): /usr/include/sys/syslimits.h
+taint$(OBJ_EXT): /usr/include/sys/time.h
+taint$(OBJ_EXT): /usr/include/sys/times.h
+taint$(OBJ_EXT): /usr/include/sys/timespec.h
+taint$(OBJ_EXT): /usr/include/sys/ttycom.h
+taint$(OBJ_EXT): /usr/include/sys/types.h
+taint$(OBJ_EXT): /usr/include/sys/unistd.h
+taint$(OBJ_EXT): /usr/include/time.h
+taint$(OBJ_EXT): /usr/include/unistd.h
+taint$(OBJ_EXT): EXTERN.h
+taint$(OBJ_EXT): av.h
+taint$(OBJ_EXT): config.h
+taint$(OBJ_EXT): cop.h
+taint$(OBJ_EXT): cv.h
+taint$(OBJ_EXT): embed.h
+taint$(OBJ_EXT): embedvar.h
+taint$(OBJ_EXT): form.h
+taint$(OBJ_EXT): gv.h
+taint$(OBJ_EXT): handy.h
+taint$(OBJ_EXT): hv.h
+taint$(OBJ_EXT): intrpvar.h
+taint$(OBJ_EXT): iperlsys.h
+taint$(OBJ_EXT): mg.h
+taint$(OBJ_EXT): op.h
+taint$(OBJ_EXT): opcode.h
+taint$(OBJ_EXT): opnames.h
+taint$(OBJ_EXT): pad.h
+taint$(OBJ_EXT): patchlevel.h
+taint$(OBJ_EXT): perl.h
+taint$(OBJ_EXT): perlio.h
+taint$(OBJ_EXT): perlvars.h
+taint$(OBJ_EXT): perly.h
+taint$(OBJ_EXT): pp.h
+taint$(OBJ_EXT): pp_proto.h
+taint$(OBJ_EXT): proto.h
+taint$(OBJ_EXT): reentr.inc
+taint$(OBJ_EXT): regexp.h
+taint$(OBJ_EXT): scope.h
+taint$(OBJ_EXT): sv.h
+taint$(OBJ_EXT): taint.c
+taint$(OBJ_EXT): thrdvar.h
+taint$(OBJ_EXT): thread.h
+taint$(OBJ_EXT): unixish.h
+taint$(OBJ_EXT): utf8.h
+taint$(OBJ_EXT): util.h
+taint$(OBJ_EXT): warnings.h
+toke$(OBJ_EXT): /usr/include/_ctype.h
+toke$(OBJ_EXT): /usr/include/arpa/inet.h
+toke$(OBJ_EXT): /usr/include/ctype.h
+toke$(OBJ_EXT): /usr/include/dirent.h
+toke$(OBJ_EXT): /usr/include/errno.h
+toke$(OBJ_EXT): /usr/include/float.h
+toke$(OBJ_EXT): /usr/include/floatingpoint.h
+toke$(OBJ_EXT): /usr/include/ieeefp.h
+toke$(OBJ_EXT): /usr/include/inttypes.h
+toke$(OBJ_EXT): /usr/include/libutil.h
+toke$(OBJ_EXT): /usr/include/limits.h
+toke$(OBJ_EXT): /usr/include/locale.h
+toke$(OBJ_EXT): /usr/include/machine/_inttypes.h
+toke$(OBJ_EXT): /usr/include/machine/_limits.h
+toke$(OBJ_EXT): /usr/include/machine/_stdint.h
+toke$(OBJ_EXT): /usr/include/machine/_types.h
+toke$(OBJ_EXT): /usr/include/machine/endian.h
+toke$(OBJ_EXT): /usr/include/machine/ieeefp.h
+toke$(OBJ_EXT): /usr/include/machine/param.h
+toke$(OBJ_EXT): /usr/include/machine/setjmp.h
+toke$(OBJ_EXT): /usr/include/machine/signal.h
+toke$(OBJ_EXT): /usr/include/machine/trap.h
+toke$(OBJ_EXT): /usr/include/math.h
+toke$(OBJ_EXT): /usr/include/netdb.h
+toke$(OBJ_EXT): /usr/include/netinet/in.h
+toke$(OBJ_EXT): /usr/include/netinet6/in6.h
+toke$(OBJ_EXT): /usr/include/runetype.h
+toke$(OBJ_EXT): /usr/include/setjmp.h
+toke$(OBJ_EXT): /usr/include/signal.h
+toke$(OBJ_EXT): /usr/include/stdarg.h
+toke$(OBJ_EXT): /usr/include/stddef.h
+toke$(OBJ_EXT): /usr/include/stdio.h
+toke$(OBJ_EXT): /usr/include/stdlib.h
+toke$(OBJ_EXT): /usr/include/string.h
+toke$(OBJ_EXT): /usr/include/strings.h
+toke$(OBJ_EXT): /usr/include/sys/_iovec.h
+toke$(OBJ_EXT): /usr/include/sys/_null.h
+toke$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+toke$(OBJ_EXT): /usr/include/sys/_sigset.h
+toke$(OBJ_EXT): /usr/include/sys/_timeval.h
+toke$(OBJ_EXT): /usr/include/sys/_types.h
+toke$(OBJ_EXT): /usr/include/sys/cdefs.h
+toke$(OBJ_EXT): /usr/include/sys/dirent.h
+toke$(OBJ_EXT): /usr/include/sys/fcntl.h
+toke$(OBJ_EXT): /usr/include/sys/file.h
+toke$(OBJ_EXT): /usr/include/sys/filio.h
+toke$(OBJ_EXT): /usr/include/sys/ioccom.h
+toke$(OBJ_EXT): /usr/include/sys/ioctl.h
+toke$(OBJ_EXT): /usr/include/sys/ipc.h
+toke$(OBJ_EXT): /usr/include/sys/limits.h
+toke$(OBJ_EXT): /usr/include/sys/param.h
+toke$(OBJ_EXT): /usr/include/sys/select.h
+toke$(OBJ_EXT): /usr/include/sys/sem.h
+toke$(OBJ_EXT): /usr/include/sys/signal.h
+toke$(OBJ_EXT): /usr/include/sys/socket.h
+toke$(OBJ_EXT): /usr/include/sys/sockio.h
+toke$(OBJ_EXT): /usr/include/sys/stat.h
+toke$(OBJ_EXT): /usr/include/sys/stdint.h
+toke$(OBJ_EXT): /usr/include/sys/syslimits.h
+toke$(OBJ_EXT): /usr/include/sys/time.h
+toke$(OBJ_EXT): /usr/include/sys/times.h
+toke$(OBJ_EXT): /usr/include/sys/timespec.h
+toke$(OBJ_EXT): /usr/include/sys/ttycom.h
+toke$(OBJ_EXT): /usr/include/sys/types.h
+toke$(OBJ_EXT): /usr/include/sys/unistd.h
+toke$(OBJ_EXT): /usr/include/time.h
+toke$(OBJ_EXT): /usr/include/unistd.h
+toke$(OBJ_EXT): EXTERN.h
+toke$(OBJ_EXT): av.h
+toke$(OBJ_EXT): config.h
+toke$(OBJ_EXT): cop.h
+toke$(OBJ_EXT): cv.h
+toke$(OBJ_EXT): embed.h
+toke$(OBJ_EXT): embedvar.h
+toke$(OBJ_EXT): form.h
+toke$(OBJ_EXT): gv.h
+toke$(OBJ_EXT): handy.h
+toke$(OBJ_EXT): hv.h
+toke$(OBJ_EXT): intrpvar.h
+toke$(OBJ_EXT): iperlsys.h
+toke$(OBJ_EXT): keywords.h
+toke$(OBJ_EXT): mg.h
+toke$(OBJ_EXT): op.h
+toke$(OBJ_EXT): opcode.h
+toke$(OBJ_EXT): opnames.h
+toke$(OBJ_EXT): pad.h
+toke$(OBJ_EXT): patchlevel.h
+toke$(OBJ_EXT): perl.h
+toke$(OBJ_EXT): perlio.h
+toke$(OBJ_EXT): perlvars.h
+toke$(OBJ_EXT): perly.h
+toke$(OBJ_EXT): pp.h
+toke$(OBJ_EXT): pp_proto.h
+toke$(OBJ_EXT): proto.h
+toke$(OBJ_EXT): reentr.inc
+toke$(OBJ_EXT): regexp.h
+toke$(OBJ_EXT): scope.h
+toke$(OBJ_EXT): sv.h
+toke$(OBJ_EXT): thrdvar.h
+toke$(OBJ_EXT): thread.h
+toke$(OBJ_EXT): toke.c
+toke$(OBJ_EXT): unixish.h
+toke$(OBJ_EXT): utf8.h
+toke$(OBJ_EXT): util.h
+toke$(OBJ_EXT): warnings.h
+util$(OBJ_EXT): /usr/include/_ctype.h
+util$(OBJ_EXT): /usr/include/arpa/inet.h
+util$(OBJ_EXT): /usr/include/ctype.h
+util$(OBJ_EXT): /usr/include/dirent.h
+util$(OBJ_EXT): /usr/include/errno.h
+util$(OBJ_EXT): /usr/include/float.h
+util$(OBJ_EXT): /usr/include/floatingpoint.h
+util$(OBJ_EXT): /usr/include/ieeefp.h
+util$(OBJ_EXT): /usr/include/inttypes.h
+util$(OBJ_EXT): /usr/include/libutil.h
+util$(OBJ_EXT): /usr/include/limits.h
+util$(OBJ_EXT): /usr/include/locale.h
+util$(OBJ_EXT): /usr/include/machine/_inttypes.h
+util$(OBJ_EXT): /usr/include/machine/_limits.h
+util$(OBJ_EXT): /usr/include/machine/_stdint.h
+util$(OBJ_EXT): /usr/include/machine/_types.h
+util$(OBJ_EXT): /usr/include/machine/endian.h
+util$(OBJ_EXT): /usr/include/machine/ieeefp.h
+util$(OBJ_EXT): /usr/include/machine/param.h
+util$(OBJ_EXT): /usr/include/machine/setjmp.h
+util$(OBJ_EXT): /usr/include/machine/signal.h
+util$(OBJ_EXT): /usr/include/machine/trap.h
+util$(OBJ_EXT): /usr/include/math.h
+util$(OBJ_EXT): /usr/include/netdb.h
+util$(OBJ_EXT): /usr/include/netinet/in.h
+util$(OBJ_EXT): /usr/include/netinet6/in6.h
+util$(OBJ_EXT): /usr/include/runetype.h
+util$(OBJ_EXT): /usr/include/setjmp.h
+util$(OBJ_EXT): /usr/include/signal.h
+util$(OBJ_EXT): /usr/include/stdarg.h
+util$(OBJ_EXT): /usr/include/stddef.h
+util$(OBJ_EXT): /usr/include/stdio.h
+util$(OBJ_EXT): /usr/include/stdlib.h
+util$(OBJ_EXT): /usr/include/string.h
+util$(OBJ_EXT): /usr/include/strings.h
+util$(OBJ_EXT): /usr/include/sys/_iovec.h
+util$(OBJ_EXT): /usr/include/sys/_null.h
+util$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+util$(OBJ_EXT): /usr/include/sys/_sigset.h
+util$(OBJ_EXT): /usr/include/sys/_timeval.h
+util$(OBJ_EXT): /usr/include/sys/_types.h
+util$(OBJ_EXT): /usr/include/sys/cdefs.h
+util$(OBJ_EXT): /usr/include/sys/dirent.h
+util$(OBJ_EXT): /usr/include/sys/fcntl.h
+util$(OBJ_EXT): /usr/include/sys/file.h
+util$(OBJ_EXT): /usr/include/sys/filio.h
+util$(OBJ_EXT): /usr/include/sys/ioccom.h
+util$(OBJ_EXT): /usr/include/sys/ioctl.h
+util$(OBJ_EXT): /usr/include/sys/ipc.h
+util$(OBJ_EXT): /usr/include/sys/limits.h
+util$(OBJ_EXT): /usr/include/sys/param.h
+util$(OBJ_EXT): /usr/include/sys/select.h
+util$(OBJ_EXT): /usr/include/sys/sem.h
+util$(OBJ_EXT): /usr/include/sys/signal.h
+util$(OBJ_EXT): /usr/include/sys/socket.h
+util$(OBJ_EXT): /usr/include/sys/sockio.h
+util$(OBJ_EXT): /usr/include/sys/stat.h
+util$(OBJ_EXT): /usr/include/sys/stdint.h
+util$(OBJ_EXT): /usr/include/sys/syslimits.h
+util$(OBJ_EXT): /usr/include/sys/time.h
+util$(OBJ_EXT): /usr/include/sys/times.h
+util$(OBJ_EXT): /usr/include/sys/timespec.h
+util$(OBJ_EXT): /usr/include/sys/ttycom.h
+util$(OBJ_EXT): /usr/include/sys/types.h
+util$(OBJ_EXT): /usr/include/sys/unistd.h
+util$(OBJ_EXT): /usr/include/sys/wait.h
+util$(OBJ_EXT): /usr/include/time.h
+util$(OBJ_EXT): /usr/include/unistd.h
+util$(OBJ_EXT): EXTERN.h
+util$(OBJ_EXT): av.h
+util$(OBJ_EXT): config.h
+util$(OBJ_EXT): cop.h
+util$(OBJ_EXT): cv.h
+util$(OBJ_EXT): embed.h
+util$(OBJ_EXT): embedvar.h
+util$(OBJ_EXT): form.h
+util$(OBJ_EXT): gv.h
+util$(OBJ_EXT): handy.h
+util$(OBJ_EXT): hv.h
+util$(OBJ_EXT): intrpvar.h
+util$(OBJ_EXT): iperlsys.h
+util$(OBJ_EXT): mg.h
+util$(OBJ_EXT): op.h
+util$(OBJ_EXT): opcode.h
+util$(OBJ_EXT): opnames.h
+util$(OBJ_EXT): pad.h
+util$(OBJ_EXT): patchlevel.h
+util$(OBJ_EXT): perl.h
+util$(OBJ_EXT): perlio.h
+util$(OBJ_EXT): perlvars.h
+util$(OBJ_EXT): perly.h
+util$(OBJ_EXT): pp.h
+util$(OBJ_EXT): pp_proto.h
+util$(OBJ_EXT): proto.h
+util$(OBJ_EXT): reentr.inc
+util$(OBJ_EXT): regexp.h
+util$(OBJ_EXT): scope.h
+util$(OBJ_EXT): sv.h
+util$(OBJ_EXT): thrdvar.h
+util$(OBJ_EXT): thread.h
+util$(OBJ_EXT): unixish.h
+util$(OBJ_EXT): utf8.h
+util$(OBJ_EXT): util.c
+util$(OBJ_EXT): util.h
+util$(OBJ_EXT): warnings.h
+deb$(OBJ_EXT): /usr/include/_ctype.h
+deb$(OBJ_EXT): /usr/include/arpa/inet.h
+deb$(OBJ_EXT): /usr/include/ctype.h
+deb$(OBJ_EXT): /usr/include/dirent.h
+deb$(OBJ_EXT): /usr/include/errno.h
+deb$(OBJ_EXT): /usr/include/float.h
+deb$(OBJ_EXT): /usr/include/floatingpoint.h
+deb$(OBJ_EXT): /usr/include/ieeefp.h
+deb$(OBJ_EXT): /usr/include/inttypes.h
+deb$(OBJ_EXT): /usr/include/libutil.h
+deb$(OBJ_EXT): /usr/include/limits.h
+deb$(OBJ_EXT): /usr/include/locale.h
+deb$(OBJ_EXT): /usr/include/machine/_inttypes.h
+deb$(OBJ_EXT): /usr/include/machine/_limits.h
+deb$(OBJ_EXT): /usr/include/machine/_stdint.h
+deb$(OBJ_EXT): /usr/include/machine/_types.h
+deb$(OBJ_EXT): /usr/include/machine/endian.h
+deb$(OBJ_EXT): /usr/include/machine/ieeefp.h
+deb$(OBJ_EXT): /usr/include/machine/param.h
+deb$(OBJ_EXT): /usr/include/machine/setjmp.h
+deb$(OBJ_EXT): /usr/include/machine/signal.h
+deb$(OBJ_EXT): /usr/include/machine/trap.h
+deb$(OBJ_EXT): /usr/include/math.h
+deb$(OBJ_EXT): /usr/include/netdb.h
+deb$(OBJ_EXT): /usr/include/netinet/in.h
+deb$(OBJ_EXT): /usr/include/netinet6/in6.h
+deb$(OBJ_EXT): /usr/include/runetype.h
+deb$(OBJ_EXT): /usr/include/setjmp.h
+deb$(OBJ_EXT): /usr/include/signal.h
+deb$(OBJ_EXT): /usr/include/stdarg.h
+deb$(OBJ_EXT): /usr/include/stddef.h
+deb$(OBJ_EXT): /usr/include/stdio.h
+deb$(OBJ_EXT): /usr/include/stdlib.h
+deb$(OBJ_EXT): /usr/include/string.h
+deb$(OBJ_EXT): /usr/include/strings.h
+deb$(OBJ_EXT): /usr/include/sys/_iovec.h
+deb$(OBJ_EXT): /usr/include/sys/_null.h
+deb$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+deb$(OBJ_EXT): /usr/include/sys/_sigset.h
+deb$(OBJ_EXT): /usr/include/sys/_timeval.h
+deb$(OBJ_EXT): /usr/include/sys/_types.h
+deb$(OBJ_EXT): /usr/include/sys/cdefs.h
+deb$(OBJ_EXT): /usr/include/sys/dirent.h
+deb$(OBJ_EXT): /usr/include/sys/fcntl.h
+deb$(OBJ_EXT): /usr/include/sys/file.h
+deb$(OBJ_EXT): /usr/include/sys/filio.h
+deb$(OBJ_EXT): /usr/include/sys/ioccom.h
+deb$(OBJ_EXT): /usr/include/sys/ioctl.h
+deb$(OBJ_EXT): /usr/include/sys/ipc.h
+deb$(OBJ_EXT): /usr/include/sys/limits.h
+deb$(OBJ_EXT): /usr/include/sys/param.h
+deb$(OBJ_EXT): /usr/include/sys/select.h
+deb$(OBJ_EXT): /usr/include/sys/sem.h
+deb$(OBJ_EXT): /usr/include/sys/signal.h
+deb$(OBJ_EXT): /usr/include/sys/socket.h
+deb$(OBJ_EXT): /usr/include/sys/sockio.h
+deb$(OBJ_EXT): /usr/include/sys/stat.h
+deb$(OBJ_EXT): /usr/include/sys/stdint.h
+deb$(OBJ_EXT): /usr/include/sys/syslimits.h
+deb$(OBJ_EXT): /usr/include/sys/time.h
+deb$(OBJ_EXT): /usr/include/sys/times.h
+deb$(OBJ_EXT): /usr/include/sys/timespec.h
+deb$(OBJ_EXT): /usr/include/sys/ttycom.h
+deb$(OBJ_EXT): /usr/include/sys/types.h
+deb$(OBJ_EXT): /usr/include/sys/unistd.h
+deb$(OBJ_EXT): /usr/include/time.h
+deb$(OBJ_EXT): /usr/include/unistd.h
+deb$(OBJ_EXT): EXTERN.h
+deb$(OBJ_EXT): av.h
+deb$(OBJ_EXT): config.h
+deb$(OBJ_EXT): cop.h
+deb$(OBJ_EXT): cv.h
+deb$(OBJ_EXT): deb.c
+deb$(OBJ_EXT): embed.h
+deb$(OBJ_EXT): embedvar.h
+deb$(OBJ_EXT): form.h
+deb$(OBJ_EXT): gv.h
+deb$(OBJ_EXT): handy.h
+deb$(OBJ_EXT): hv.h
+deb$(OBJ_EXT): intrpvar.h
+deb$(OBJ_EXT): iperlsys.h
+deb$(OBJ_EXT): mg.h
+deb$(OBJ_EXT): op.h
+deb$(OBJ_EXT): opcode.h
+deb$(OBJ_EXT): opnames.h
+deb$(OBJ_EXT): pad.h
+deb$(OBJ_EXT): patchlevel.h
+deb$(OBJ_EXT): perl.h
+deb$(OBJ_EXT): perlio.h
+deb$(OBJ_EXT): perlvars.h
+deb$(OBJ_EXT): perly.h
+deb$(OBJ_EXT): pp.h
+deb$(OBJ_EXT): pp_proto.h
+deb$(OBJ_EXT): proto.h
+deb$(OBJ_EXT): reentr.inc
+deb$(OBJ_EXT): regexp.h
+deb$(OBJ_EXT): scope.h
+deb$(OBJ_EXT): sv.h
+deb$(OBJ_EXT): thrdvar.h
+deb$(OBJ_EXT): thread.h
+deb$(OBJ_EXT): unixish.h
+deb$(OBJ_EXT): utf8.h
+deb$(OBJ_EXT): util.h
+deb$(OBJ_EXT): warnings.h
+run$(OBJ_EXT): /usr/include/_ctype.h
+run$(OBJ_EXT): /usr/include/arpa/inet.h
+run$(OBJ_EXT): /usr/include/ctype.h
+run$(OBJ_EXT): /usr/include/dirent.h
+run$(OBJ_EXT): /usr/include/errno.h
+run$(OBJ_EXT): /usr/include/float.h
+run$(OBJ_EXT): /usr/include/floatingpoint.h
+run$(OBJ_EXT): /usr/include/ieeefp.h
+run$(OBJ_EXT): /usr/include/inttypes.h
+run$(OBJ_EXT): /usr/include/libutil.h
+run$(OBJ_EXT): /usr/include/limits.h
+run$(OBJ_EXT): /usr/include/locale.h
+run$(OBJ_EXT): /usr/include/machine/_inttypes.h
+run$(OBJ_EXT): /usr/include/machine/_limits.h
+run$(OBJ_EXT): /usr/include/machine/_stdint.h
+run$(OBJ_EXT): /usr/include/machine/_types.h
+run$(OBJ_EXT): /usr/include/machine/endian.h
+run$(OBJ_EXT): /usr/include/machine/ieeefp.h
+run$(OBJ_EXT): /usr/include/machine/param.h
+run$(OBJ_EXT): /usr/include/machine/setjmp.h
+run$(OBJ_EXT): /usr/include/machine/signal.h
+run$(OBJ_EXT): /usr/include/machine/trap.h
+run$(OBJ_EXT): /usr/include/math.h
+run$(OBJ_EXT): /usr/include/netdb.h
+run$(OBJ_EXT): /usr/include/netinet/in.h
+run$(OBJ_EXT): /usr/include/netinet6/in6.h
+run$(OBJ_EXT): /usr/include/runetype.h
+run$(OBJ_EXT): /usr/include/setjmp.h
+run$(OBJ_EXT): /usr/include/signal.h
+run$(OBJ_EXT): /usr/include/stdarg.h
+run$(OBJ_EXT): /usr/include/stddef.h
+run$(OBJ_EXT): /usr/include/stdio.h
+run$(OBJ_EXT): /usr/include/stdlib.h
+run$(OBJ_EXT): /usr/include/string.h
+run$(OBJ_EXT): /usr/include/strings.h
+run$(OBJ_EXT): /usr/include/sys/_iovec.h
+run$(OBJ_EXT): /usr/include/sys/_null.h
+run$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+run$(OBJ_EXT): /usr/include/sys/_sigset.h
+run$(OBJ_EXT): /usr/include/sys/_timeval.h
+run$(OBJ_EXT): /usr/include/sys/_types.h
+run$(OBJ_EXT): /usr/include/sys/cdefs.h
+run$(OBJ_EXT): /usr/include/sys/dirent.h
+run$(OBJ_EXT): /usr/include/sys/fcntl.h
+run$(OBJ_EXT): /usr/include/sys/file.h
+run$(OBJ_EXT): /usr/include/sys/filio.h
+run$(OBJ_EXT): /usr/include/sys/ioccom.h
+run$(OBJ_EXT): /usr/include/sys/ioctl.h
+run$(OBJ_EXT): /usr/include/sys/ipc.h
+run$(OBJ_EXT): /usr/include/sys/limits.h
+run$(OBJ_EXT): /usr/include/sys/param.h
+run$(OBJ_EXT): /usr/include/sys/select.h
+run$(OBJ_EXT): /usr/include/sys/sem.h
+run$(OBJ_EXT): /usr/include/sys/signal.h
+run$(OBJ_EXT): /usr/include/sys/socket.h
+run$(OBJ_EXT): /usr/include/sys/sockio.h
+run$(OBJ_EXT): /usr/include/sys/stat.h
+run$(OBJ_EXT): /usr/include/sys/stdint.h
+run$(OBJ_EXT): /usr/include/sys/syslimits.h
+run$(OBJ_EXT): /usr/include/sys/time.h
+run$(OBJ_EXT): /usr/include/sys/times.h
+run$(OBJ_EXT): /usr/include/sys/timespec.h
+run$(OBJ_EXT): /usr/include/sys/ttycom.h
+run$(OBJ_EXT): /usr/include/sys/types.h
+run$(OBJ_EXT): /usr/include/sys/unistd.h
+run$(OBJ_EXT): /usr/include/time.h
+run$(OBJ_EXT): /usr/include/unistd.h
+run$(OBJ_EXT): EXTERN.h
+run$(OBJ_EXT): av.h
+run$(OBJ_EXT): config.h
+run$(OBJ_EXT): cop.h
+run$(OBJ_EXT): cv.h
+run$(OBJ_EXT): embed.h
+run$(OBJ_EXT): embedvar.h
+run$(OBJ_EXT): form.h
+run$(OBJ_EXT): gv.h
+run$(OBJ_EXT): handy.h
+run$(OBJ_EXT): hv.h
+run$(OBJ_EXT): intrpvar.h
+run$(OBJ_EXT): iperlsys.h
+run$(OBJ_EXT): mg.h
+run$(OBJ_EXT): op.h
+run$(OBJ_EXT): opcode.h
+run$(OBJ_EXT): opnames.h
+run$(OBJ_EXT): pad.h
+run$(OBJ_EXT): patchlevel.h
+run$(OBJ_EXT): perl.h
+run$(OBJ_EXT): perlio.h
+run$(OBJ_EXT): perlvars.h
+run$(OBJ_EXT): perly.h
+run$(OBJ_EXT): pp.h
+run$(OBJ_EXT): pp_proto.h
+run$(OBJ_EXT): proto.h
+run$(OBJ_EXT): reentr.inc
+run$(OBJ_EXT): regexp.h
+run$(OBJ_EXT): run.c
+run$(OBJ_EXT): scope.h
+run$(OBJ_EXT): sv.h
+run$(OBJ_EXT): thrdvar.h
+run$(OBJ_EXT): thread.h
+run$(OBJ_EXT): unixish.h
+run$(OBJ_EXT): utf8.h
+run$(OBJ_EXT): util.h
+run$(OBJ_EXT): warnings.h
+universal$(OBJ_EXT): /usr/include/_ctype.h
+universal$(OBJ_EXT): /usr/include/arpa/inet.h
+universal$(OBJ_EXT): /usr/include/ctype.h
+universal$(OBJ_EXT): /usr/include/dirent.h
+universal$(OBJ_EXT): /usr/include/errno.h
+universal$(OBJ_EXT): /usr/include/float.h
+universal$(OBJ_EXT): /usr/include/floatingpoint.h
+universal$(OBJ_EXT): /usr/include/ieeefp.h
+universal$(OBJ_EXT): /usr/include/inttypes.h
+universal$(OBJ_EXT): /usr/include/libutil.h
+universal$(OBJ_EXT): /usr/include/limits.h
+universal$(OBJ_EXT): /usr/include/locale.h
+universal$(OBJ_EXT): /usr/include/machine/_inttypes.h
+universal$(OBJ_EXT): /usr/include/machine/_limits.h
+universal$(OBJ_EXT): /usr/include/machine/_stdint.h
+universal$(OBJ_EXT): /usr/include/machine/_types.h
+universal$(OBJ_EXT): /usr/include/machine/endian.h
+universal$(OBJ_EXT): /usr/include/machine/ieeefp.h
+universal$(OBJ_EXT): /usr/include/machine/param.h
+universal$(OBJ_EXT): /usr/include/machine/setjmp.h
+universal$(OBJ_EXT): /usr/include/machine/signal.h
+universal$(OBJ_EXT): /usr/include/machine/trap.h
+universal$(OBJ_EXT): /usr/include/math.h
+universal$(OBJ_EXT): /usr/include/netdb.h
+universal$(OBJ_EXT): /usr/include/netinet/in.h
+universal$(OBJ_EXT): /usr/include/netinet6/in6.h
+universal$(OBJ_EXT): /usr/include/runetype.h
+universal$(OBJ_EXT): /usr/include/setjmp.h
+universal$(OBJ_EXT): /usr/include/signal.h
+universal$(OBJ_EXT): /usr/include/stdarg.h
+universal$(OBJ_EXT): /usr/include/stddef.h
+universal$(OBJ_EXT): /usr/include/stdio.h
+universal$(OBJ_EXT): /usr/include/stdlib.h
+universal$(OBJ_EXT): /usr/include/string.h
+universal$(OBJ_EXT): /usr/include/strings.h
+universal$(OBJ_EXT): /usr/include/sys/_iovec.h
+universal$(OBJ_EXT): /usr/include/sys/_null.h
+universal$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+universal$(OBJ_EXT): /usr/include/sys/_sigset.h
+universal$(OBJ_EXT): /usr/include/sys/_timeval.h
+universal$(OBJ_EXT): /usr/include/sys/_types.h
+universal$(OBJ_EXT): /usr/include/sys/cdefs.h
+universal$(OBJ_EXT): /usr/include/sys/dirent.h
+universal$(OBJ_EXT): /usr/include/sys/fcntl.h
+universal$(OBJ_EXT): /usr/include/sys/file.h
+universal$(OBJ_EXT): /usr/include/sys/filio.h
+universal$(OBJ_EXT): /usr/include/sys/ioccom.h
+universal$(OBJ_EXT): /usr/include/sys/ioctl.h
+universal$(OBJ_EXT): /usr/include/sys/ipc.h
+universal$(OBJ_EXT): /usr/include/sys/limits.h
+universal$(OBJ_EXT): /usr/include/sys/param.h
+universal$(OBJ_EXT): /usr/include/sys/select.h
+universal$(OBJ_EXT): /usr/include/sys/sem.h
+universal$(OBJ_EXT): /usr/include/sys/signal.h
+universal$(OBJ_EXT): /usr/include/sys/socket.h
+universal$(OBJ_EXT): /usr/include/sys/sockio.h
+universal$(OBJ_EXT): /usr/include/sys/stat.h
+universal$(OBJ_EXT): /usr/include/sys/stdint.h
+universal$(OBJ_EXT): /usr/include/sys/syslimits.h
+universal$(OBJ_EXT): /usr/include/sys/time.h
+universal$(OBJ_EXT): /usr/include/sys/times.h
+universal$(OBJ_EXT): /usr/include/sys/timespec.h
+universal$(OBJ_EXT): /usr/include/sys/ttycom.h
+universal$(OBJ_EXT): /usr/include/sys/types.h
+universal$(OBJ_EXT): /usr/include/sys/unistd.h
+universal$(OBJ_EXT): /usr/include/time.h
+universal$(OBJ_EXT): /usr/include/unistd.h
+universal$(OBJ_EXT): EXTERN.h
+universal$(OBJ_EXT): XSUB.h
+universal$(OBJ_EXT): av.h
+universal$(OBJ_EXT): config.h
+universal$(OBJ_EXT): cop.h
+universal$(OBJ_EXT): cv.h
+universal$(OBJ_EXT): embed.h
+universal$(OBJ_EXT): embedvar.h
+universal$(OBJ_EXT): form.h
+universal$(OBJ_EXT): gv.h
+universal$(OBJ_EXT): handy.h
+universal$(OBJ_EXT): hv.h
+universal$(OBJ_EXT): intrpvar.h
+universal$(OBJ_EXT): iperlsys.h
+universal$(OBJ_EXT): mg.h
+universal$(OBJ_EXT): op.h
+universal$(OBJ_EXT): opcode.h
+universal$(OBJ_EXT): opnames.h
+universal$(OBJ_EXT): pad.h
+universal$(OBJ_EXT): patchlevel.h
+universal$(OBJ_EXT): perl.h
+universal$(OBJ_EXT): perlapi.h
+universal$(OBJ_EXT): perlio.h
+universal$(OBJ_EXT): perliol.h
+universal$(OBJ_EXT): perlvars.h
+universal$(OBJ_EXT): perly.h
+universal$(OBJ_EXT): pp.h
+universal$(OBJ_EXT): pp_proto.h
+universal$(OBJ_EXT): proto.h
+universal$(OBJ_EXT): reentr.inc
+universal$(OBJ_EXT): regexp.h
+universal$(OBJ_EXT): scope.h
+universal$(OBJ_EXT): sv.h
+universal$(OBJ_EXT): thrdvar.h
+universal$(OBJ_EXT): thread.h
+universal$(OBJ_EXT): universal.c
+universal$(OBJ_EXT): unixish.h
+universal$(OBJ_EXT): utf8.h
+universal$(OBJ_EXT): util.h
+universal$(OBJ_EXT): warnings.h
+xsutils$(OBJ_EXT): /usr/include/_ctype.h
+xsutils$(OBJ_EXT): /usr/include/arpa/inet.h
+xsutils$(OBJ_EXT): /usr/include/ctype.h
+xsutils$(OBJ_EXT): /usr/include/dirent.h
+xsutils$(OBJ_EXT): /usr/include/errno.h
+xsutils$(OBJ_EXT): /usr/include/float.h
+xsutils$(OBJ_EXT): /usr/include/floatingpoint.h
+xsutils$(OBJ_EXT): /usr/include/ieeefp.h
+xsutils$(OBJ_EXT): /usr/include/inttypes.h
+xsutils$(OBJ_EXT): /usr/include/libutil.h
+xsutils$(OBJ_EXT): /usr/include/limits.h
+xsutils$(OBJ_EXT): /usr/include/locale.h
+xsutils$(OBJ_EXT): /usr/include/machine/_inttypes.h
+xsutils$(OBJ_EXT): /usr/include/machine/_limits.h
+xsutils$(OBJ_EXT): /usr/include/machine/_stdint.h
+xsutils$(OBJ_EXT): /usr/include/machine/_types.h
+xsutils$(OBJ_EXT): /usr/include/machine/endian.h
+xsutils$(OBJ_EXT): /usr/include/machine/ieeefp.h
+xsutils$(OBJ_EXT): /usr/include/machine/param.h
+xsutils$(OBJ_EXT): /usr/include/machine/setjmp.h
+xsutils$(OBJ_EXT): /usr/include/machine/signal.h
+xsutils$(OBJ_EXT): /usr/include/machine/trap.h
+xsutils$(OBJ_EXT): /usr/include/math.h
+xsutils$(OBJ_EXT): /usr/include/netdb.h
+xsutils$(OBJ_EXT): /usr/include/netinet/in.h
+xsutils$(OBJ_EXT): /usr/include/netinet6/in6.h
+xsutils$(OBJ_EXT): /usr/include/runetype.h
+xsutils$(OBJ_EXT): /usr/include/setjmp.h
+xsutils$(OBJ_EXT): /usr/include/signal.h
+xsutils$(OBJ_EXT): /usr/include/stdarg.h
+xsutils$(OBJ_EXT): /usr/include/stddef.h
+xsutils$(OBJ_EXT): /usr/include/stdio.h
+xsutils$(OBJ_EXT): /usr/include/stdlib.h
+xsutils$(OBJ_EXT): /usr/include/string.h
+xsutils$(OBJ_EXT): /usr/include/strings.h
+xsutils$(OBJ_EXT): /usr/include/sys/_iovec.h
+xsutils$(OBJ_EXT): /usr/include/sys/_null.h
+xsutils$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+xsutils$(OBJ_EXT): /usr/include/sys/_sigset.h
+xsutils$(OBJ_EXT): /usr/include/sys/_timeval.h
+xsutils$(OBJ_EXT): /usr/include/sys/_types.h
+xsutils$(OBJ_EXT): /usr/include/sys/cdefs.h
+xsutils$(OBJ_EXT): /usr/include/sys/dirent.h
+xsutils$(OBJ_EXT): /usr/include/sys/fcntl.h
+xsutils$(OBJ_EXT): /usr/include/sys/file.h
+xsutils$(OBJ_EXT): /usr/include/sys/filio.h
+xsutils$(OBJ_EXT): /usr/include/sys/ioccom.h
+xsutils$(OBJ_EXT): /usr/include/sys/ioctl.h
+xsutils$(OBJ_EXT): /usr/include/sys/ipc.h
+xsutils$(OBJ_EXT): /usr/include/sys/limits.h
+xsutils$(OBJ_EXT): /usr/include/sys/param.h
+xsutils$(OBJ_EXT): /usr/include/sys/select.h
+xsutils$(OBJ_EXT): /usr/include/sys/sem.h
+xsutils$(OBJ_EXT): /usr/include/sys/signal.h
+xsutils$(OBJ_EXT): /usr/include/sys/socket.h
+xsutils$(OBJ_EXT): /usr/include/sys/sockio.h
+xsutils$(OBJ_EXT): /usr/include/sys/stat.h
+xsutils$(OBJ_EXT): /usr/include/sys/stdint.h
+xsutils$(OBJ_EXT): /usr/include/sys/syslimits.h
+xsutils$(OBJ_EXT): /usr/include/sys/time.h
+xsutils$(OBJ_EXT): /usr/include/sys/times.h
+xsutils$(OBJ_EXT): /usr/include/sys/timespec.h
+xsutils$(OBJ_EXT): /usr/include/sys/ttycom.h
+xsutils$(OBJ_EXT): /usr/include/sys/types.h
+xsutils$(OBJ_EXT): /usr/include/sys/unistd.h
+xsutils$(OBJ_EXT): /usr/include/time.h
+xsutils$(OBJ_EXT): /usr/include/unistd.h
+xsutils$(OBJ_EXT): EXTERN.h
+xsutils$(OBJ_EXT): XSUB.h
+xsutils$(OBJ_EXT): av.h
+xsutils$(OBJ_EXT): config.h
+xsutils$(OBJ_EXT): cop.h
+xsutils$(OBJ_EXT): cv.h
+xsutils$(OBJ_EXT): embed.h
+xsutils$(OBJ_EXT): embedvar.h
+xsutils$(OBJ_EXT): form.h
+xsutils$(OBJ_EXT): gv.h
+xsutils$(OBJ_EXT): handy.h
+xsutils$(OBJ_EXT): hv.h
+xsutils$(OBJ_EXT): intrpvar.h
+xsutils$(OBJ_EXT): iperlsys.h
+xsutils$(OBJ_EXT): mg.h
+xsutils$(OBJ_EXT): op.h
+xsutils$(OBJ_EXT): opcode.h
+xsutils$(OBJ_EXT): opnames.h
+xsutils$(OBJ_EXT): pad.h
+xsutils$(OBJ_EXT): patchlevel.h
+xsutils$(OBJ_EXT): perl.h
+xsutils$(OBJ_EXT): perlapi.h
+xsutils$(OBJ_EXT): perlio.h
+xsutils$(OBJ_EXT): perlvars.h
+xsutils$(OBJ_EXT): perly.h
+xsutils$(OBJ_EXT): pp.h
+xsutils$(OBJ_EXT): pp_proto.h
+xsutils$(OBJ_EXT): proto.h
+xsutils$(OBJ_EXT): reentr.inc
+xsutils$(OBJ_EXT): regexp.h
+xsutils$(OBJ_EXT): scope.h
+xsutils$(OBJ_EXT): sv.h
+xsutils$(OBJ_EXT): thrdvar.h
+xsutils$(OBJ_EXT): thread.h
+xsutils$(OBJ_EXT): unixish.h
+xsutils$(OBJ_EXT): utf8.h
+xsutils$(OBJ_EXT): util.h
+xsutils$(OBJ_EXT): warnings.h
+xsutils$(OBJ_EXT): xsutils.c
+pad$(OBJ_EXT): /usr/include/_ctype.h
+pad$(OBJ_EXT): /usr/include/arpa/inet.h
+pad$(OBJ_EXT): /usr/include/ctype.h
+pad$(OBJ_EXT): /usr/include/dirent.h
+pad$(OBJ_EXT): /usr/include/errno.h
+pad$(OBJ_EXT): /usr/include/float.h
+pad$(OBJ_EXT): /usr/include/floatingpoint.h
+pad$(OBJ_EXT): /usr/include/ieeefp.h
+pad$(OBJ_EXT): /usr/include/inttypes.h
+pad$(OBJ_EXT): /usr/include/libutil.h
+pad$(OBJ_EXT): /usr/include/limits.h
+pad$(OBJ_EXT): /usr/include/locale.h
+pad$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pad$(OBJ_EXT): /usr/include/machine/_limits.h
+pad$(OBJ_EXT): /usr/include/machine/_stdint.h
+pad$(OBJ_EXT): /usr/include/machine/_types.h
+pad$(OBJ_EXT): /usr/include/machine/endian.h
+pad$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pad$(OBJ_EXT): /usr/include/machine/param.h
+pad$(OBJ_EXT): /usr/include/machine/setjmp.h
+pad$(OBJ_EXT): /usr/include/machine/signal.h
+pad$(OBJ_EXT): /usr/include/machine/trap.h
+pad$(OBJ_EXT): /usr/include/math.h
+pad$(OBJ_EXT): /usr/include/netdb.h
+pad$(OBJ_EXT): /usr/include/netinet/in.h
+pad$(OBJ_EXT): /usr/include/netinet6/in6.h
+pad$(OBJ_EXT): /usr/include/runetype.h
+pad$(OBJ_EXT): /usr/include/setjmp.h
+pad$(OBJ_EXT): /usr/include/signal.h
+pad$(OBJ_EXT): /usr/include/stdarg.h
+pad$(OBJ_EXT): /usr/include/stddef.h
+pad$(OBJ_EXT): /usr/include/stdio.h
+pad$(OBJ_EXT): /usr/include/stdlib.h
+pad$(OBJ_EXT): /usr/include/string.h
+pad$(OBJ_EXT): /usr/include/strings.h
+pad$(OBJ_EXT): /usr/include/sys/_iovec.h
+pad$(OBJ_EXT): /usr/include/sys/_null.h
+pad$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pad$(OBJ_EXT): /usr/include/sys/_sigset.h
+pad$(OBJ_EXT): /usr/include/sys/_timeval.h
+pad$(OBJ_EXT): /usr/include/sys/_types.h
+pad$(OBJ_EXT): /usr/include/sys/cdefs.h
+pad$(OBJ_EXT): /usr/include/sys/dirent.h
+pad$(OBJ_EXT): /usr/include/sys/fcntl.h
+pad$(OBJ_EXT): /usr/include/sys/file.h
+pad$(OBJ_EXT): /usr/include/sys/filio.h
+pad$(OBJ_EXT): /usr/include/sys/ioccom.h
+pad$(OBJ_EXT): /usr/include/sys/ioctl.h
+pad$(OBJ_EXT): /usr/include/sys/ipc.h
+pad$(OBJ_EXT): /usr/include/sys/limits.h
+pad$(OBJ_EXT): /usr/include/sys/param.h
+pad$(OBJ_EXT): /usr/include/sys/select.h
+pad$(OBJ_EXT): /usr/include/sys/sem.h
+pad$(OBJ_EXT): /usr/include/sys/signal.h
+pad$(OBJ_EXT): /usr/include/sys/socket.h
+pad$(OBJ_EXT): /usr/include/sys/sockio.h
+pad$(OBJ_EXT): /usr/include/sys/stat.h
+pad$(OBJ_EXT): /usr/include/sys/stdint.h
+pad$(OBJ_EXT): /usr/include/sys/syslimits.h
+pad$(OBJ_EXT): /usr/include/sys/time.h
+pad$(OBJ_EXT): /usr/include/sys/times.h
+pad$(OBJ_EXT): /usr/include/sys/timespec.h
+pad$(OBJ_EXT): /usr/include/sys/ttycom.h
+pad$(OBJ_EXT): /usr/include/sys/types.h
+pad$(OBJ_EXT): /usr/include/sys/unistd.h
+pad$(OBJ_EXT): /usr/include/time.h
+pad$(OBJ_EXT): /usr/include/unistd.h
+pad$(OBJ_EXT): EXTERN.h
+pad$(OBJ_EXT): av.h
+pad$(OBJ_EXT): config.h
+pad$(OBJ_EXT): cop.h
+pad$(OBJ_EXT): cv.h
+pad$(OBJ_EXT): embed.h
+pad$(OBJ_EXT): embedvar.h
+pad$(OBJ_EXT): form.h
+pad$(OBJ_EXT): gv.h
+pad$(OBJ_EXT): handy.h
+pad$(OBJ_EXT): hv.h
+pad$(OBJ_EXT): intrpvar.h
+pad$(OBJ_EXT): iperlsys.h
+pad$(OBJ_EXT): mg.h
+pad$(OBJ_EXT): op.h
+pad$(OBJ_EXT): opcode.h
+pad$(OBJ_EXT): opnames.h
+pad$(OBJ_EXT): pad.c
+pad$(OBJ_EXT): pad.h
+pad$(OBJ_EXT): patchlevel.h
+pad$(OBJ_EXT): perl.h
+pad$(OBJ_EXT): perlio.h
+pad$(OBJ_EXT): perlvars.h
+pad$(OBJ_EXT): perly.h
+pad$(OBJ_EXT): pp.h
+pad$(OBJ_EXT): pp_proto.h
+pad$(OBJ_EXT): proto.h
+pad$(OBJ_EXT): reentr.inc
+pad$(OBJ_EXT): regexp.h
+pad$(OBJ_EXT): scope.h
+pad$(OBJ_EXT): sv.h
+pad$(OBJ_EXT): thrdvar.h
+pad$(OBJ_EXT): thread.h
+pad$(OBJ_EXT): unixish.h
+pad$(OBJ_EXT): utf8.h
+pad$(OBJ_EXT): util.h
+pad$(OBJ_EXT): warnings.h
+globals$(OBJ_EXT): /usr/include/_ctype.h
+globals$(OBJ_EXT): /usr/include/arpa/inet.h
+globals$(OBJ_EXT): /usr/include/ctype.h
+globals$(OBJ_EXT): /usr/include/dirent.h
+globals$(OBJ_EXT): /usr/include/errno.h
+globals$(OBJ_EXT): /usr/include/float.h
+globals$(OBJ_EXT): /usr/include/floatingpoint.h
+globals$(OBJ_EXT): /usr/include/ieeefp.h
+globals$(OBJ_EXT): /usr/include/inttypes.h
+globals$(OBJ_EXT): /usr/include/libutil.h
+globals$(OBJ_EXT): /usr/include/limits.h
+globals$(OBJ_EXT): /usr/include/locale.h
+globals$(OBJ_EXT): /usr/include/machine/_inttypes.h
+globals$(OBJ_EXT): /usr/include/machine/_limits.h
+globals$(OBJ_EXT): /usr/include/machine/_stdint.h
+globals$(OBJ_EXT): /usr/include/machine/_types.h
+globals$(OBJ_EXT): /usr/include/machine/endian.h
+globals$(OBJ_EXT): /usr/include/machine/ieeefp.h
+globals$(OBJ_EXT): /usr/include/machine/param.h
+globals$(OBJ_EXT): /usr/include/machine/setjmp.h
+globals$(OBJ_EXT): /usr/include/machine/signal.h
+globals$(OBJ_EXT): /usr/include/machine/trap.h
+globals$(OBJ_EXT): /usr/include/math.h
+globals$(OBJ_EXT): /usr/include/netdb.h
+globals$(OBJ_EXT): /usr/include/netinet/in.h
+globals$(OBJ_EXT): /usr/include/netinet6/in6.h
+globals$(OBJ_EXT): /usr/include/runetype.h
+globals$(OBJ_EXT): /usr/include/setjmp.h
+globals$(OBJ_EXT): /usr/include/signal.h
+globals$(OBJ_EXT): /usr/include/stdarg.h
+globals$(OBJ_EXT): /usr/include/stddef.h
+globals$(OBJ_EXT): /usr/include/stdio.h
+globals$(OBJ_EXT): /usr/include/stdlib.h
+globals$(OBJ_EXT): /usr/include/string.h
+globals$(OBJ_EXT): /usr/include/strings.h
+globals$(OBJ_EXT): /usr/include/sys/_iovec.h
+globals$(OBJ_EXT): /usr/include/sys/_null.h
+globals$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+globals$(OBJ_EXT): /usr/include/sys/_sigset.h
+globals$(OBJ_EXT): /usr/include/sys/_timeval.h
+globals$(OBJ_EXT): /usr/include/sys/_types.h
+globals$(OBJ_EXT): /usr/include/sys/cdefs.h
+globals$(OBJ_EXT): /usr/include/sys/dirent.h
+globals$(OBJ_EXT): /usr/include/sys/fcntl.h
+globals$(OBJ_EXT): /usr/include/sys/file.h
+globals$(OBJ_EXT): /usr/include/sys/filio.h
+globals$(OBJ_EXT): /usr/include/sys/ioccom.h
+globals$(OBJ_EXT): /usr/include/sys/ioctl.h
+globals$(OBJ_EXT): /usr/include/sys/ipc.h
+globals$(OBJ_EXT): /usr/include/sys/limits.h
+globals$(OBJ_EXT): /usr/include/sys/param.h
+globals$(OBJ_EXT): /usr/include/sys/select.h
+globals$(OBJ_EXT): /usr/include/sys/sem.h
+globals$(OBJ_EXT): /usr/include/sys/signal.h
+globals$(OBJ_EXT): /usr/include/sys/socket.h
+globals$(OBJ_EXT): /usr/include/sys/sockio.h
+globals$(OBJ_EXT): /usr/include/sys/stat.h
+globals$(OBJ_EXT): /usr/include/sys/stdint.h
+globals$(OBJ_EXT): /usr/include/sys/syslimits.h
+globals$(OBJ_EXT): /usr/include/sys/time.h
+globals$(OBJ_EXT): /usr/include/sys/times.h
+globals$(OBJ_EXT): /usr/include/sys/timespec.h
+globals$(OBJ_EXT): /usr/include/sys/ttycom.h
+globals$(OBJ_EXT): /usr/include/sys/types.h
+globals$(OBJ_EXT): /usr/include/sys/unistd.h
+globals$(OBJ_EXT): /usr/include/time.h
+globals$(OBJ_EXT): /usr/include/unistd.h
+globals$(OBJ_EXT): INTERN.h
+globals$(OBJ_EXT): av.h
+globals$(OBJ_EXT): config.h
+globals$(OBJ_EXT): cop.h
+globals$(OBJ_EXT): cv.h
+globals$(OBJ_EXT): embed.h
+globals$(OBJ_EXT): embedvar.h
+globals$(OBJ_EXT): form.h
+globals$(OBJ_EXT): globals.c
+globals$(OBJ_EXT): gv.h
+globals$(OBJ_EXT): handy.h
+globals$(OBJ_EXT): hv.h
+globals$(OBJ_EXT): intrpvar.h
+globals$(OBJ_EXT): iperlsys.h
+globals$(OBJ_EXT): mg.h
+globals$(OBJ_EXT): op.h
+globals$(OBJ_EXT): opcode.h
+globals$(OBJ_EXT): opnames.h
+globals$(OBJ_EXT): pad.h
+globals$(OBJ_EXT): patchlevel.h
+globals$(OBJ_EXT): perl.h
+globals$(OBJ_EXT): perlapi.h
+globals$(OBJ_EXT): perlio.h
+globals$(OBJ_EXT): perlvars.h
+globals$(OBJ_EXT): perly.h
+globals$(OBJ_EXT): pp.h
+globals$(OBJ_EXT): pp_proto.h
+globals$(OBJ_EXT): proto.h
+globals$(OBJ_EXT): reentr.inc
+globals$(OBJ_EXT): regexp.h
+globals$(OBJ_EXT): scope.h
+globals$(OBJ_EXT): sv.h
+globals$(OBJ_EXT): thrdvar.h
+globals$(OBJ_EXT): thread.h
+globals$(OBJ_EXT): unixish.h
+globals$(OBJ_EXT): utf8.h
+globals$(OBJ_EXT): util.h
+globals$(OBJ_EXT): warnings.h
+perlio$(OBJ_EXT): /usr/include/_ctype.h
+perlio$(OBJ_EXT): /usr/include/arpa/inet.h
+perlio$(OBJ_EXT): /usr/include/ctype.h
+perlio$(OBJ_EXT): /usr/include/dirent.h
+perlio$(OBJ_EXT): /usr/include/errno.h
+perlio$(OBJ_EXT): /usr/include/float.h
+perlio$(OBJ_EXT): /usr/include/floatingpoint.h
+perlio$(OBJ_EXT): /usr/include/ieeefp.h
+perlio$(OBJ_EXT): /usr/include/inttypes.h
+perlio$(OBJ_EXT): /usr/include/libutil.h
+perlio$(OBJ_EXT): /usr/include/limits.h
+perlio$(OBJ_EXT): /usr/include/locale.h
+perlio$(OBJ_EXT): /usr/include/machine/_inttypes.h
+perlio$(OBJ_EXT): /usr/include/machine/_limits.h
+perlio$(OBJ_EXT): /usr/include/machine/_stdint.h
+perlio$(OBJ_EXT): /usr/include/machine/_types.h
+perlio$(OBJ_EXT): /usr/include/machine/endian.h
+perlio$(OBJ_EXT): /usr/include/machine/ieeefp.h
+perlio$(OBJ_EXT): /usr/include/machine/param.h
+perlio$(OBJ_EXT): /usr/include/machine/setjmp.h
+perlio$(OBJ_EXT): /usr/include/machine/signal.h
+perlio$(OBJ_EXT): /usr/include/machine/trap.h
+perlio$(OBJ_EXT): /usr/include/math.h
+perlio$(OBJ_EXT): /usr/include/netdb.h
+perlio$(OBJ_EXT): /usr/include/netinet/in.h
+perlio$(OBJ_EXT): /usr/include/netinet6/in6.h
+perlio$(OBJ_EXT): /usr/include/runetype.h
+perlio$(OBJ_EXT): /usr/include/setjmp.h
+perlio$(OBJ_EXT): /usr/include/signal.h
+perlio$(OBJ_EXT): /usr/include/stdarg.h
+perlio$(OBJ_EXT): /usr/include/stddef.h
+perlio$(OBJ_EXT): /usr/include/stdio.h
+perlio$(OBJ_EXT): /usr/include/stdlib.h
+perlio$(OBJ_EXT): /usr/include/string.h
+perlio$(OBJ_EXT): /usr/include/strings.h
+perlio$(OBJ_EXT): /usr/include/sys/_iovec.h
+perlio$(OBJ_EXT): /usr/include/sys/_null.h
+perlio$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+perlio$(OBJ_EXT): /usr/include/sys/_sigset.h
+perlio$(OBJ_EXT): /usr/include/sys/_timeval.h
+perlio$(OBJ_EXT): /usr/include/sys/_types.h
+perlio$(OBJ_EXT): /usr/include/sys/cdefs.h
+perlio$(OBJ_EXT): /usr/include/sys/dirent.h
+perlio$(OBJ_EXT): /usr/include/sys/fcntl.h
+perlio$(OBJ_EXT): /usr/include/sys/file.h
+perlio$(OBJ_EXT): /usr/include/sys/filio.h
+perlio$(OBJ_EXT): /usr/include/sys/ioccom.h
+perlio$(OBJ_EXT): /usr/include/sys/ioctl.h
+perlio$(OBJ_EXT): /usr/include/sys/ipc.h
+perlio$(OBJ_EXT): /usr/include/sys/limits.h
+perlio$(OBJ_EXT): /usr/include/sys/mman.h
+perlio$(OBJ_EXT): /usr/include/sys/param.h
+perlio$(OBJ_EXT): /usr/include/sys/select.h
+perlio$(OBJ_EXT): /usr/include/sys/sem.h
+perlio$(OBJ_EXT): /usr/include/sys/signal.h
+perlio$(OBJ_EXT): /usr/include/sys/socket.h
+perlio$(OBJ_EXT): /usr/include/sys/sockio.h
+perlio$(OBJ_EXT): /usr/include/sys/stat.h
+perlio$(OBJ_EXT): /usr/include/sys/stdint.h
+perlio$(OBJ_EXT): /usr/include/sys/syslimits.h
+perlio$(OBJ_EXT): /usr/include/sys/time.h
+perlio$(OBJ_EXT): /usr/include/sys/times.h
+perlio$(OBJ_EXT): /usr/include/sys/timespec.h
+perlio$(OBJ_EXT): /usr/include/sys/ttycom.h
+perlio$(OBJ_EXT): /usr/include/sys/types.h
+perlio$(OBJ_EXT): /usr/include/sys/unistd.h
+perlio$(OBJ_EXT): /usr/include/time.h
+perlio$(OBJ_EXT): /usr/include/unistd.h
+perlio$(OBJ_EXT): EXTERN.h
+perlio$(OBJ_EXT): XSUB.h
+perlio$(OBJ_EXT): av.h
+perlio$(OBJ_EXT): config.h
+perlio$(OBJ_EXT): cop.h
+perlio$(OBJ_EXT): cv.h
+perlio$(OBJ_EXT): embed.h
+perlio$(OBJ_EXT): embedvar.h
+perlio$(OBJ_EXT): form.h
+perlio$(OBJ_EXT): gv.h
+perlio$(OBJ_EXT): handy.h
+perlio$(OBJ_EXT): hv.h
+perlio$(OBJ_EXT): intrpvar.h
+perlio$(OBJ_EXT): iperlsys.h
+perlio$(OBJ_EXT): mg.h
+perlio$(OBJ_EXT): op.h
+perlio$(OBJ_EXT): opcode.h
+perlio$(OBJ_EXT): opnames.h
+perlio$(OBJ_EXT): pad.h
+perlio$(OBJ_EXT): patchlevel.h
+perlio$(OBJ_EXT): perl.h
+perlio$(OBJ_EXT): perlapi.h
+perlio$(OBJ_EXT): perlio.c
+perlio$(OBJ_EXT): perlio.h
+perlio$(OBJ_EXT): perliol.h
+perlio$(OBJ_EXT): perlvars.h
+perlio$(OBJ_EXT): perly.h
+perlio$(OBJ_EXT): pp.h
+perlio$(OBJ_EXT): pp_proto.h
+perlio$(OBJ_EXT): proto.h
+perlio$(OBJ_EXT): reentr.inc
+perlio$(OBJ_EXT): regexp.h
+perlio$(OBJ_EXT): scope.h
+perlio$(OBJ_EXT): sv.h
+perlio$(OBJ_EXT): thrdvar.h
+perlio$(OBJ_EXT): thread.h
+perlio$(OBJ_EXT): unixish.h
+perlio$(OBJ_EXT): utf8.h
+perlio$(OBJ_EXT): util.h
+perlio$(OBJ_EXT): warnings.h
+perlapi$(OBJ_EXT): /usr/include/_ctype.h
+perlapi$(OBJ_EXT): /usr/include/arpa/inet.h
+perlapi$(OBJ_EXT): /usr/include/ctype.h
+perlapi$(OBJ_EXT): /usr/include/dirent.h
+perlapi$(OBJ_EXT): /usr/include/errno.h
+perlapi$(OBJ_EXT): /usr/include/float.h
+perlapi$(OBJ_EXT): /usr/include/floatingpoint.h
+perlapi$(OBJ_EXT): /usr/include/ieeefp.h
+perlapi$(OBJ_EXT): /usr/include/inttypes.h
+perlapi$(OBJ_EXT): /usr/include/libutil.h
+perlapi$(OBJ_EXT): /usr/include/limits.h
+perlapi$(OBJ_EXT): /usr/include/locale.h
+perlapi$(OBJ_EXT): /usr/include/machine/_inttypes.h
+perlapi$(OBJ_EXT): /usr/include/machine/_limits.h
+perlapi$(OBJ_EXT): /usr/include/machine/_stdint.h
+perlapi$(OBJ_EXT): /usr/include/machine/_types.h
+perlapi$(OBJ_EXT): /usr/include/machine/endian.h
+perlapi$(OBJ_EXT): /usr/include/machine/ieeefp.h
+perlapi$(OBJ_EXT): /usr/include/machine/param.h
+perlapi$(OBJ_EXT): /usr/include/machine/setjmp.h
+perlapi$(OBJ_EXT): /usr/include/machine/signal.h
+perlapi$(OBJ_EXT): /usr/include/machine/trap.h
+perlapi$(OBJ_EXT): /usr/include/math.h
+perlapi$(OBJ_EXT): /usr/include/netdb.h
+perlapi$(OBJ_EXT): /usr/include/netinet/in.h
+perlapi$(OBJ_EXT): /usr/include/netinet6/in6.h
+perlapi$(OBJ_EXT): /usr/include/runetype.h
+perlapi$(OBJ_EXT): /usr/include/setjmp.h
+perlapi$(OBJ_EXT): /usr/include/signal.h
+perlapi$(OBJ_EXT): /usr/include/stdarg.h
+perlapi$(OBJ_EXT): /usr/include/stddef.h
+perlapi$(OBJ_EXT): /usr/include/stdio.h
+perlapi$(OBJ_EXT): /usr/include/stdlib.h
+perlapi$(OBJ_EXT): /usr/include/string.h
+perlapi$(OBJ_EXT): /usr/include/strings.h
+perlapi$(OBJ_EXT): /usr/include/sys/_iovec.h
+perlapi$(OBJ_EXT): /usr/include/sys/_null.h
+perlapi$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+perlapi$(OBJ_EXT): /usr/include/sys/_sigset.h
+perlapi$(OBJ_EXT): /usr/include/sys/_timeval.h
+perlapi$(OBJ_EXT): /usr/include/sys/_types.h
+perlapi$(OBJ_EXT): /usr/include/sys/cdefs.h
+perlapi$(OBJ_EXT): /usr/include/sys/dirent.h
+perlapi$(OBJ_EXT): /usr/include/sys/fcntl.h
+perlapi$(OBJ_EXT): /usr/include/sys/file.h
+perlapi$(OBJ_EXT): /usr/include/sys/filio.h
+perlapi$(OBJ_EXT): /usr/include/sys/ioccom.h
+perlapi$(OBJ_EXT): /usr/include/sys/ioctl.h
+perlapi$(OBJ_EXT): /usr/include/sys/ipc.h
+perlapi$(OBJ_EXT): /usr/include/sys/limits.h
+perlapi$(OBJ_EXT): /usr/include/sys/param.h
+perlapi$(OBJ_EXT): /usr/include/sys/select.h
+perlapi$(OBJ_EXT): /usr/include/sys/sem.h
+perlapi$(OBJ_EXT): /usr/include/sys/signal.h
+perlapi$(OBJ_EXT): /usr/include/sys/socket.h
+perlapi$(OBJ_EXT): /usr/include/sys/sockio.h
+perlapi$(OBJ_EXT): /usr/include/sys/stat.h
+perlapi$(OBJ_EXT): /usr/include/sys/stdint.h
+perlapi$(OBJ_EXT): /usr/include/sys/syslimits.h
+perlapi$(OBJ_EXT): /usr/include/sys/time.h
+perlapi$(OBJ_EXT): /usr/include/sys/times.h
+perlapi$(OBJ_EXT): /usr/include/sys/timespec.h
+perlapi$(OBJ_EXT): /usr/include/sys/ttycom.h
+perlapi$(OBJ_EXT): /usr/include/sys/types.h
+perlapi$(OBJ_EXT): /usr/include/sys/unistd.h
+perlapi$(OBJ_EXT): /usr/include/time.h
+perlapi$(OBJ_EXT): /usr/include/unistd.h
+perlapi$(OBJ_EXT): EXTERN.h
+perlapi$(OBJ_EXT): av.h
+perlapi$(OBJ_EXT): config.h
+perlapi$(OBJ_EXT): cop.h
+perlapi$(OBJ_EXT): cv.h
+perlapi$(OBJ_EXT): embed.h
+perlapi$(OBJ_EXT): embedvar.h
+perlapi$(OBJ_EXT): form.h
+perlapi$(OBJ_EXT): gv.h
+perlapi$(OBJ_EXT): handy.h
+perlapi$(OBJ_EXT): hv.h
+perlapi$(OBJ_EXT): intrpvar.h
+perlapi$(OBJ_EXT): iperlsys.h
+perlapi$(OBJ_EXT): mg.h
+perlapi$(OBJ_EXT): op.h
+perlapi$(OBJ_EXT): opcode.h
+perlapi$(OBJ_EXT): opnames.h
+perlapi$(OBJ_EXT): pad.h
+perlapi$(OBJ_EXT): patchlevel.h
+perlapi$(OBJ_EXT): perl.h
+perlapi$(OBJ_EXT): perlapi.c
+perlapi$(OBJ_EXT): perlapi.h
+perlapi$(OBJ_EXT): perlio.h
+perlapi$(OBJ_EXT): perlvars.h
+perlapi$(OBJ_EXT): perly.h
+perlapi$(OBJ_EXT): pp.h
+perlapi$(OBJ_EXT): pp_proto.h
+perlapi$(OBJ_EXT): proto.h
+perlapi$(OBJ_EXT): reentr.inc
+perlapi$(OBJ_EXT): regexp.h
+perlapi$(OBJ_EXT): scope.h
+perlapi$(OBJ_EXT): sv.h
+perlapi$(OBJ_EXT): thrdvar.h
+perlapi$(OBJ_EXT): thread.h
+perlapi$(OBJ_EXT): unixish.h
+perlapi$(OBJ_EXT): utf8.h
+perlapi$(OBJ_EXT): util.h
+perlapi$(OBJ_EXT): warnings.h
+numeric$(OBJ_EXT): /usr/include/_ctype.h
+numeric$(OBJ_EXT): /usr/include/arpa/inet.h
+numeric$(OBJ_EXT): /usr/include/ctype.h
+numeric$(OBJ_EXT): /usr/include/dirent.h
+numeric$(OBJ_EXT): /usr/include/errno.h
+numeric$(OBJ_EXT): /usr/include/float.h
+numeric$(OBJ_EXT): /usr/include/floatingpoint.h
+numeric$(OBJ_EXT): /usr/include/ieeefp.h
+numeric$(OBJ_EXT): /usr/include/inttypes.h
+numeric$(OBJ_EXT): /usr/include/libutil.h
+numeric$(OBJ_EXT): /usr/include/limits.h
+numeric$(OBJ_EXT): /usr/include/locale.h
+numeric$(OBJ_EXT): /usr/include/machine/_inttypes.h
+numeric$(OBJ_EXT): /usr/include/machine/_limits.h
+numeric$(OBJ_EXT): /usr/include/machine/_stdint.h
+numeric$(OBJ_EXT): /usr/include/machine/_types.h
+numeric$(OBJ_EXT): /usr/include/machine/endian.h
+numeric$(OBJ_EXT): /usr/include/machine/ieeefp.h
+numeric$(OBJ_EXT): /usr/include/machine/param.h
+numeric$(OBJ_EXT): /usr/include/machine/setjmp.h
+numeric$(OBJ_EXT): /usr/include/machine/signal.h
+numeric$(OBJ_EXT): /usr/include/machine/trap.h
+numeric$(OBJ_EXT): /usr/include/math.h
+numeric$(OBJ_EXT): /usr/include/netdb.h
+numeric$(OBJ_EXT): /usr/include/netinet/in.h
+numeric$(OBJ_EXT): /usr/include/netinet6/in6.h
+numeric$(OBJ_EXT): /usr/include/runetype.h
+numeric$(OBJ_EXT): /usr/include/setjmp.h
+numeric$(OBJ_EXT): /usr/include/signal.h
+numeric$(OBJ_EXT): /usr/include/stdarg.h
+numeric$(OBJ_EXT): /usr/include/stddef.h
+numeric$(OBJ_EXT): /usr/include/stdio.h
+numeric$(OBJ_EXT): /usr/include/stdlib.h
+numeric$(OBJ_EXT): /usr/include/string.h
+numeric$(OBJ_EXT): /usr/include/strings.h
+numeric$(OBJ_EXT): /usr/include/sys/_iovec.h
+numeric$(OBJ_EXT): /usr/include/sys/_null.h
+numeric$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+numeric$(OBJ_EXT): /usr/include/sys/_sigset.h
+numeric$(OBJ_EXT): /usr/include/sys/_timeval.h
+numeric$(OBJ_EXT): /usr/include/sys/_types.h
+numeric$(OBJ_EXT): /usr/include/sys/cdefs.h
+numeric$(OBJ_EXT): /usr/include/sys/dirent.h
+numeric$(OBJ_EXT): /usr/include/sys/fcntl.h
+numeric$(OBJ_EXT): /usr/include/sys/file.h
+numeric$(OBJ_EXT): /usr/include/sys/filio.h
+numeric$(OBJ_EXT): /usr/include/sys/ioccom.h
+numeric$(OBJ_EXT): /usr/include/sys/ioctl.h
+numeric$(OBJ_EXT): /usr/include/sys/ipc.h
+numeric$(OBJ_EXT): /usr/include/sys/limits.h
+numeric$(OBJ_EXT): /usr/include/sys/param.h
+numeric$(OBJ_EXT): /usr/include/sys/select.h
+numeric$(OBJ_EXT): /usr/include/sys/sem.h
+numeric$(OBJ_EXT): /usr/include/sys/signal.h
+numeric$(OBJ_EXT): /usr/include/sys/socket.h
+numeric$(OBJ_EXT): /usr/include/sys/sockio.h
+numeric$(OBJ_EXT): /usr/include/sys/stat.h
+numeric$(OBJ_EXT): /usr/include/sys/stdint.h
+numeric$(OBJ_EXT): /usr/include/sys/syslimits.h
+numeric$(OBJ_EXT): /usr/include/sys/time.h
+numeric$(OBJ_EXT): /usr/include/sys/times.h
+numeric$(OBJ_EXT): /usr/include/sys/timespec.h
+numeric$(OBJ_EXT): /usr/include/sys/ttycom.h
+numeric$(OBJ_EXT): /usr/include/sys/types.h
+numeric$(OBJ_EXT): /usr/include/sys/unistd.h
+numeric$(OBJ_EXT): /usr/include/time.h
+numeric$(OBJ_EXT): /usr/include/unistd.h
+numeric$(OBJ_EXT): EXTERN.h
+numeric$(OBJ_EXT): av.h
+numeric$(OBJ_EXT): config.h
+numeric$(OBJ_EXT): cop.h
+numeric$(OBJ_EXT): cv.h
+numeric$(OBJ_EXT): embed.h
+numeric$(OBJ_EXT): embedvar.h
+numeric$(OBJ_EXT): form.h
+numeric$(OBJ_EXT): gv.h
+numeric$(OBJ_EXT): handy.h
+numeric$(OBJ_EXT): hv.h
+numeric$(OBJ_EXT): intrpvar.h
+numeric$(OBJ_EXT): iperlsys.h
+numeric$(OBJ_EXT): mg.h
+numeric$(OBJ_EXT): numeric.c
+numeric$(OBJ_EXT): op.h
+numeric$(OBJ_EXT): opcode.h
+numeric$(OBJ_EXT): opnames.h
+numeric$(OBJ_EXT): pad.h
+numeric$(OBJ_EXT): patchlevel.h
+numeric$(OBJ_EXT): perl.h
+numeric$(OBJ_EXT): perlio.h
+numeric$(OBJ_EXT): perlvars.h
+numeric$(OBJ_EXT): perly.h
+numeric$(OBJ_EXT): pp.h
+numeric$(OBJ_EXT): pp_proto.h
+numeric$(OBJ_EXT): proto.h
+numeric$(OBJ_EXT): reentr.inc
+numeric$(OBJ_EXT): regexp.h
+numeric$(OBJ_EXT): scope.h
+numeric$(OBJ_EXT): sv.h
+numeric$(OBJ_EXT): thrdvar.h
+numeric$(OBJ_EXT): thread.h
+numeric$(OBJ_EXT): unixish.h
+numeric$(OBJ_EXT): utf8.h
+numeric$(OBJ_EXT): util.h
+numeric$(OBJ_EXT): warnings.h
+locale$(OBJ_EXT): /usr/include/_ctype.h
+locale$(OBJ_EXT): /usr/include/arpa/inet.h
+locale$(OBJ_EXT): /usr/include/ctype.h
+locale$(OBJ_EXT): /usr/include/dirent.h
+locale$(OBJ_EXT): /usr/include/errno.h
+locale$(OBJ_EXT): /usr/include/float.h
+locale$(OBJ_EXT): /usr/include/floatingpoint.h
+locale$(OBJ_EXT): /usr/include/ieeefp.h
+locale$(OBJ_EXT): /usr/include/inttypes.h
+locale$(OBJ_EXT): /usr/include/langinfo.h
+locale$(OBJ_EXT): /usr/include/libutil.h
+locale$(OBJ_EXT): /usr/include/limits.h
+locale$(OBJ_EXT): /usr/include/locale.h
+locale$(OBJ_EXT): /usr/include/machine/_inttypes.h
+locale$(OBJ_EXT): /usr/include/machine/_limits.h
+locale$(OBJ_EXT): /usr/include/machine/_stdint.h
+locale$(OBJ_EXT): /usr/include/machine/_types.h
+locale$(OBJ_EXT): /usr/include/machine/endian.h
+locale$(OBJ_EXT): /usr/include/machine/ieeefp.h
+locale$(OBJ_EXT): /usr/include/machine/param.h
+locale$(OBJ_EXT): /usr/include/machine/setjmp.h
+locale$(OBJ_EXT): /usr/include/machine/signal.h
+locale$(OBJ_EXT): /usr/include/machine/trap.h
+locale$(OBJ_EXT): /usr/include/math.h
+locale$(OBJ_EXT): /usr/include/netdb.h
+locale$(OBJ_EXT): /usr/include/netinet/in.h
+locale$(OBJ_EXT): /usr/include/netinet6/in6.h
+locale$(OBJ_EXT): /usr/include/runetype.h
+locale$(OBJ_EXT): /usr/include/setjmp.h
+locale$(OBJ_EXT): /usr/include/signal.h
+locale$(OBJ_EXT): /usr/include/stdarg.h
+locale$(OBJ_EXT): /usr/include/stddef.h
+locale$(OBJ_EXT): /usr/include/stdio.h
+locale$(OBJ_EXT): /usr/include/stdlib.h
+locale$(OBJ_EXT): /usr/include/string.h
+locale$(OBJ_EXT): /usr/include/strings.h
+locale$(OBJ_EXT): /usr/include/sys/_iovec.h
+locale$(OBJ_EXT): /usr/include/sys/_null.h
+locale$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+locale$(OBJ_EXT): /usr/include/sys/_sigset.h
+locale$(OBJ_EXT): /usr/include/sys/_timeval.h
+locale$(OBJ_EXT): /usr/include/sys/_types.h
+locale$(OBJ_EXT): /usr/include/sys/cdefs.h
+locale$(OBJ_EXT): /usr/include/sys/dirent.h
+locale$(OBJ_EXT): /usr/include/sys/fcntl.h
+locale$(OBJ_EXT): /usr/include/sys/file.h
+locale$(OBJ_EXT): /usr/include/sys/filio.h
+locale$(OBJ_EXT): /usr/include/sys/ioccom.h
+locale$(OBJ_EXT): /usr/include/sys/ioctl.h
+locale$(OBJ_EXT): /usr/include/sys/ipc.h
+locale$(OBJ_EXT): /usr/include/sys/limits.h
+locale$(OBJ_EXT): /usr/include/sys/param.h
+locale$(OBJ_EXT): /usr/include/sys/select.h
+locale$(OBJ_EXT): /usr/include/sys/sem.h
+locale$(OBJ_EXT): /usr/include/sys/signal.h
+locale$(OBJ_EXT): /usr/include/sys/socket.h
+locale$(OBJ_EXT): /usr/include/sys/sockio.h
+locale$(OBJ_EXT): /usr/include/sys/stat.h
+locale$(OBJ_EXT): /usr/include/sys/stdint.h
+locale$(OBJ_EXT): /usr/include/sys/syslimits.h
+locale$(OBJ_EXT): /usr/include/sys/time.h
+locale$(OBJ_EXT): /usr/include/sys/times.h
+locale$(OBJ_EXT): /usr/include/sys/timespec.h
+locale$(OBJ_EXT): /usr/include/sys/ttycom.h
+locale$(OBJ_EXT): /usr/include/sys/types.h
+locale$(OBJ_EXT): /usr/include/sys/unistd.h
+locale$(OBJ_EXT): /usr/include/time.h
+locale$(OBJ_EXT): /usr/include/unistd.h
+locale$(OBJ_EXT): EXTERN.h
+locale$(OBJ_EXT): av.h
+locale$(OBJ_EXT): config.h
+locale$(OBJ_EXT): cop.h
+locale$(OBJ_EXT): cv.h
+locale$(OBJ_EXT): embed.h
+locale$(OBJ_EXT): embedvar.h
+locale$(OBJ_EXT): form.h
+locale$(OBJ_EXT): gv.h
+locale$(OBJ_EXT): handy.h
+locale$(OBJ_EXT): hv.h
+locale$(OBJ_EXT): intrpvar.h
+locale$(OBJ_EXT): iperlsys.h
+locale$(OBJ_EXT): locale.c
+locale$(OBJ_EXT): mg.h
+locale$(OBJ_EXT): op.h
+locale$(OBJ_EXT): opcode.h
+locale$(OBJ_EXT): opnames.h
+locale$(OBJ_EXT): pad.h
+locale$(OBJ_EXT): patchlevel.h
+locale$(OBJ_EXT): perl.h
+locale$(OBJ_EXT): perlio.h
+locale$(OBJ_EXT): perlvars.h
+locale$(OBJ_EXT): perly.h
+locale$(OBJ_EXT): pp.h
+locale$(OBJ_EXT): pp_proto.h
+locale$(OBJ_EXT): proto.h
+locale$(OBJ_EXT): reentr.h
+locale$(OBJ_EXT): reentr.inc
+locale$(OBJ_EXT): regexp.h
+locale$(OBJ_EXT): scope.h
+locale$(OBJ_EXT): sv.h
+locale$(OBJ_EXT): thrdvar.h
+locale$(OBJ_EXT): thread.h
+locale$(OBJ_EXT): unixish.h
+locale$(OBJ_EXT): utf8.h
+locale$(OBJ_EXT): util.h
+locale$(OBJ_EXT): warnings.h
+pp_pack$(OBJ_EXT): /usr/include/_ctype.h
+pp_pack$(OBJ_EXT): /usr/include/arpa/inet.h
+pp_pack$(OBJ_EXT): /usr/include/ctype.h
+pp_pack$(OBJ_EXT): /usr/include/dirent.h
+pp_pack$(OBJ_EXT): /usr/include/errno.h
+pp_pack$(OBJ_EXT): /usr/include/float.h
+pp_pack$(OBJ_EXT): /usr/include/floatingpoint.h
+pp_pack$(OBJ_EXT): /usr/include/ieeefp.h
+pp_pack$(OBJ_EXT): /usr/include/inttypes.h
+pp_pack$(OBJ_EXT): /usr/include/libutil.h
+pp_pack$(OBJ_EXT): /usr/include/limits.h
+pp_pack$(OBJ_EXT): /usr/include/locale.h
+pp_pack$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pp_pack$(OBJ_EXT): /usr/include/machine/_limits.h
+pp_pack$(OBJ_EXT): /usr/include/machine/_stdint.h
+pp_pack$(OBJ_EXT): /usr/include/machine/_types.h
+pp_pack$(OBJ_EXT): /usr/include/machine/endian.h
+pp_pack$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pp_pack$(OBJ_EXT): /usr/include/machine/param.h
+pp_pack$(OBJ_EXT): /usr/include/machine/setjmp.h
+pp_pack$(OBJ_EXT): /usr/include/machine/signal.h
+pp_pack$(OBJ_EXT): /usr/include/machine/trap.h
+pp_pack$(OBJ_EXT): /usr/include/math.h
+pp_pack$(OBJ_EXT): /usr/include/netdb.h
+pp_pack$(OBJ_EXT): /usr/include/netinet/in.h
+pp_pack$(OBJ_EXT): /usr/include/netinet6/in6.h
+pp_pack$(OBJ_EXT): /usr/include/runetype.h
+pp_pack$(OBJ_EXT): /usr/include/setjmp.h
+pp_pack$(OBJ_EXT): /usr/include/signal.h
+pp_pack$(OBJ_EXT): /usr/include/stdarg.h
+pp_pack$(OBJ_EXT): /usr/include/stddef.h
+pp_pack$(OBJ_EXT): /usr/include/stdio.h
+pp_pack$(OBJ_EXT): /usr/include/stdlib.h
+pp_pack$(OBJ_EXT): /usr/include/string.h
+pp_pack$(OBJ_EXT): /usr/include/strings.h
+pp_pack$(OBJ_EXT): /usr/include/sys/_iovec.h
+pp_pack$(OBJ_EXT): /usr/include/sys/_null.h
+pp_pack$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pp_pack$(OBJ_EXT): /usr/include/sys/_sigset.h
+pp_pack$(OBJ_EXT): /usr/include/sys/_timeval.h
+pp_pack$(OBJ_EXT): /usr/include/sys/_types.h
+pp_pack$(OBJ_EXT): /usr/include/sys/cdefs.h
+pp_pack$(OBJ_EXT): /usr/include/sys/dirent.h
+pp_pack$(OBJ_EXT): /usr/include/sys/fcntl.h
+pp_pack$(OBJ_EXT): /usr/include/sys/file.h
+pp_pack$(OBJ_EXT): /usr/include/sys/filio.h
+pp_pack$(OBJ_EXT): /usr/include/sys/ioccom.h
+pp_pack$(OBJ_EXT): /usr/include/sys/ioctl.h
+pp_pack$(OBJ_EXT): /usr/include/sys/ipc.h
+pp_pack$(OBJ_EXT): /usr/include/sys/limits.h
+pp_pack$(OBJ_EXT): /usr/include/sys/param.h
+pp_pack$(OBJ_EXT): /usr/include/sys/select.h
+pp_pack$(OBJ_EXT): /usr/include/sys/sem.h
+pp_pack$(OBJ_EXT): /usr/include/sys/signal.h
+pp_pack$(OBJ_EXT): /usr/include/sys/socket.h
+pp_pack$(OBJ_EXT): /usr/include/sys/sockio.h
+pp_pack$(OBJ_EXT): /usr/include/sys/stat.h
+pp_pack$(OBJ_EXT): /usr/include/sys/stdint.h
+pp_pack$(OBJ_EXT): /usr/include/sys/syslimits.h
+pp_pack$(OBJ_EXT): /usr/include/sys/time.h
+pp_pack$(OBJ_EXT): /usr/include/sys/times.h
+pp_pack$(OBJ_EXT): /usr/include/sys/timespec.h
+pp_pack$(OBJ_EXT): /usr/include/sys/ttycom.h
+pp_pack$(OBJ_EXT): /usr/include/sys/types.h
+pp_pack$(OBJ_EXT): /usr/include/sys/unistd.h
+pp_pack$(OBJ_EXT): /usr/include/time.h
+pp_pack$(OBJ_EXT): /usr/include/unistd.h
+pp_pack$(OBJ_EXT): EXTERN.h
+pp_pack$(OBJ_EXT): av.h
+pp_pack$(OBJ_EXT): config.h
+pp_pack$(OBJ_EXT): cop.h
+pp_pack$(OBJ_EXT): cv.h
+pp_pack$(OBJ_EXT): embed.h
+pp_pack$(OBJ_EXT): embedvar.h
+pp_pack$(OBJ_EXT): form.h
+pp_pack$(OBJ_EXT): gv.h
+pp_pack$(OBJ_EXT): handy.h
+pp_pack$(OBJ_EXT): hv.h
+pp_pack$(OBJ_EXT): intrpvar.h
+pp_pack$(OBJ_EXT): iperlsys.h
+pp_pack$(OBJ_EXT): mg.h
+pp_pack$(OBJ_EXT): op.h
+pp_pack$(OBJ_EXT): opcode.h
+pp_pack$(OBJ_EXT): opnames.h
+pp_pack$(OBJ_EXT): pad.h
+pp_pack$(OBJ_EXT): patchlevel.h
+pp_pack$(OBJ_EXT): perl.h
+pp_pack$(OBJ_EXT): perlio.h
+pp_pack$(OBJ_EXT): perlvars.h
+pp_pack$(OBJ_EXT): perly.h
+pp_pack$(OBJ_EXT): pp.h
+pp_pack$(OBJ_EXT): pp_pack.c
+pp_pack$(OBJ_EXT): pp_proto.h
+pp_pack$(OBJ_EXT): proto.h
+pp_pack$(OBJ_EXT): reentr.inc
+pp_pack$(OBJ_EXT): regexp.h
+pp_pack$(OBJ_EXT): scope.h
+pp_pack$(OBJ_EXT): sv.h
+pp_pack$(OBJ_EXT): thrdvar.h
+pp_pack$(OBJ_EXT): thread.h
+pp_pack$(OBJ_EXT): unixish.h
+pp_pack$(OBJ_EXT): utf8.h
+pp_pack$(OBJ_EXT): util.h
+pp_pack$(OBJ_EXT): warnings.h
+pp_sort$(OBJ_EXT): /usr/include/_ctype.h
+pp_sort$(OBJ_EXT): /usr/include/arpa/inet.h
+pp_sort$(OBJ_EXT): /usr/include/ctype.h
+pp_sort$(OBJ_EXT): /usr/include/dirent.h
+pp_sort$(OBJ_EXT): /usr/include/errno.h
+pp_sort$(OBJ_EXT): /usr/include/float.h
+pp_sort$(OBJ_EXT): /usr/include/floatingpoint.h
+pp_sort$(OBJ_EXT): /usr/include/ieeefp.h
+pp_sort$(OBJ_EXT): /usr/include/inttypes.h
+pp_sort$(OBJ_EXT): /usr/include/libutil.h
+pp_sort$(OBJ_EXT): /usr/include/limits.h
+pp_sort$(OBJ_EXT): /usr/include/locale.h
+pp_sort$(OBJ_EXT): /usr/include/machine/_inttypes.h
+pp_sort$(OBJ_EXT): /usr/include/machine/_limits.h
+pp_sort$(OBJ_EXT): /usr/include/machine/_stdint.h
+pp_sort$(OBJ_EXT): /usr/include/machine/_types.h
+pp_sort$(OBJ_EXT): /usr/include/machine/endian.h
+pp_sort$(OBJ_EXT): /usr/include/machine/ieeefp.h
+pp_sort$(OBJ_EXT): /usr/include/machine/param.h
+pp_sort$(OBJ_EXT): /usr/include/machine/setjmp.h
+pp_sort$(OBJ_EXT): /usr/include/machine/signal.h
+pp_sort$(OBJ_EXT): /usr/include/machine/trap.h
+pp_sort$(OBJ_EXT): /usr/include/math.h
+pp_sort$(OBJ_EXT): /usr/include/netdb.h
+pp_sort$(OBJ_EXT): /usr/include/netinet/in.h
+pp_sort$(OBJ_EXT): /usr/include/netinet6/in6.h
+pp_sort$(OBJ_EXT): /usr/include/runetype.h
+pp_sort$(OBJ_EXT): /usr/include/setjmp.h
+pp_sort$(OBJ_EXT): /usr/include/signal.h
+pp_sort$(OBJ_EXT): /usr/include/stdarg.h
+pp_sort$(OBJ_EXT): /usr/include/stddef.h
+pp_sort$(OBJ_EXT): /usr/include/stdio.h
+pp_sort$(OBJ_EXT): /usr/include/stdlib.h
+pp_sort$(OBJ_EXT): /usr/include/string.h
+pp_sort$(OBJ_EXT): /usr/include/strings.h
+pp_sort$(OBJ_EXT): /usr/include/sys/_iovec.h
+pp_sort$(OBJ_EXT): /usr/include/sys/_null.h
+pp_sort$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+pp_sort$(OBJ_EXT): /usr/include/sys/_sigset.h
+pp_sort$(OBJ_EXT): /usr/include/sys/_timeval.h
+pp_sort$(OBJ_EXT): /usr/include/sys/_types.h
+pp_sort$(OBJ_EXT): /usr/include/sys/cdefs.h
+pp_sort$(OBJ_EXT): /usr/include/sys/dirent.h
+pp_sort$(OBJ_EXT): /usr/include/sys/fcntl.h
+pp_sort$(OBJ_EXT): /usr/include/sys/file.h
+pp_sort$(OBJ_EXT): /usr/include/sys/filio.h
+pp_sort$(OBJ_EXT): /usr/include/sys/ioccom.h
+pp_sort$(OBJ_EXT): /usr/include/sys/ioctl.h
+pp_sort$(OBJ_EXT): /usr/include/sys/ipc.h
+pp_sort$(OBJ_EXT): /usr/include/sys/limits.h
+pp_sort$(OBJ_EXT): /usr/include/sys/param.h
+pp_sort$(OBJ_EXT): /usr/include/sys/select.h
+pp_sort$(OBJ_EXT): /usr/include/sys/sem.h
+pp_sort$(OBJ_EXT): /usr/include/sys/signal.h
+pp_sort$(OBJ_EXT): /usr/include/sys/socket.h
+pp_sort$(OBJ_EXT): /usr/include/sys/sockio.h
+pp_sort$(OBJ_EXT): /usr/include/sys/stat.h
+pp_sort$(OBJ_EXT): /usr/include/sys/stdint.h
+pp_sort$(OBJ_EXT): /usr/include/sys/syslimits.h
+pp_sort$(OBJ_EXT): /usr/include/sys/time.h
+pp_sort$(OBJ_EXT): /usr/include/sys/times.h
+pp_sort$(OBJ_EXT): /usr/include/sys/timespec.h
+pp_sort$(OBJ_EXT): /usr/include/sys/ttycom.h
+pp_sort$(OBJ_EXT): /usr/include/sys/types.h
+pp_sort$(OBJ_EXT): /usr/include/sys/unistd.h
+pp_sort$(OBJ_EXT): /usr/include/time.h
+pp_sort$(OBJ_EXT): /usr/include/unistd.h
+pp_sort$(OBJ_EXT): EXTERN.h
+pp_sort$(OBJ_EXT): av.h
+pp_sort$(OBJ_EXT): config.h
+pp_sort$(OBJ_EXT): cop.h
+pp_sort$(OBJ_EXT): cv.h
+pp_sort$(OBJ_EXT): embed.h
+pp_sort$(OBJ_EXT): embedvar.h
+pp_sort$(OBJ_EXT): form.h
+pp_sort$(OBJ_EXT): gv.h
+pp_sort$(OBJ_EXT): handy.h
+pp_sort$(OBJ_EXT): hv.h
+pp_sort$(OBJ_EXT): intrpvar.h
+pp_sort$(OBJ_EXT): iperlsys.h
+pp_sort$(OBJ_EXT): mg.h
+pp_sort$(OBJ_EXT): op.h
+pp_sort$(OBJ_EXT): opcode.h
+pp_sort$(OBJ_EXT): opnames.h
+pp_sort$(OBJ_EXT): pad.h
+pp_sort$(OBJ_EXT): patchlevel.h
+pp_sort$(OBJ_EXT): perl.h
+pp_sort$(OBJ_EXT): perlio.h
+pp_sort$(OBJ_EXT): perlvars.h
+pp_sort$(OBJ_EXT): perly.h
+pp_sort$(OBJ_EXT): pp.h
+pp_sort$(OBJ_EXT): pp_proto.h
+pp_sort$(OBJ_EXT): pp_sort.c
+pp_sort$(OBJ_EXT): proto.h
+pp_sort$(OBJ_EXT): reentr.inc
+pp_sort$(OBJ_EXT): regexp.h
+pp_sort$(OBJ_EXT): scope.h
+pp_sort$(OBJ_EXT): sv.h
+pp_sort$(OBJ_EXT): thrdvar.h
+pp_sort$(OBJ_EXT): thread.h
+pp_sort$(OBJ_EXT): unixish.h
+pp_sort$(OBJ_EXT): utf8.h
+pp_sort$(OBJ_EXT): util.h
+pp_sort$(OBJ_EXT): warnings.h
+miniperlmain$(OBJ_EXT): /usr/include/_ctype.h
+miniperlmain$(OBJ_EXT): /usr/include/arpa/inet.h
+miniperlmain$(OBJ_EXT): /usr/include/ctype.h
+miniperlmain$(OBJ_EXT): /usr/include/dirent.h
+miniperlmain$(OBJ_EXT): /usr/include/errno.h
+miniperlmain$(OBJ_EXT): /usr/include/float.h
+miniperlmain$(OBJ_EXT): /usr/include/floatingpoint.h
+miniperlmain$(OBJ_EXT): /usr/include/ieeefp.h
+miniperlmain$(OBJ_EXT): /usr/include/inttypes.h
+miniperlmain$(OBJ_EXT): /usr/include/libutil.h
+miniperlmain$(OBJ_EXT): /usr/include/limits.h
+miniperlmain$(OBJ_EXT): /usr/include/locale.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/_inttypes.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/_limits.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/_stdint.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/_types.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/endian.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/ieeefp.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/param.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/setjmp.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/signal.h
+miniperlmain$(OBJ_EXT): /usr/include/machine/trap.h
+miniperlmain$(OBJ_EXT): /usr/include/math.h
+miniperlmain$(OBJ_EXT): /usr/include/netdb.h
+miniperlmain$(OBJ_EXT): /usr/include/netinet/in.h
+miniperlmain$(OBJ_EXT): /usr/include/netinet6/in6.h
+miniperlmain$(OBJ_EXT): /usr/include/runetype.h
+miniperlmain$(OBJ_EXT): /usr/include/setjmp.h
+miniperlmain$(OBJ_EXT): /usr/include/signal.h
+miniperlmain$(OBJ_EXT): /usr/include/stdarg.h
+miniperlmain$(OBJ_EXT): /usr/include/stddef.h
+miniperlmain$(OBJ_EXT): /usr/include/stdio.h
+miniperlmain$(OBJ_EXT): /usr/include/stdlib.h
+miniperlmain$(OBJ_EXT): /usr/include/string.h
+miniperlmain$(OBJ_EXT): /usr/include/strings.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/_iovec.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/_null.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/_sigset.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/_timeval.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/_types.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/cdefs.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/dirent.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/fcntl.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/file.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/filio.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/ioccom.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/ioctl.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/ipc.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/limits.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/param.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/select.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/sem.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/signal.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/socket.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/sockio.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/stat.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/stdint.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/syslimits.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/time.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/times.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/timespec.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/ttycom.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/types.h
+miniperlmain$(OBJ_EXT): /usr/include/sys/unistd.h
+miniperlmain$(OBJ_EXT): /usr/include/time.h
+miniperlmain$(OBJ_EXT): /usr/include/unistd.h
+miniperlmain$(OBJ_EXT): EXTERN.h
+miniperlmain$(OBJ_EXT): av.h
+miniperlmain$(OBJ_EXT): config.h
+miniperlmain$(OBJ_EXT): cop.h
+miniperlmain$(OBJ_EXT): cv.h
+miniperlmain$(OBJ_EXT): embed.h
+miniperlmain$(OBJ_EXT): embedvar.h
+miniperlmain$(OBJ_EXT): form.h
+miniperlmain$(OBJ_EXT): gv.h
+miniperlmain$(OBJ_EXT): handy.h
+miniperlmain$(OBJ_EXT): hv.h
+miniperlmain$(OBJ_EXT): intrpvar.h
+miniperlmain$(OBJ_EXT): iperlsys.h
+miniperlmain$(OBJ_EXT): mg.h
+miniperlmain$(OBJ_EXT): miniperlmain.c
+miniperlmain$(OBJ_EXT): op.h
+miniperlmain$(OBJ_EXT): opcode.h
+miniperlmain$(OBJ_EXT): opnames.h
+miniperlmain$(OBJ_EXT): pad.h
+miniperlmain$(OBJ_EXT): patchlevel.h
+miniperlmain$(OBJ_EXT): perl.h
+miniperlmain$(OBJ_EXT): perlio.h
+miniperlmain$(OBJ_EXT): perlvars.h
+miniperlmain$(OBJ_EXT): perly.h
+miniperlmain$(OBJ_EXT): pp.h
+miniperlmain$(OBJ_EXT): pp_proto.h
+miniperlmain$(OBJ_EXT): proto.h
+miniperlmain$(OBJ_EXT): reentr.inc
+miniperlmain$(OBJ_EXT): regexp.h
+miniperlmain$(OBJ_EXT): scope.h
+miniperlmain$(OBJ_EXT): sv.h
+miniperlmain$(OBJ_EXT): thrdvar.h
+miniperlmain$(OBJ_EXT): thread.h
+miniperlmain$(OBJ_EXT): unixish.h
+miniperlmain$(OBJ_EXT): utf8.h
+miniperlmain$(OBJ_EXT): util.h
+miniperlmain$(OBJ_EXT): warnings.h
+perlmain$(OBJ_EXT): /usr/include/_ctype.h
+perlmain$(OBJ_EXT): /usr/include/arpa/inet.h
+perlmain$(OBJ_EXT): /usr/include/ctype.h
+perlmain$(OBJ_EXT): /usr/include/dirent.h
+perlmain$(OBJ_EXT): /usr/include/errno.h
+perlmain$(OBJ_EXT): /usr/include/float.h
+perlmain$(OBJ_EXT): /usr/include/floatingpoint.h
+perlmain$(OBJ_EXT): /usr/include/ieeefp.h
+perlmain$(OBJ_EXT): /usr/include/inttypes.h
+perlmain$(OBJ_EXT): /usr/include/libutil.h
+perlmain$(OBJ_EXT): /usr/include/limits.h
+perlmain$(OBJ_EXT): /usr/include/locale.h
+perlmain$(OBJ_EXT): /usr/include/machine/_inttypes.h
+perlmain$(OBJ_EXT): /usr/include/machine/_limits.h
+perlmain$(OBJ_EXT): /usr/include/machine/_stdint.h
+perlmain$(OBJ_EXT): /usr/include/machine/_types.h
+perlmain$(OBJ_EXT): /usr/include/machine/endian.h
+perlmain$(OBJ_EXT): /usr/include/machine/ieeefp.h
+perlmain$(OBJ_EXT): /usr/include/machine/param.h
+perlmain$(OBJ_EXT): /usr/include/machine/setjmp.h
+perlmain$(OBJ_EXT): /usr/include/machine/signal.h
+perlmain$(OBJ_EXT): /usr/include/machine/trap.h
+perlmain$(OBJ_EXT): /usr/include/math.h
+perlmain$(OBJ_EXT): /usr/include/netdb.h
+perlmain$(OBJ_EXT): /usr/include/netinet/in.h
+perlmain$(OBJ_EXT): /usr/include/netinet6/in6.h
+perlmain$(OBJ_EXT): /usr/include/runetype.h
+perlmain$(OBJ_EXT): /usr/include/setjmp.h
+perlmain$(OBJ_EXT): /usr/include/signal.h
+perlmain$(OBJ_EXT): /usr/include/stdarg.h
+perlmain$(OBJ_EXT): /usr/include/stddef.h
+perlmain$(OBJ_EXT): /usr/include/stdio.h
+perlmain$(OBJ_EXT): /usr/include/stdlib.h
+perlmain$(OBJ_EXT): /usr/include/string.h
+perlmain$(OBJ_EXT): /usr/include/strings.h
+perlmain$(OBJ_EXT): /usr/include/sys/_iovec.h
+perlmain$(OBJ_EXT): /usr/include/sys/_null.h
+perlmain$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+perlmain$(OBJ_EXT): /usr/include/sys/_sigset.h
+perlmain$(OBJ_EXT): /usr/include/sys/_timeval.h
+perlmain$(OBJ_EXT): /usr/include/sys/_types.h
+perlmain$(OBJ_EXT): /usr/include/sys/cdefs.h
+perlmain$(OBJ_EXT): /usr/include/sys/dirent.h
+perlmain$(OBJ_EXT): /usr/include/sys/fcntl.h
+perlmain$(OBJ_EXT): /usr/include/sys/file.h
+perlmain$(OBJ_EXT): /usr/include/sys/filio.h
+perlmain$(OBJ_EXT): /usr/include/sys/ioccom.h
+perlmain$(OBJ_EXT): /usr/include/sys/ioctl.h
+perlmain$(OBJ_EXT): /usr/include/sys/ipc.h
+perlmain$(OBJ_EXT): /usr/include/sys/limits.h
+perlmain$(OBJ_EXT): /usr/include/sys/param.h
+perlmain$(OBJ_EXT): /usr/include/sys/select.h
+perlmain$(OBJ_EXT): /usr/include/sys/sem.h
+perlmain$(OBJ_EXT): /usr/include/sys/signal.h
+perlmain$(OBJ_EXT): /usr/include/sys/socket.h
+perlmain$(OBJ_EXT): /usr/include/sys/sockio.h
+perlmain$(OBJ_EXT): /usr/include/sys/stat.h
+perlmain$(OBJ_EXT): /usr/include/sys/stdint.h
+perlmain$(OBJ_EXT): /usr/include/sys/syslimits.h
+perlmain$(OBJ_EXT): /usr/include/sys/time.h
+perlmain$(OBJ_EXT): /usr/include/sys/times.h
+perlmain$(OBJ_EXT): /usr/include/sys/timespec.h
+perlmain$(OBJ_EXT): /usr/include/sys/ttycom.h
+perlmain$(OBJ_EXT): /usr/include/sys/types.h
+perlmain$(OBJ_EXT): /usr/include/sys/unistd.h
+perlmain$(OBJ_EXT): /usr/include/time.h
+perlmain$(OBJ_EXT): /usr/include/unistd.h
+perlmain$(OBJ_EXT): EXTERN.h
+perlmain$(OBJ_EXT): av.h
+perlmain$(OBJ_EXT): config.h
+perlmain$(OBJ_EXT): cop.h
+perlmain$(OBJ_EXT): cv.h
+perlmain$(OBJ_EXT): embed.h
+perlmain$(OBJ_EXT): embedvar.h
+perlmain$(OBJ_EXT): form.h
+perlmain$(OBJ_EXT): gv.h
+perlmain$(OBJ_EXT): handy.h
+perlmain$(OBJ_EXT): hv.h
+perlmain$(OBJ_EXT): intrpvar.h
+perlmain$(OBJ_EXT): iperlsys.h
+perlmain$(OBJ_EXT): mg.h
+perlmain$(OBJ_EXT): op.h
+perlmain$(OBJ_EXT): opcode.h
+perlmain$(OBJ_EXT): opnames.h
+perlmain$(OBJ_EXT): pad.h
+perlmain$(OBJ_EXT): patchlevel.h
+perlmain$(OBJ_EXT): perl.h
+perlmain$(OBJ_EXT): perlio.h
+perlmain$(OBJ_EXT): perlmain.c
+perlmain$(OBJ_EXT): perlvars.h
+perlmain$(OBJ_EXT): perly.h
+perlmain$(OBJ_EXT): pp.h
+perlmain$(OBJ_EXT): pp_proto.h
+perlmain$(OBJ_EXT): proto.h
+perlmain$(OBJ_EXT): reentr.inc
+perlmain$(OBJ_EXT): regexp.h
+perlmain$(OBJ_EXT): scope.h
+perlmain$(OBJ_EXT): sv.h
+perlmain$(OBJ_EXT): thrdvar.h
+perlmain$(OBJ_EXT): thread.h
+perlmain$(OBJ_EXT): unixish.h
+perlmain$(OBJ_EXT): utf8.h
+perlmain$(OBJ_EXT): util.h
+perlmain$(OBJ_EXT): warnings.h
+opmini$(OBJ_EXT): /usr/include/_ctype.h
+opmini$(OBJ_EXT): /usr/include/arpa/inet.h
+opmini$(OBJ_EXT): /usr/include/ctype.h
+opmini$(OBJ_EXT): /usr/include/dirent.h
+opmini$(OBJ_EXT): /usr/include/errno.h
+opmini$(OBJ_EXT): /usr/include/float.h
+opmini$(OBJ_EXT): /usr/include/floatingpoint.h
+opmini$(OBJ_EXT): /usr/include/ieeefp.h
+opmini$(OBJ_EXT): /usr/include/inttypes.h
+opmini$(OBJ_EXT): /usr/include/libutil.h
+opmini$(OBJ_EXT): /usr/include/limits.h
+opmini$(OBJ_EXT): /usr/include/locale.h
+opmini$(OBJ_EXT): /usr/include/machine/_inttypes.h
+opmini$(OBJ_EXT): /usr/include/machine/_limits.h
+opmini$(OBJ_EXT): /usr/include/machine/_stdint.h
+opmini$(OBJ_EXT): /usr/include/machine/_types.h
+opmini$(OBJ_EXT): /usr/include/machine/endian.h
+opmini$(OBJ_EXT): /usr/include/machine/ieeefp.h
+opmini$(OBJ_EXT): /usr/include/machine/param.h
+opmini$(OBJ_EXT): /usr/include/machine/setjmp.h
+opmini$(OBJ_EXT): /usr/include/machine/signal.h
+opmini$(OBJ_EXT): /usr/include/machine/trap.h
+opmini$(OBJ_EXT): /usr/include/math.h
+opmini$(OBJ_EXT): /usr/include/netdb.h
+opmini$(OBJ_EXT): /usr/include/netinet/in.h
+opmini$(OBJ_EXT): /usr/include/netinet6/in6.h
+opmini$(OBJ_EXT): /usr/include/runetype.h
+opmini$(OBJ_EXT): /usr/include/setjmp.h
+opmini$(OBJ_EXT): /usr/include/signal.h
+opmini$(OBJ_EXT): /usr/include/stdarg.h
+opmini$(OBJ_EXT): /usr/include/stddef.h
+opmini$(OBJ_EXT): /usr/include/stdio.h
+opmini$(OBJ_EXT): /usr/include/stdlib.h
+opmini$(OBJ_EXT): /usr/include/string.h
+opmini$(OBJ_EXT): /usr/include/strings.h
+opmini$(OBJ_EXT): /usr/include/sys/_iovec.h
+opmini$(OBJ_EXT): /usr/include/sys/_null.h
+opmini$(OBJ_EXT): /usr/include/sys/_pthreadtypes.h
+opmini$(OBJ_EXT): /usr/include/sys/_sigset.h
+opmini$(OBJ_EXT): /usr/include/sys/_timeval.h
+opmini$(OBJ_EXT): /usr/include/sys/_types.h
+opmini$(OBJ_EXT): /usr/include/sys/cdefs.h
+opmini$(OBJ_EXT): /usr/include/sys/dirent.h
+opmini$(OBJ_EXT): /usr/include/sys/fcntl.h
+opmini$(OBJ_EXT): /usr/include/sys/file.h
+opmini$(OBJ_EXT): /usr/include/sys/filio.h
+opmini$(OBJ_EXT): /usr/include/sys/ioccom.h
+opmini$(OBJ_EXT): /usr/include/sys/ioctl.h
+opmini$(OBJ_EXT): /usr/include/sys/ipc.h
+opmini$(OBJ_EXT): /usr/include/sys/limits.h
+opmini$(OBJ_EXT): /usr/include/sys/param.h
+opmini$(OBJ_EXT): /usr/include/sys/select.h
+opmini$(OBJ_EXT): /usr/include/sys/sem.h
+opmini$(OBJ_EXT): /usr/include/sys/signal.h
+opmini$(OBJ_EXT): /usr/include/sys/socket.h
+opmini$(OBJ_EXT): /usr/include/sys/sockio.h
+opmini$(OBJ_EXT): /usr/include/sys/stat.h
+opmini$(OBJ_EXT): /usr/include/sys/stdint.h
+opmini$(OBJ_EXT): /usr/include/sys/syslimits.h
+opmini$(OBJ_EXT): /usr/include/sys/time.h
+opmini$(OBJ_EXT): /usr/include/sys/times.h
+opmini$(OBJ_EXT): /usr/include/sys/timespec.h
+opmini$(OBJ_EXT): /usr/include/sys/ttycom.h
+opmini$(OBJ_EXT): /usr/include/sys/types.h
+opmini$(OBJ_EXT): /usr/include/sys/unistd.h
+opmini$(OBJ_EXT): /usr/include/time.h
+opmini$(OBJ_EXT): /usr/include/unistd.h
+opmini$(OBJ_EXT): EXTERN.h
+opmini$(OBJ_EXT): XSUB.h
+opmini$(OBJ_EXT): av.h
+opmini$(OBJ_EXT): config.h
+opmini$(OBJ_EXT): cop.h
+opmini$(OBJ_EXT): cv.h
+opmini$(OBJ_EXT): embed.h
+opmini$(OBJ_EXT): embedvar.h
+opmini$(OBJ_EXT): form.h
+opmini$(OBJ_EXT): gv.h
+opmini$(OBJ_EXT): handy.h
+opmini$(OBJ_EXT): hv.h
+opmini$(OBJ_EXT): intrpvar.h
+opmini$(OBJ_EXT): iperlsys.h
+opmini$(OBJ_EXT): keywords.h
+opmini$(OBJ_EXT): mg.h
+opmini$(OBJ_EXT): op.h
+opmini$(OBJ_EXT): opcode.h
+opmini$(OBJ_EXT): opmini.c
+opmini$(OBJ_EXT): opnames.h
+opmini$(OBJ_EXT): pad.h
+opmini$(OBJ_EXT): patchlevel.h
+opmini$(OBJ_EXT): perl.h
+opmini$(OBJ_EXT): perlapi.h
+opmini$(OBJ_EXT): perlio.h
+opmini$(OBJ_EXT): perlvars.h
+opmini$(OBJ_EXT): perly.h
+opmini$(OBJ_EXT): pp.h
+opmini$(OBJ_EXT): pp_proto.h
+opmini$(OBJ_EXT): proto.h
+opmini$(OBJ_EXT): reentr.inc
+opmini$(OBJ_EXT): regexp.h
+opmini$(OBJ_EXT): scope.h
+opmini$(OBJ_EXT): sv.h
+opmini$(OBJ_EXT): thrdvar.h
+opmini$(OBJ_EXT): thread.h
+opmini$(OBJ_EXT): unixish.h
+opmini$(OBJ_EXT): utf8.h
+opmini$(OBJ_EXT): util.h
+opmini$(OBJ_EXT): warnings.h
+cflags: cflags.SH ./config.sh ; /bin/sh cflags.SH
+makeaperl: makeaperl.SH ./config.sh ; /bin/sh makeaperl.SH
+makedir: makedir.SH ./config.sh ; /bin/sh makedir.SH
+myconfig: myconfig.SH ./config.sh ; /bin/sh myconfig.SH
+writemain: writemain.SH ./config.sh ; /bin/sh writemain.SH
+pod/Makefile: pod/Makefile.SH ./config.sh ; /bin/sh pod/Makefile.SH
+# WARNING: Put nothing here or make depend will gobble it up!

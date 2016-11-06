@@ -1,0 +1,38 @@
+body {
+	-x-system-font:none;
+	background-color:#FFFFFF;
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	font-size-adjust:none;
+	font-stretch:normal;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:normal;
+}
+
+p {
+	margin-left: 10px;
+}
+
+h2 {
+	padding: 0px;
+	margin-bottom: 35px;
+}
+
+h3 {
+}
+
+#maindiv {
+	width: 600px;
+	border: 1px solid #dedec6;
+	background-color: #eeeedd;
+	padding: 15px;
+	margin: 5px 0px 15px 50px;
+}
+
+#copyright {
+	color: #e0e0e0;
+	margin-left: 320px;
+}

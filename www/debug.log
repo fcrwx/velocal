@@ -1,0 +1,610 @@
+======> Fri May  1 03:42:16 GMT 2009 <========
+http://velocal.org/debug.cgi?a=add&d=30&m=5&y=2009
+======> Fri May  1 03:44:30 GMT 2009 <========
+http://velocal.org/debug.cgi?group_id=34&title=test3&m=5&d=30&y=2009&start_hour=8&start_minutes=0&location=3015%20Cortez%20Street&map_id=0&pace=B&terrain=Rolling&distance=&notes=&a=add&method=add&event_id=&check=true
+redirecting to: http://velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Fri May  1 03:44:31 GMT 2009 <========
+http://velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Fri May  1 03:45:25 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 17:23:43 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 19:19:33 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 19:20:40 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 19:20:46 GMT 2009 <========
+http://velocal.org/debug.cgi?a=add&d=9&m=5&y=2009
+======> Sat May  2 19:22:05 GMT 2009 <========
+http://velocal.org/debug.cgi?group_id=79&title=RR%20from%20West%20School&m=5&d=9&y=2009&start_hour=10&start_minutes=0&location=West%20Main%20an%20Dix&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=10%3A00%20ready%20to%20ride.&a=add&method=add&event_id=&check=true
+redirecting to: http://velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sat May  2 19:36:08 GMT 2009 <========
+http://velocal.org/debug.cgi?group_id=79&title=RR%20from%20West%20School&m=5&d=9&y=2009&start_hour=10&start_minutes=0&location=West%20Main%20an%20Dix&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=10%3A00%20ready%20to%20ride.&a=add&method=add&event_id=&check=true
+======> Sat May  2 19:36:23 GMT 2009 <========
+http://velocal.org/debug.cgi
+redirecting to: http://velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sat May  2 19:38:18 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 19:38:58 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2086
+======> Sat May  2 19:39:05 GMT 2009 <========
+http://velocal.org/debug.cgi?e=2086&a=delete_event
+======> Sat May  2 19:39:52 GMT 2009 <========
+http://velocal.org/debug.cgi?message=Program%20error%20posted%20event%20twice.%20%20Programming%20support%20is%20looking%20into%20the%20problem.&e=2086&a=delete_event&c=1
+======> Sat May  2 19:41:18 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 20:28:29 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sat May  2 20:28:34 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2077
+======> Sat May  2 20:29:05 GMT 2009 <========
+http://velocal.org/debug.cgi?attend=no&e=2077&u=660&a=att&comments=I%20will%20not%20be%20able%20to%20ride%20this%20week.
+======> Sat May  2 20:29:05 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2077
+======> Sat May  2 20:29:19 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2084
+======> Sat May  2 20:29:36 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2085
+======> Sun May  3 00:40:31 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Sun May  3 00:40:40 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2077
+======> Mon May  4 00:22:00 GMT 2009 <========
+http://velocal.org/debug.cgi?a=att&e=2087&u=741&attend=yes
+======> Mon May  4 00:22:01 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2087
+======> Wed May  6 13:28:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 13:28:49 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=login
+======> Wed May  6 13:28:53 GMT 2009 <========
+http://www.velocal.org/debug.cgi?e=jerryk2007%40mchsi.com&password=252525&a=login_check&redirect_url=
+======> Wed May  6 13:28:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=main
+======> Wed May  6 13:29:02 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2090
+======> Wed May  6 14:02:06 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 14:02:11 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=10&m=5&y=2009
+======> Wed May  6 14:03:48 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20McClung&m=5&d=10&y=2009&start_hour=10&start_minutes=0&location=McClung%20Park%20off%20Chestnut&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=Back%20by%20popular%20demand%2C%2010AM%20ready%20to%20ride.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Wed May  6 14:04:22 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 14:04:27 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Wed May  6 14:06:08 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=no&e=2092&u=660&a=att&comments=I%20cannot%20ride%20but%20am%20available%20for%20SAG.%20%20Reach%20me%20at%20573-353-9425%20--%20put%20that%20in%20your%20phone.
+======> Wed May  6 14:06:08 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Wed May  6 14:06:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Wed May  6 14:06:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=no&e=2092&u=904&a=att&comments=mothers%20day
+======> Wed May  6 14:06:44 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Wed May  6 14:07:01 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=support
+======> Wed May  6 21:10:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 21:11:02 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2090
+======> Wed May  6 21:26:20 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 21:26:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2084
+======> Wed May  6 21:26:47 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 21:26:52 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2085
+======> Wed May  6 21:27:07 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May  6 21:27:12 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2087
+======> Thu May  7 19:31:57 GMT 2009 <========
+http://velocal.org/debug.cgi?a=att&e=2087&u=760&attend=yes
+======> Thu May  7 19:31:58 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2087
+======> Thu May  7 22:21:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May  7 22:21:50 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Thu May  7 22:22:07 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2087
+======> Thu May  7 22:22:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=no&e=2087&u=660&a=att&comments=I%20cannot%20ride%20this%20week.
+======> Thu May  7 22:22:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2087
+======> Sat May  9 13:25:55 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sat May  9 13:26:04 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2087
+======> Sat May  9 14:54:31 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sat May  9 14:54:37 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Sat May  9 20:05:48 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sat May  9 20:05:53 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Sun May 10 13:50:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 10 13:50:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=12&m=5&y=2009
+======> Sun May 10 13:51:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20Memorial&m=5&d=12&y=2009&start_hour=17&start_minutes=30&location=Memorial%20Park&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20Sunset%3B%208%3A11.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sun May 10 13:51:42 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 10 13:51:47 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=13&m=5&y=2009
+======> Sun May 10 13:52:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20Govenor%27s%20Mansion&m=5&d=13&y=2009&start_hour=17&start_minutes=30&location=Madison%20Street&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20%20Sunset%208%3A12.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sun May 10 13:53:11 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 10 13:53:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=14&m=5&y=2009
+======> Sun May 10 13:53:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=&m=5&d=14&y=2009&start_hour=17&start_minutes=30&location=RR%20from%20McClung&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20%20Sunset%208%3A13.&a=add&method=add&event_id=&check=true
+======> Sun May 10 13:54:46 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20McClung&m=5&d=14&y=2009&start_hour=17&start_minutes=30&location=McClung%20Park%20off%20Chestnut.&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20%20Sunset%208%3A13.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sun May 10 13:55:19 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 10 13:55:27 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2092
+======> Sun May 10 13:55:35 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 10 16:29:03 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2102&u=760&attend=yes
+======> Sun May 10 16:29:04 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2102
+======> Sun May 10 16:29:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2100&u=760&attend=yes
+======> Sun May 10 16:29:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2100
+======> Sun May 10 18:04:23 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2102&u=958&attend=no
+======> Sun May 10 18:04:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2102
+======> Sun May 10 18:05:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=885
+======> Sun May 10 18:05:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=885&f=photo_filename&m=photo_magick
+======> Sun May 10 18:05:28 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=850
+======> Sun May 10 18:05:28 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=850&f=photo_filename&m=photo_magick
+======> Sun May 10 18:06:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=908
+======> Sun May 10 18:06:07 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=908&f=photo_filename&m=photo_magick
+======> Sun May 10 18:06:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=737
+======> Sun May 10 18:06:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=737&f=photo_filename&m=photo_magick
+======> Sun May 10 18:06:44 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=732
+======> Sun May 10 18:06:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=732&f=photo_filename&m=photo_magick
+======> Sun May 10 18:07:14 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=738
+======> Sun May 10 18:07:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=738&f=photo_filename&m=photo_magick
+======> Sun May 10 18:07:25 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=730
+======> Sun May 10 18:07:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=730&f=photo_filename&m=photo_magick
+======> Sun May 10 18:08:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=932
+======> Sun May 10 18:08:28 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=958
+======> Sun May 10 18:09:35 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2100&u=958&attend=no
+======> Sun May 10 18:09:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2100
+======> Mon May 11 19:01:52 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2101&u=850&attend=no
+======> Mon May 11 19:01:53 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2101
+======> Mon May 11 19:02:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=no&e=2101&u=850&a=att&comments=Cary%20will%20be%20out%20of%20town.
+======> Mon May 11 19:02:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2101
+======> Mon May 11 19:02:32 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2100&u=850&attend=no
+======> Mon May 11 19:02:33 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2100
+======> Tue May 12 02:47:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2101&u=958&attend=yes
+======> Tue May 12 19:17:14 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Tue May 12 19:17:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2108
+======> Tue May 12 19:17:58 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Tue May 12 19:18:02 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2100
+======> Wed May 13 03:35:38 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May 13 03:35:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Wed May 13 03:36:19 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=maps&c=image&l=id&r=84&f=image_filename&m=image_magick
+======> Wed May 13 03:37:19 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May 13 03:38:08 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2108
+======> Wed May 13 03:38:38 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2108&u=660&a=att&comments=If%20the%20weather%20cooperates.
+======> Wed May 13 03:38:39 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2108
+======> Thu May 14 18:49:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 18:49:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 18:50:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2112&u=660&a=att&comments=Should%20be%20a%20nice%20day.%20%20Map%20of%20optional%2061%20mile%20route%3A%20%20http%3A%2F%2Fwww.mapmyride.com%2Froute%2Fus%2Fmo%2Fholts%2520summit%2F872124232628597977
+======> Thu May 14 18:50:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 18:50:23 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Thu May 14 18:50:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=map_edit&new=1&g=79
+======> Thu May 14 18:51:47 GMT 2009 <========
+http://www.velocal.org/debug.cgi?name=Holts%20Summit%2C%20Millersberg%2C%20Fulton&description=Holts%20Summit%20Plaza%20thru%20Millersberg%2C%20up%20to%2070%2C%20Fulton%2C%20and%20back%20to%20the%20Plaza.&map_action=url&url=http%3A%2F%2Fwww.mapmyride.com%2Froute%2Fus%2Fmo%2Fholts%2520summit%2F872124232628597977&image_name=&a=map_write&map_id=&group_id=79
+======> Thu May 14 18:51:48 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Thu May 14 18:52:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 18:52:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 18:53:00 GMT 2009 <========
+http://www.velocal.org/debug.cgi?event_id=2112&start_hour=09&start_minutes=00&d=17&m=05&y=2009&group_id=79&title=RR%20from%20Holts%20Summit&location=Holts%20Summit%20Plaza&map_id=84&pace=C&terrain=Moderately%20Hilly&distance=34%20miles&notes=9AM%20ready%20to%20ride.&a=add&method=edit
+======> Thu May 14 18:54:03 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20Holts%20Summit&m=5&d=17&y=2009&start_hour=9&start_minutes=0&location=Holts%20Summit%20Plaza&map_id=84&pace=C&terrain=Moderately%20Hilly&distance=34%2F61%20Miles.&notes=9AM%20ready%20to%20ride.%20%20See%20map%20for%20optional%2061%20mile%20route%3A%20http%3A%2F%2Fwww.mapmyride.com%2Froute%2Fus%2Fmo%2Fholts%2520summit%2F872124232628597977&a=add&method=edit&event_id=2112&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Thu May 14 18:54:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 18:55:01 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 18:56:59 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=unsubscribe&g=79
+======> Thu May 14 18:57:10 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 19:25:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 19:29:47 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=maybe&e=2112&u=730&a=att&comments=Sounds%20good.%20%20I%20will%20probably%20be%20up%20for%20the%20long%20option%20if%20anyone%20is%20interested.
+======> Thu May 14 19:29:48 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 19:33:12 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2112&u=965&attend=no
+======> Thu May 14 19:33:12 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=login&redirect_url=http%3A%2F%2Fwww.velocal.org%2Fdebug.cgi%3Fa%3Datt%26e%3D2112%26u%3D965%26attend%3Dno
+======> Thu May 14 19:33:23 GMT 2009 <========
+http://www.velocal.org/debug.cgi?e=ereroe%40eroe.com&password=presceovc&a=login_check&redirect_url=http%3A%2F%2Fwww.velocal.org%2Fdebug.cgi%3Fa%3Datt%26e%3D2112%26u%3D965%26attend%3Dno
+======> Thu May 14 19:33:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2112&u=965&attend=no
+======> Thu May 14 19:33:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 19:33:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=no&e=2112&u=965&a=att&comments=
+======> Thu May 14 19:33:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 19:33:49 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=logout
+======> Thu May 14 19:33:49 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 19:45:21 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=support
+======> Thu May 14 19:45:29 GMT 2009 <========
+http://www.velocal.org/debug.cgi?comments=&a=thanks
+======> Thu May 14 19:45:39 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 19:46:27 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=register
+======> Thu May 14 19:46:30 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=support
+======> Thu May 14 19:46:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 19:47:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=login
+======> Thu May 14 19:47:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?e=ereroe%40eroe.com&password=presceovc&a=login_check&redirect_url=
+======> Thu May 14 19:47:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=main
+======> Thu May 14 19:47:53 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Thu May 14 19:48:12 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=965
+======> Thu May 14 19:48:27 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile
+======> Thu May 14 19:48:31 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile_edit
+======> Thu May 14 19:49:18 GMT 2009 <========
+http://www.velocal.org/debug.cgi?name_first=Edward&name_last=Eroe&biography=&pref_pace=B&pref_terrain=Moderately%20Hilly&mon_cal=N&hide_email=N&a=profile_write&photo_action=add&photo=TourofMissouri070911030Small.jpg
+======> Thu May 14 19:49:19 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile_edit&ec=2
+======> Thu May 14 19:50:50 GMT 2009 <========
+http://www.velocal.org/debug.cgi?name_first=Edward&name_last=Eroe&biography=&pref_pace=A&pref_terrain=Moderately%20Hilly&mon_cal=N&hide_email=N&a=profile_write&photo_action=add&photo=TourofMissouri070911030Small.JPG
+======> Thu May 14 19:50:50 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile_edit&ec=2
+======> Thu May 14 19:51:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?name_first=Edward&name_last=Eroe&biography=&pref_pace=B&pref_terrain=Moderately%20Hilly&mon_cal=N&hide_email=N&a=profile_write&photo_action=add&photo=TourofMissouri070911030Small_1.JPG
+======> Thu May 14 19:51:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile_edit&ec=2
+======> Thu May 14 19:52:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi?name_first=Edward&name_last=Eroe&biography=&pref_pace=B&pref_terrain=Moderately%20Hilly&mon_cal=N&hide_email=N&a=profile_write&photo_action=add&photo=TourofMissouri070911030Small.JPG
+======> Thu May 14 19:52:44 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile
+======> Thu May 14 19:52:45 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=965&f=photo_filename&m=photo_magick
+======> Thu May 14 19:53:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group_edit
+======> Thu May 14 20:03:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi?state=KS&city=NEW&new_city=Overland%20Park&name=Quivira%20Park%20Bike%20Group&homepage=http%3A%2F%2Fquivira.eroe.com&description=The%20Quivira%20Park%20Bike%20Group%20gets%20together%20every%20Saturday%20morning%20from%20May%20through%20October%20in%20Overland%20Park%2C%20Kansas%20at%20Quivira%20Park%20at%20119th%20and%20Quivira%20for%20several%20different%20bicycle%20rides.%20The%20website%20is%20http%3A%2F%2Fquivira.eroe.com%20and%20has%20maps%20of%20each%20route.%20The%20group%20is%20part%20of%20the%20Johnston%20County%20Bicycle%20Club%20%28www.jcbikeclub.org%29%20and%20the%20pace%20is%2015-18%20mph.%0D%0A%0D%0AThe%20Quivira%20Park%20Bike%20Group%20is%20also%20on%20Facebook%20so%20if%20you%20have%20an%20account%20please%20also%20become%20a%20member%20of%20the%20group%20by%20going%20to%20http%3A%2F%2Fwww.facebook.com%20and%20then%20searching%20for%20Quivira%20Park%20Bike%20Group.%20%20You%20can%20also%20sign%20up%20for%20our%20Twitter%20account%20at%20http%3A%2F%2Ftwitter.com%2Fquiviraparkbike%20and%20receive%20updates%20through%20your%20account%20or%20RSS%20Feed.&type=public&default_pace=B&default_terrain=Moderately%20Hilly&default_start_location=Quivira%20Park&default_start_time_hour=07&default_start_time_minute=00&a=group_edit&g=&m=validate&edit=
+======> Thu May 14 20:03:35 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 20:03:46 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group_admin&g=90
+======> Thu May 14 20:05:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=logout
+======> Thu May 14 20:05:07 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Thu May 14 20:10:42 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Thu May 14 20:10:42 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=login&redirect_url=http%3A%2F%2Fwww.velocal.org%2Fdebug.cgi%3Fa%3Devent%26e%3D2112
+======> Thu May 14 23:46:32 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=maps&c=image&l=id&r=84&f=image_filename&m=image_magick
+======> Fri May 15 01:58:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Fri May 15 20:59:50 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Fri May 15 20:59:56 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2108
+======> Sat May 16 03:59:03 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2112&u=760&attend=yes
+======> Sat May 16 03:59:04 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Sat May 16 03:59:31 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=923
+======> Sat May 16 04:00:17 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=738
+======> Sat May 16 04:00:18 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=738&f=photo_filename&m=photo_magick
+======> Sat May 16 21:15:03 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=961
+======> Sat May 16 21:15:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=961&f=photo_filename&m=photo_magick
+======> Sat May 16 21:15:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sat May 16 21:15:31 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Sat May 16 21:59:09 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Sun May 17 19:58:03 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 17 19:58:21 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=19&m=5&y=2009
+======> Sun May 17 19:59:53 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20Memorial&m=5&d=19&y=2009&start_hour=17&start_minutes=30&location=Memorial%20Park&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20%20Sunset%208%3A18.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sun May 17 20:01:51 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 17 20:03:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=20&m=5&y=2009
+======> Sun May 17 20:04:24 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20Govenor%27s%20Mansion&m=5&d=20&y=2009&start_hour=17&start_minutes=30&location=Madison%20Street&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20%20Sunset%3A%20%208%3A18.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sun May 17 20:05:00 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 17 20:05:06 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=21&m=5&y=2009
+======> Sun May 17 20:05:58 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20McClung&m=5&d=21&y=2009&start_hour=17&start_minutes=30&location=McClung%20Park%20off%20Chestnut.&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=5%3A30%20ready%20to%20ride.%20%20Sunset%3A%20%208%3A19.&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Sun May 17 20:06:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 17 20:12:22 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sun May 17 20:26:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2112
+======> Sun May 17 22:14:21 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Sun May 17 22:14:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2123&u=912&a=att&comments=
+======> Sun May 17 22:14:37 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Sun May 17 22:52:55 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2125&u=741&attend=yes
+======> Sun May 17 22:52:56 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2125
+======> Sun May 17 22:53:38 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2124&u=741&attend=yes
+======> Sun May 17 22:53:39 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2124
+======> Sun May 17 22:54:25 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2123&u=741&attend=yes
+======> Sun May 17 22:54:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Mon May 18 00:39:30 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2125&u=760&attend=yes
+======> Mon May 18 00:39:31 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2125
+======> Mon May 18 00:39:58 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2124&u=760&attend=yes
+======> Mon May 18 00:39:59 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2124
+======> Mon May 18 00:41:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2123&u=760&attend=yes
+======> Mon May 18 00:41:37 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Mon May 18 20:14:39 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Mon May 18 20:14:44 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=add&d=23&m=5&y=2009
+======> Mon May 18 20:16:32 GMT 2009 <========
+http://www.velocal.org/debug.cgi?group_id=79&title=RR%20from%20West%20School&m=5&d=23&y=2009&start_hour=9&start_minutes=0&location=Dix%20and%20West%20Main&map_id=0&pace=C&terrain=Moderately%20Hilly&distance=TBD&notes=9AM%20ready%20to%20ride.%20%20Anyone%20got%20a%20new%2C%20interesting%20route%3F&a=add&method=add&event_id=&check=true
+redirecting to: http://www.velocal.org/debug.cgi?action=main&y=2009&m=05
+======> Mon May 18 20:18:41 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Mon May 18 20:19:10 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Mon May 18 20:20:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2128
+======> Mon May 18 20:21:33 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=no&e=2128&u=660&a=att&comments=When%20I%20get%20as%20old%20and%20ugly%20as%20Pat%2C%20will%20I%20be%20a%20has%20been%20too%3F
+======> Mon May 18 20:21:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2128
+======> Mon May 18 20:21:51 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Mon May 18 20:21:55 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Mon May 18 20:22:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2123&u=660&a=att&comments=The%20cookie%20said%20%22it%20is%20in%20my%20future.%22
+======> Mon May 18 20:22:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Mon May 18 20:25:21 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=965
+======> Mon May 18 20:25:22 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=965&f=photo_filename&m=photo_magick
+======> Mon May 18 20:25:56 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=user_profile&u=732
+======> Mon May 18 20:25:57 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=users&c=photo&l=user_id&r=732&f=photo_filename&m=photo_magick
+======> Mon May 18 20:27:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Mon May 18 20:28:02 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Mon May 18 20:38:38 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Mon May 18 20:38:43 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2124
+======> Mon May 18 20:38:55 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Mon May 18 20:39:00 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2102
+======> Mon May 18 20:39:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2125
+======> Mon May 18 21:56:20 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Tue May 19 00:44:34 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2128
+======> Tue May 19 00:45:09 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Tue May 19 00:45:56 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Tue May 19 00:46:14 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2124
+======> Tue May 19 01:15:03 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2129&u=850&attend=no
+======> Tue May 19 01:15:04 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Tue May 19 11:52:47 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2129&u=741&attend=no
+======> Tue May 19 11:52:48 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Tue May 19 13:08:11 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Tue May 19 20:04:00 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Tue May 19 20:04:08 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2128
+======> Tue May 19 20:04:28 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Tue May 19 20:47:09 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2128
+======> Wed May 20 12:51:57 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May 20 20:13:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Wed May 20 20:13:57 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Thu May 21 04:02:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=att&e=2125&u=760&attend=yes
+======> Thu May 21 04:02:05 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2125
+======> Fri May 22 21:47:27 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Fri May 22 21:47:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Fri May 22 21:48:46 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2129&u=660&a=att&comments=
+======> Fri May 22 21:48:47 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Fri May 22 21:49:06 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2129
+======> Fri May 22 21:49:17 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2134
+======> Fri May 22 21:49:35 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2134&u=660&a=att&comments=
+======> Fri May 22 21:49:36 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2134
+======> Fri May 22 21:50:01 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2109
+======> Fri May 22 21:50:16 GMT 2009 <========
+http://www.velocal.org/debug.cgi?attend=yes&e=2109&u=660&a=att&comments=
+======> Fri May 22 21:50:17 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2109
+======> Sat May 23 19:21:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sat May 23 19:21:35 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group_admin&g=79
+======> Sat May 23 19:21:53 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group_prefs&g=79
+======> Sat May 23 19:21:58 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Sat May 23 19:22:15 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile
+======> Sat May 23 19:22:20 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile_edit
+======> Sat May 23 19:22:31 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group_admin&g=79
+======> Sat May 23 19:22:37 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=manage_users&g=79
+======> Sat May 23 19:22:55 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Sat May 23 19:25:06 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=map_edit&id=88&g=79
+======> Sat May 23 19:28:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi
+======> Sat May 23 19:32:11 GMT 2009 <========
+http://www.velocal.org/debug.cgi?name=McClung%2C%20Wardsville%2C%20Taos&description=From%20McClung%20to%20the%20East%20and%20back.&map_action=url&url=http%3A%2F%2Fwww.mapmyride.com%2Fride%2Funited-states%2Fmo%2Fjefferson-city%2F188991970034&image_name=&a=map_write&map_id=88&group_id=79
+======> Sat May 23 19:32:11 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Sat May 23 19:32:26 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=maps&c=image&l=id&r=84&f=image_filename&m=image_magick
+======> Sat May 23 19:32:37 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=get_image&t=maps&c=image&l=id&r=83&f=image_filename&m=image_magick
+======> Fri Jun  5 01:22:40 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=event&e=2123
+======> Fri Jun  5 01:22:54 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile
+======> Fri Jun  5 01:23:11 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=profile_edit
+======> Fri Jun  5 01:23:32 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group_prefs&g=79
+======> Fri Jun  5 01:23:51 GMT 2009 <========
+http://www.velocal.org/debug.cgi?a=group&g=79
+======> Fri Jun 12 22:53:04 GMT 2009 <========
+http://velocal.org/debug.cgi
+======> Fri Jun 12 22:53:12 GMT 2009 <========
+http://velocal.org/debug.cgi?a=add&d=13&m=6&y=2009
+======> Fri Jun 12 22:53:34 GMT 2009 <========
+http://velocal.org/debug.cgi?group_id=34&title=test%20ride&m=6&d=13&y=2009&start_hour=8&start_minutes=0&location=3015%20Cortez%20Street&map_id=0&pace=B&terrain=Rolling&distance=&notes=&a=add&method=add&event_id=&check=true
+redirecting to: http://velocal.org/debug.cgi?action=main&y=2009&m=06
+======> Fri Jun 12 22:53:35 GMT 2009 <========
+http://velocal.org/debug.cgi?action=main&y=2009&m=06
+======> Fri Jun 12 22:56:52 GMT 2009 <========
+http://velocal.org/debug.cgi?a=event&e=2193
+======> Fri Jun 12 22:56:55 GMT 2009 <========
+http://velocal.org/debug.cgi?event_id=2193&start_hour=08&start_minutes=00&d=13&m=06&y=2009&group_id=34&title=test%20ride&location=3015%20Cortez%20Street&map_id=0&pace=B&terrain=Rolling&distance=&notes=&a=add&method=edit
+======> Fri Jun 12 22:57:04 GMT 2009 <========
+http://velocal.org/debug.cgi?group_id=34&title=test%20ride&m=6&d=13&y=2009&start_hour=8&start_minutes=30&location=3015%20Cortez%20Street&map_id=0&pace=B&terrain=Rolling&distance=&notes=&a=add&method=edit&event_id=2193&check=true
+redirecting to: http://velocal.org/debug.cgi?action=main&y=2009&m=06
+======> Fri Jun 12 22:57:05 GMT 2009 <========
+http://velocal.org/debug.cgi?action=main&y=2009&m=06
